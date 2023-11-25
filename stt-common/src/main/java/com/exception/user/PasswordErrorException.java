@@ -1,4 +1,4 @@
-package com.exception;
+package com.exception.user;
 
 /**
  * 密码错误异常

@@ -1,4 +1,4 @@
-package com.exception;
+package com.exception.user;
 
 /**
  * 账号不存在异常

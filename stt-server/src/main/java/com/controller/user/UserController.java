@@ -3,6 +3,7 @@ package com.controller.user;
 import com.constant.JwtClaimsConstant;
 import com.constant.MessageConstant;
 import com.dto.UserLoginDTO;
+import com.dto.UserRegisterDTO;
 import com.entity.User;
 import com.properties.JwtProperties;
 import com.result.Result;
@@ -13,9 +14,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,15 +43,27 @@ public class UserController {
         }
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put(JwtClaimsConstant.USER_ID, user.getUserid());
+        claims.put(JwtClaimsConstant.USER_ID, user.getUserId());
         String token = JwtUtil.createJWT(jwtProperties.getUserSecretKey(), jwtProperties.getUserTtl(), claims);
 
         UserLoginVO userLoginVO = UserLoginVO.builder()
-                .user_id(String.valueOf(user.getUserid()))
+                .userId(String.valueOf(user.getUserId()))
                 .token(token)
-                .user_name(user.getUserName())
+                .userName(user.getUserName())
                 .build();
 
         return Result.success(userLoginVO, MessageConstant.USER_LOGIN_SUCCESS);
+    }
+
+    @PostMapping("/register")
+    @ApiOperation("用户注册")
+    public Result register(@RequestBody UserRegisterDTO userRegisterDTO) {
+        log.info("用户注册：{}", userRegisterDTO.getEmail());
+
+        Boolean registerStatus = userService.register(userRegisterDTO);
+
+        return registerStatus
+                ? Result.success(MessageConstant.USER_REGISTER_SUCCESS)
+                : Result.success(MessageConstant.USER_REGISTER_ERROR_EMAIL_EXIST);
     }
 }

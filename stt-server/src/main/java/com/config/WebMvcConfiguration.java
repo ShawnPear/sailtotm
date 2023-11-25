@@ -28,12 +28,12 @@ import java.util.List;
 @Configuration
 @Slf4j
 public class WebMvcConfiguration extends WebMvcConfigurationSupport {
-
     @Autowired
     private JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
 
     @Autowired
     private JwtTokenUserInterceptor jwtTokenUserInterceptor;
+
     /**
      * 注册自定义拦截器
      *
@@ -44,15 +44,18 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         //后台
         registry.addInterceptor(jwtTokenAdminInterceptor)
                 .addPathPatterns("/admin/**")
-                .excludePathPatterns("/admin/login");
+                .excludePathPatterns("/admin/login")
+                .excludePathPatterns("/admin/register");
         //客户端
         registry.addInterceptor(jwtTokenUserInterceptor)
                 .addPathPatterns("/user/**")
-                .excludePathPatterns("/user/login");
+                .excludePathPatterns("/user/login")
+                .excludePathPatterns("/user/register");
     }
 
     /**
      * 通过knife4j生成接口文档
+     *
      * @return
      */
     @Bean
@@ -73,6 +76,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     /**
      * 设置静态资源映射
+     *
      * @param registry
      */
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -80,7 +84,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
-    protected void extendMessageConverters(List<HttpMessageConverter<?>>converters){
+    protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         log.info("starting message transformation....");
         //创建一个消息转换对象
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
@@ -88,11 +92,11 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         converter.setObjectMapper(new JacksonObjectMapper());
 
         //将转换器加入到mvc框架容器里面
-        converters.add(0,converter);
+        converters.add(0, converter);
     }
 
     @Bean
-    public Docket docket1(){
+    public Docket docket1() {
         log.info("准备生成接口文档...");
         ApiInfo apiInfo = new ApiInfoBuilder()
                 .title("SailToTM项目接口文档")
@@ -113,7 +117,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public Docket docket2(){
+    public Docket docket2() {
         log.info("准备生成接口文档...");
         ApiInfo apiInfo = new ApiInfoBuilder()
                 .title("SailToTM项目接口文档")
@@ -136,5 +140,4 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
      * 注册自定义拦截器
      * @param registry
      */
-
 }

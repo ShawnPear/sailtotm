@@ -1,4 +1,4 @@
-package com.exception;
+package com.exception.user;
 
 /**
  * 业务异常

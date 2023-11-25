@@ -2,14 +2,17 @@ package com.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@lombok.Data
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserLoginVO {
+public class StuffLoginVO {
+    private String firstName;
+    private String lastName;
+    private String roleid;
+    private String stuffid;
     private String token;
-    private String userId;
-    private String userName;
 }

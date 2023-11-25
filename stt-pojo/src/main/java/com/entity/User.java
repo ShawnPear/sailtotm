@@ -8,9 +8,14 @@ package com.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@lombok.Data
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
+
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,11 +23,11 @@ public class User {
     /**
      * 用户创建时间
      */
-    private String createdDate;
+    private LocalDateTime createdDate;
     /**
      * 生日
      */
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
     /**
      * 邮箱
      */
@@ -42,11 +47,11 @@ public class User {
     /**
      * 信息最后修改时间
      */
-    private String updatedDate;
+    private LocalDateTime updatedDate;
     /**
      * 用户id
      */
-    private long userid;
+    private long userId;
     /**
      * 用户名
      */

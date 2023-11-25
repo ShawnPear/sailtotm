@@ -1,4 +1,4 @@
-package com.vo;
+package com.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserLoginVO {
-    private String token;
+public class UserResetEmailDTO {
+    private String newEmail;
     private String userId;
-    private String userName;
 }

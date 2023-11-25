@@ -2,6 +2,7 @@ package com.json;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -25,8 +26,8 @@ import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKN
 public class JacksonObjectMapper extends ObjectMapper {
 
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
-    //public static final String DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    public static final String DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
+    public static final String DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+//    public static final String DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
     public static final String DEFAULT_TIME_FORMAT = "HH:mm:ss";
 
     public JacksonObjectMapper() {
@@ -37,6 +38,9 @@ public class JacksonObjectMapper extends ObjectMapper {
         //反序列化时，属性不存在的兼容处理
         this.getDeserializationConfig().withoutFeatures(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
+//        setPropertyNamingStrategy(new CustomNamingStrategy());
+        setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+
         SimpleModule simpleModule = new SimpleModule()
                 .addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT)))
                 .addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT)))
@@ -46,5 +50,28 @@ public class JacksonObjectMapper extends ObjectMapper {
                 .addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(DEFAULT_TIME_FORMAT)));
         //注册功能模块 例如，可以添加自定义序列化器和反序列化器
         this.registerModule(simpleModule);
+    }
+
+    private static class CustomNamingStrategy extends PropertyNamingStrategy.PropertyNamingStrategyBase {
+
+        @Override
+        public String translate(String propertyName) {
+            // 将蛇形命名转换为小驼峰命名
+            if (propertyName.contains("_")) {
+                StringBuilder sb = new StringBuilder();
+                boolean capitalizeNext = false;
+                for (char c : propertyName.toCharArray()) {
+                    if (c == '_') {
+                        capitalizeNext = true;
+                    } else {
+                        sb.append(capitalizeNext ? Character.toUpperCase(c) : Character.toLowerCase(c));
+                        capitalizeNext = false;
+                    }
+                }
+                return sb.toString();
+            }
+            // 将小驼峰命名转换为蛇形命名
+            return propertyName.replaceAll("([a-z])([A-Z]+)", "$1_$2").toLowerCase();
+        }
     }
 }
