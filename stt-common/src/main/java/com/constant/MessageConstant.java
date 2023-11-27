@@ -20,4 +20,7 @@ public class MessageConstant {
     public static final String STUFF_PASSWORD_ERROR = "Password error";
     public static final String STUFF_REGISTER_ERROR_EMAIL_EXIST = "Email address is already in use";
     public static final String STUFF_REGISTER_SUCCESS = "Successfully register";
+    public static final String USER_SEARCH_SUCCESS = "search_success";
+    public static final String OneBoundApi_SEARCH_ERROR = "oneBound_api_search_error";
+    public static final String PARAM_MISSING_ERROR = "parameter missing";
 }

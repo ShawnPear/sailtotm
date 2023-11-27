@@ -1,5 +1,6 @@
 server:
   port: 8080
+  address: 0.0.0.0
 
 spring:
   profiles:
@@ -40,3 +41,9 @@ sailtotm:
     user-secret-key: sailtotm
     user-ttl: 720000000
     user-token-name: Authorization
+onebound:
+  host: api-gw.onebound.cn
+  taobao-search: /taobao/item_search
+  key: t8629095275
+  secret: 20230825
+  scheme: https
