@@ -5,6 +5,7 @@ import com.dto.SearchGoodsKeyWordPageDTO;
 import com.dto.TaobaoSearchDTO;
 import com.dto.TaobaoSearchDetailDTO;
 import com.exception.user.ParamMissingException;
+import com.result.PageResult;
 import com.result.Result;
 import com.service.OneBoundApiService;
 import com.vo.TaobaoGoodDetailVO;
@@ -41,6 +42,26 @@ public class SearchController {
                 .build();
         TaobaoGoodListVO goodList = oneBoundApiService.taoBaoSearch(taobaoSearchDTO);
         return Result.success(goodList, MessageConstant.USER_SEARCH_SUCCESS);
+    }
+
+    @GetMapping("/search_page")
+    public Result<PageResult> searchByKeyWord2(SearchGoodsKeyWordPageDTO dto) {
+        if (Objects.equals(dto.getPage(), "") || Objects.equals(dto.getQ(), "")) {
+            throw new ParamMissingException(MessageConstant.PARAM_MISSING_ERROR);
+        }
+        TaobaoSearchDTO taobaoSearchDTO = TaobaoSearchDTO.builder()
+                .q(dto.getQ())
+                .page(dto.getPage())
+                .startPrice("0")
+                .endPrice("0")
+                .cat("0")
+                .build();
+        TaobaoGoodListVO goodList = oneBoundApiService.taoBaoSearch(taobaoSearchDTO);
+        PageResult pageResult = PageResult.builder()
+                .total(48)
+                .records(goodList.getItems().getItem())
+                .build();
+        return Result.success(pageResult, MessageConstant.USER_SEARCH_SUCCESS);
     }
 
     @GetMapping("/search-item")

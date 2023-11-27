@@ -3,8 +3,7 @@ package com.service.impl;
 import com.constant.MessageConstant;
 import com.dto.TaobaoSearchDTO;
 import com.dto.TaobaoSearchDetailDTO;
-import com.entity.TaobaoGoodList.Item;
-import com.entity.TaobaoGoodList.TaobaoGoodList;
+import com.entity.TaobaoGoodList.Product;
 import com.exception.user.OneBoundApiException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.mapper.OneBoundApiTaobaoProductMapper;
@@ -73,8 +72,8 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
             String body = EntityUtils.toString(entity);
             TaobaoGoodListVO goodList = jsonMapper.readValue(body, TaobaoGoodListVO.class);
             //缓存到数据库去
-            List<Item> itemList = goodList.getItems().getItem();
-            for (Item item : itemList) {
+            List<Product> itemList = goodList.getItems().getItem();
+            for (Product item : itemList) {
                 new Thread(() -> {
                     LocalDateTime time = LocalDateTime.now();
                     obApiTaobaoProductMapper.insertOrReplace(item, dto.getQ(), time);
