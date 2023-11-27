@@ -44,6 +44,7 @@ sailtotm:
 onebound:
   host: api-gw.onebound.cn
   taobao-search: /taobao/item_search
+  taobao-search-detail: /taobao/item_get
   key: t8629095275
   secret: 20230825
   scheme: https

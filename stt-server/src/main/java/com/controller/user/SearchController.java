@@ -1,12 +1,14 @@
 package com.controller.user;
 
 import com.constant.MessageConstant;
-import com.dto.SearchKeyWordPageDTO;
+import com.dto.SearchGoodsKeyWordPageDTO;
 import com.dto.TaobaoSearchDTO;
-import com.entity.TaobaoGood.TaobaoGoodList;
+import com.dto.TaobaoSearchDetailDTO;
 import com.exception.user.ParamMissingException;
 import com.result.Result;
 import com.service.OneBoundApiService;
+import com.vo.TaobaoGoodDetailVO;
+import com.vo.TaobaoGoodListVO;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +28,8 @@ public class SearchController {
     OneBoundApiService oneBoundApiService;
 
     @GetMapping("/search")
-    public Result<TaobaoGoodList> searchByKeyWord(SearchKeyWordPageDTO dto) {
-        if(Objects.equals(dto.getPage(), "") || Objects.equals(dto.getQ(), "")){
+    public Result<TaobaoGoodListVO> searchByKeyWord(SearchGoodsKeyWordPageDTO dto) {
+        if (Objects.equals(dto.getPage(), "") || Objects.equals(dto.getQ(), "")) {
             throw new ParamMissingException(MessageConstant.PARAM_MISSING_ERROR);
         }
         TaobaoSearchDTO taobaoSearchDTO = TaobaoSearchDTO.builder()
@@ -37,7 +39,19 @@ public class SearchController {
                 .endPrice("0")
                 .cat("0")
                 .build();
-        TaobaoGoodList goodList = oneBoundApiService.taoBaoSearch(taobaoSearchDTO);
+        TaobaoGoodListVO goodList = oneBoundApiService.taoBaoSearch(taobaoSearchDTO);
         return Result.success(goodList, MessageConstant.USER_SEARCH_SUCCESS);
+    }
+
+    @GetMapping("/search-item")
+    public Result<TaobaoGoodDetailVO> searchDetailByNumIid(String product_id) {
+        if (product_id.equals("")) {
+            throw new ParamMissingException(MessageConstant.PARAM_MISSING_ERROR);
+        }
+        TaobaoSearchDetailDTO taobaoSearchDetailDTO = TaobaoSearchDetailDTO.builder()
+                .numIid(product_id)
+                .build();
+        TaobaoGoodDetailVO taobaoGoodDetail = oneBoundApiService.taoBaoSearchDetail(taobaoSearchDetailDTO);
+        return Result.success(taobaoGoodDetail);
     }
 }

@@ -20,5 +20,6 @@ public class OneBoundProperties {
      * 淘宝搜索path
      * */
     private String taobaoSearch;
+    private String taobaoSearchDetail;
     private String scheme;
 }

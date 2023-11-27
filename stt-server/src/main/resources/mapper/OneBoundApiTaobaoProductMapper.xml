@@ -2,9 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mapper.OneBoundApiTaobaoProductMapper">
-    <insert id="insert">
-        insert into OneBoundApiTaobaoProduct (created_date, detail_url, num_iid, pic_url, price, promotion_price, sales,
-                                              saller_nick, title, original_json, q)
-        VALUES (#{created_date},#{detailUrl},#{numIid},#{picUrl},#{price},#{promotionPrice},#{sales},#{sallerNick},#{title},#{originalJson},#{q})
+    <insert id="insertOrReplace">
+        insert into OneBoundApiTaobaoProduct (created_date, detail_url, num_iid, pic_url, price,
+                                              promotion_price, sales,
+                                              saller_nick, title, q)
+        VALUES (#{created_date}, #{item.detailUrl}, #{item.numIid}, #{item.picUrl}, #{item.price},
+                #{item.promotionPrice}, #{item.sales},
+                #{item.sellerNick}, #{item.title}, #{q})
+        ON DUPLICATE KEY UPDATE created_date    = #{created_date},
+                                detail_url      = #{item.detailUrl},
+                                pic_url         = #{item.picUrl},
+                                price           = #{item.price},
+                                promotion_price = #{item.promotionPrice},
+                                sales           = #{item.sales},
+                                saller_nick     = #{item.sellerNick},
+                                title           = #{item.title},
+                                q               = #{q}
     </insert>
 </mapper>

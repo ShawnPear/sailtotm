@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS `SailToTMDB`.`Users`
     `date_of_birth` DATETIME     NULL DEFAULT NULL,
     `created_date`  DATETIME     NOT NULL,
     `updated_date`  DATETIME     NOT NULL,
+    `user_name`     VARCHAR(500) NOT NULL,
     PRIMARY KEY (`user_id`)
 )
     ENGINE = InnoDB
@@ -39,19 +40,26 @@ CREATE TABLE IF NOT EXISTS `SailToTMDB`.`Users`
 -- -----------------------------------------------------
 -- Table `SailToTMDB`.`CartItems`
 -- -----------------------------------------------------
+
+
 CREATE TABLE IF NOT EXISTS `SailToTMDB`.`CartItems`
 (
-    `card_id`        INT  NOT NULL AUTO_INCREMENT,
-    `user_id`        INT  NOT NULL,
-    `quantity`       INT  NOT NULL,
-    `product_detail` JSON NOT NULL,
+    `card_id`      INT          NOT NULL AUTO_INCREMENT,
+    `user_id`      INT          NOT NULL,
+    `quantity`     INT          NOT NULL,
+    `created_date` datetime     NOT NULL,
+    `num_iid`      VARCHAR(100) NOT NULL,
     PRIMARY KEY (`card_id`, `user_id`),
     INDEX `fk_Cart_list_Users_idx` (`user_id` ASC) VISIBLE,
     CONSTRAINT `fk_Cart_list_Users`
         FOREIGN KEY (`user_id`)
             REFERENCES `SailToTMDB`.`Users` (`user_id`)
             ON DELETE NO ACTION
-            ON UPDATE CASCADE
+            ON UPDATE CASCADE,
+    FOREIGN KEY (`num_iid`)
+        REFERENCES `SailToTMDB`.`OneBoundApiTaobaoProduct` (`num_iid`)
+        ON DELETE NO ACTION
+        ON UPDATE CASCADE
 )
     ENGINE = InnoDB
     AUTO_INCREMENT = 10000001
@@ -155,12 +163,18 @@ CREATE TABLE IF NOT EXISTS `SailToTMDB`.`Stuff`
 -- -----------------------------------------------------
 -- Table `SailToTMDB`.`GoodsDetails`
 -- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `SailToTMDB`.`GoodsDetails`
 (
-    `good_detail_id` INT  NOT NULL,
-    `quantity`       INT  NOT NULL,
-    `product`        JSON NOT NULL,
-    PRIMARY KEY (`good_detail_id`)
+    `good_detail_id` INT          NOT NULL,
+    `quantity`       INT          NOT NULL,
+    `num_iid`        VARCHAR(100) NOT NULL,
+    PRIMARY KEY (`good_detail_id`),
+    CONSTRAINT `fk_Goods_details`
+        FOREIGN KEY (`num_iid`)
+            REFERENCES `SailToTMDB`.`OneBoundApiTaobaoProduct` (`num_iid`)
+            ON DELETE NO ACTION
+            ON UPDATE CASCADE
 )
     ENGINE = InnoDB;
 
@@ -346,18 +360,24 @@ CREATE TABLE IF NOT EXISTS `SailToTMDB`.`Orders`
 -- -----------------------------------------------------
 -- Table `SailToTMDB`.`FavouriteItems`
 -- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `SailToTMDB`.`FavouriteItems`
 (
-    `favourite_id`   INT  NOT NULL AUTO_INCREMENT,
-    `user_id`        INT  NOT NULL,
-    `product_detail` JSON NOT NULL,
+    `favourite_id` INT          NOT NULL AUTO_INCREMENT,
+    `user_id`      INT          NOT NULL,
+    `created_date` DATETIME     NOT NULL,
+    `num_iid`      varchar(100) NOT NULL,
     PRIMARY KEY (`favourite_id`, `user_id`),
     INDEX `fk_Favourite_list_Users1_idx` (`user_id` ASC) VISIBLE,
     CONSTRAINT `fk_Favourite_list_Users1`
         FOREIGN KEY (`user_id`)
             REFERENCES `SailToTMDB`.`Users` (`user_id`)
             ON DELETE NO ACTION
-            ON UPDATE CASCADE
+            ON UPDATE CASCADE,
+    FOREIGN KEY (`num_iid`)
+        REFERENCES `SailToTMDB`.`OneBoundApiTaobaoProduct` (`num_iid`)
+        ON DELETE NO ACTION
+        ON UPDATE CASCADE
 )
     ENGINE = InnoDB
     AUTO_INCREMENT = 10000001
@@ -367,19 +387,24 @@ CREATE TABLE IF NOT EXISTS `SailToTMDB`.`FavouriteItems`
 -- -----------------------------------------------------
 -- Table `SailToTMDB`.`HistoryItems`
 -- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `SailToTMDB`.`HistoryItems`
 (
-    `history_id`     INT      NOT NULL AUTO_INCREMENT,
-    `user_id`        INT      NOT NULL,
-    `product_detail` JSON     NOT NULL,
-    `created_date`   DATETIME NOT NULL,
+    `history_id`   INT          NOT NULL AUTO_INCREMENT,
+    `user_id`      INT          NOT NULL,
+    `num_iid`      VARCHAR(100) NOT NULL,
+    `created_date` DATETIME     NOT NULL,
     PRIMARY KEY (`history_id`, `user_id`),
     INDEX `fk_History_list_Users1_idx` (`user_id` ASC) VISIBLE,
     CONSTRAINT `fk_History_list_Users1`
         FOREIGN KEY (`user_id`)
             REFERENCES `SailToTMDB`.`Users` (`user_id`)
             ON DELETE NO ACTION
-            ON UPDATE CASCADE
+            ON UPDATE CASCADE,
+    FOREIGN KEY (`num_iid`)
+        REFERENCES `SailToTMDB`.`OneBoundApiTaobaoProduct` (`num_iid`)
+        ON DELETE NO ACTION
+        ON UPDATE CASCADE
 )
     ENGINE = InnoDB
     AUTO_INCREMENT = 10000001
@@ -536,6 +561,7 @@ CREATE TABLE IF NOT EXISTS `SailToTMDB`.`ExchangeRate`
     ENGINE = InnoDB;
 
 
+
 -- -----------------------------------------------------
 -- Table `SailToTMDB`.`InterestRate`
 -- -----------------------------------------------------
@@ -565,6 +591,26 @@ CREATE TABLE IF NOT EXISTS `SailToTMDB`.`ProgressDetailsInfo`
     PRIMARY KEY (`progress_id`)
 )
     ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `SailToTMDB`.`OneBoundApiTaobaoProduct`
+(
+    created_date    DATETIME      NOT NULL,
+    detail_url      VARCHAR(2000) NOT NULL,
+    num_iid         VARCHAR(100)  NOT NULL,
+    pic_url         VARCHAR(2000) NOT NULL,
+    price           FLOAT         NOT NULL,
+    promotion_price FLOAT         NOT NULL,
+    sales           INT           NOT NULL,
+    saller_nick     VARCHAR(100)  NOT NULL,
+    title           VARCHAR(1000) NOT NULL,
+    PRIMARY KEY (`num_iid`)
+)
+    ENGINE = InnoDB
+    AUTO_INCREMENT = 10000001
+    DEFAULT CHARACTER SET = utf8mb3;
+
+ALTER TABLE `SailToTMDB`.OneBoundApiTaobaoProduct
+    ADD `q` VARCHAR(200) NOT NULL;
 
 
 SET SQL_MODE = @OLD_SQL_MODE;

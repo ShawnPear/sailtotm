@@ -2,23 +2,29 @@ package com.service.impl;
 
 import com.constant.MessageConstant;
 import com.dto.TaobaoSearchDTO;
-import com.entity.TaobaoGood.TaobaoGoodList;
+import com.dto.TaobaoSearchDetailDTO;
+import com.entity.TaobaoGoodList.Item;
+import com.entity.TaobaoGoodList.TaobaoGoodList;
 import com.exception.user.OneBoundApiException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.mapper.OneBoundApiTaobaoProductMapper;
 import com.properties.OneBoundProperties;
 import com.service.OneBoundApiService;
-import com.utils.NetUtil;
+import com.utils.GetUri;
+import com.vo.TaobaoGoodDetailVO;
+import com.vo.TaobaoGoodListVO;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -29,13 +35,18 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
     @Autowired
     private OneBoundProperties obProperties;
 
+    @Autowired
+    private OneBoundApiTaobaoProductMapper obApiTaobaoProductMapper;
+
+    @Autowired
+    private CloseableHttpClient httpClient;
+
     @Override
-    public TaobaoGoodList taoBaoSearch(TaobaoSearchDTO dto) {
-        //创建httpclient对象
-        CloseableHttpClient httpClient = HttpClients.createDefault();
+    public TaobaoGoodListVO taoBaoSearch(TaobaoSearchDTO dto) {
+        String keyWord = dto.getQ();
 
         Map<String, Object> query = new HashMap<>();
-        query.put("q", dto.getQ());
+        query.put("q", keyWord);
         query.put("start_price", dto.getStartPrice());
         query.put("end_price", dto.getEndPrice());
         query.put("page", dto.getPage());
@@ -43,7 +54,58 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
         query.put("sort", null);
         query.put("key", obProperties.getKey());
         query.put("secret", obProperties.getSecret());
-        String uri = NetUtil.getFullPath(obProperties.getScheme(), obProperties.getHost(), obProperties.getTaobaoSearch(), query);
+        String uri = GetUri.builder()
+                .scheme(obProperties.getScheme())
+                .host(obProperties.getHost())
+                .path(obProperties.getTaobaoSearch())
+                .query(query)
+                .build().toString();        //创建请求对象
+        HttpGet httpGet = new HttpGet(uri);
+        try {
+            //发送请求，接受响应结果
+            CloseableHttpResponse response = httpClient.execute(httpGet);
+
+            //获取服务端返回的状态码
+            int statusCode = response.getStatusLine().getStatusCode();
+            System.out.println("服务端返回的状态码为：" + statusCode);
+
+            HttpEntity entity = response.getEntity();
+            String body = EntityUtils.toString(entity);
+            TaobaoGoodListVO goodList = jsonMapper.readValue(body, TaobaoGoodListVO.class);
+            //缓存到数据库去
+            List<Item> itemList = goodList.getItems().getItem();
+            for (Item item : itemList) {
+                new Thread(() -> {
+                    LocalDateTime time = LocalDateTime.now();
+                    obApiTaobaoProductMapper.insertOrReplace(item, dto.getQ(), time);
+                }).start();
+            }
+            //关闭资源
+            response.close();
+            httpClient.close();
+
+            return goodList;
+        } catch (IOException e) {
+            throw new OneBoundApiException(MessageConstant.OneBoundApi_SEARCH_ERROR);
+        }
+    }
+
+    @Override
+    public TaobaoGoodDetailVO taoBaoSearchDetail(TaobaoSearchDetailDTO dto) throws OneBoundApiException {
+        String numIid = dto.getNumIid();
+
+        Map<String, Object> query = new HashMap<>();
+        query.put("num_iid", numIid);
+        query.put("is_promotion", 1);
+        query.put("lang", "zh-CN");
+        query.put("key", obProperties.getKey());
+        query.put("secret", obProperties.getSecret());
+        String uri = GetUri.builder()
+                .scheme(obProperties.getScheme())
+                .host(obProperties.getHost())
+                .path(obProperties.getTaobaoSearchDetail())
+                .query(query)
+                .build().toString();
         //创建请求对象
         HttpGet httpGet = new HttpGet(uri);
         try {
@@ -57,15 +119,17 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
             HttpEntity entity = response.getEntity();
             String body = EntityUtils.toString(entity);
 
-            //缓存到数据库去
-
-
-            TaobaoGoodList goodList = jsonMapper.readValue(body, TaobaoGoodList.class);
             //关闭资源
-            response.close();
-            httpClient.close();
-
-            return goodList;
+            new Thread(() -> {
+                try {
+                    response.close();
+                    httpClient.close();
+                } catch (IOException ignored) {
+                }
+            });
+            return TaobaoGoodDetailVO.builder()
+                    .detailJson(body)
+                    .build();
         } catch (IOException e) {
             throw new OneBoundApiException(MessageConstant.OneBoundApi_SEARCH_ERROR);
         }

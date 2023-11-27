@@ -1,7 +1,7 @@
 package com.dto;
 
 @lombok.Data
-public class SearchKeyWordPageDTO {
+public class SearchGoodsKeyWordPageDTO {
     /**
      * 搜索页面
      */
