@@ -2,8 +2,8 @@ package com.controller.user;
 
 import com.constant.JwtClaimsConstant;
 import com.constant.MessageConstant;
-import com.dto.UserLoginDTO;
-import com.dto.UserRegisterDTO;
+import com.dto.UserAccount.UserLoginDTO;
+import com.dto.UserAccount.UserRegisterDTO;
 import com.entity.User;
 import com.properties.JwtProperties;
 import com.result.Result;

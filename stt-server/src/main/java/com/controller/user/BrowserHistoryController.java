@@ -1,10 +1,11 @@
 package com.controller.user;
 
+import com.constant.MessageConstant;
 import com.dto.BrowserHistoryDTO;
 import com.entity.TaobaoGoodList.Product;
-import com.result.PageResult;
 import com.result.Result;
 import com.service.BrowserHistoryService;
+import com.vo.BrowserHistory.BrowserHistoryListPageVO;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -20,16 +21,21 @@ public class BrowserHistoryController {
     private BrowserHistoryService browserHistoryService;
 
     @GetMapping("/{user_id}")
-    public Result<PageResult> getBrowserHistory(@PathVariable String user_id, String page, String page_size) {
-        PageResult pageResult = browserHistoryService.getBrowserHistory(user_id, page, page_size);
-        return Result.success(pageResult);
+    public Result<BrowserHistoryListPageVO> getBrowserHistory(@PathVariable String user_id, String page, String page_size, String q) {
+        BrowserHistoryListPageVO result = BrowserHistoryListPageVO.builder().build();
+        if (q == null || q.isEmpty()) {
+            result = browserHistoryService.getBrowserHistory(user_id, page, page_size);
+        } else {
+            result = browserHistoryService.getBrowserHistoryBySearch(user_id, page, page_size, q);
+        }
+        return Result.success(result, MessageConstant.SUCCESS);
     }
 
     @PostMapping
-    public Result addBrowserHistory(BrowserHistoryDTO dto) {
+    public Result addBrowserHistory(@RequestBody BrowserHistoryDTO dto) {
         Product product = Product.builder().build();
         BeanUtils.copyProperties(dto, product);
         browserHistoryService.addBrowserHistory(product, dto.getUserId());
-        return Result.success();
+        return Result.success(MessageConstant.SUCCESS);
     }
 }

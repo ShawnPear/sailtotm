@@ -2,8 +2,8 @@ package com.controller.admin;
 
 import com.constant.JwtClaimsConstant;
 import com.constant.MessageConstant;
-import com.dto.StuffLoginDTO;
-import com.dto.StuffRegisterDTO;
+import com.dto.Stuff.StuffLoginDTO;
+import com.dto.Stuff.StuffRegisterDTO;
 import com.entity.Stuff;
 import com.properties.JwtProperties;
 import com.result.Result;
@@ -44,6 +44,7 @@ public class StuffController {
 
         Map<String, Object> claims = new HashMap<>();
         claims.put(JwtClaimsConstant.ADMIN_ID, stuff.getStuffId());
+        claims.put(JwtClaimsConstant.ADMIN_ROLE_ID, stuff.getRoleId());
         String token = JwtUtil.createJWT(jwtProperties.getAdminSecretKey(), jwtProperties.getAdminTtl(), claims);
 
         StuffLoginVO stuffLoginVO = StuffLoginVO.builder()

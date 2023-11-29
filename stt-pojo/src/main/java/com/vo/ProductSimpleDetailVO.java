@@ -2,11 +2,14 @@
 
 package com.vo;
 
+import lombok.Builder;
+
 @lombok.Data
-public class ProductDetailVO {
-    private String imageUrl;
+@Builder
+public class ProductSimpleDetailVO {
+    private String picUrl;
     private String numIid;
-    private String originalPrice;
+    private String promotionPrice;
     private String price;
     private String title;
 }

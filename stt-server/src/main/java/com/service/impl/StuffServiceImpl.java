@@ -1,17 +1,17 @@
 package com.service.impl;
 
 import com.constant.MessageConstant;
-import com.dto.StuffLoginDTO;
-import com.dto.StuffRegisterDTO;
+import com.dto.Stuff.StuffLoginDTO;
+import com.dto.Stuff.StuffRegisterDTO;
+import com.dto.Stuff.StuffStatusChangeDTO;
 import com.entity.Name;
 import com.entity.Stuff;
-import com.entity.User;
+import com.entity.StuffStatusChange;
 import com.exception.user.AccountExistException;
 import com.exception.user.AccountNotFoundException;
 import com.exception.user.EmailFormatErrorException;
 import com.exception.user.PasswordErrorException;
 import com.mapper.StuffMapper;
-import com.mapper.UserMapper;
 import com.service.StuffService;
 import com.utils.EmailUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -69,12 +69,28 @@ public class StuffServiceImpl implements StuffService {
                         .build())
                 .password(md5password)
                 .phone(dto.getPhoneNumber())
-                .roleId(Long.parseLong(dto.getRole()))
+                .roleId(Long.parseLong(dto.getRoleId()))
                 .salary(Double.parseDouble(dto.getSalary()))
                 .stuffId(1)
+                .statusId(4)
                 .updatedDate(LocalDateTime.now())
                 .build();
         Boolean status = stuffMapper.insert(stuff);
         return status;
+    }
+
+    @Override
+    public Boolean changeStuffStatus(StuffStatusChangeDTO dto) {
+        Stuff stuff = stuffMapper.getById(dto.getStuffId());
+        if (stuff == null) {
+            throw new AccountNotFoundException(MessageConstant.STUFF_ID_ERROR_NOT_EXIST);
+        }
+        StuffStatusChange change = StuffStatusChange.builder()
+                .stuffId(Integer.parseInt(dto.getStuffId()))
+                .statusId(dto.getStatusId())
+                .locationId(dto.getLocationId())
+                .roleId(dto.getRoleId())
+                .build();
+        return stuffMapper.updateStatusByStuffId(change);
     }
 }

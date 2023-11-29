@@ -41,7 +41,6 @@ CREATE TABLE IF NOT EXISTS `SailToTMDB`.`Users`
 -- Table `SailToTMDB`.`CartItems`
 -- -----------------------------------------------------
 
-
 CREATE TABLE IF NOT EXISTS `SailToTMDB`.`CartItems`
 (
     `card_id`      INT          NOT NULL AUTO_INCREMENT,
@@ -595,13 +594,13 @@ CREATE TABLE IF NOT EXISTS `SailToTMDB`.`ProgressDetailsInfo`
 CREATE TABLE IF NOT EXISTS `SailToTMDB`.`OneBoundApiTaobaoProduct`
 (
     created_date    DATETIME      NOT NULL,
-    detail_url      VARCHAR(2000) ,
+    detail_url      VARCHAR(2000),
     num_iid         VARCHAR(100)  NOT NULL,
     pic_url         VARCHAR(2000) NOT NULL,
     price           FLOAT         NOT NULL,
     promotion_price FLOAT         NOT NULL,
-    sales           INT           ,
-    saller_nick     VARCHAR(100)  ,
+    sales           INT,
+    saller_nick     VARCHAR(100),
     title           VARCHAR(1000) NOT NULL,
     PRIMARY KEY (`num_iid`)
 )

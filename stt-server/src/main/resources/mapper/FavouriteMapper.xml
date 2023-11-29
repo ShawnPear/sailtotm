@@ -1,37 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.mapper.BrowserHistoryMapper">
+<mapper namespace="com.mapper.FavouriteMapper">
 
 
     <insert id="insert">
-        insert into SailToTMDB.HistoryItems (user_id, num_iid, created_date)
+        insert into SailToTMDB.FavouriteItems (user_id, num_iid, created_date)
         VALUES (#{user_id},
                 #{num_iid},
                 #{created_time});
     </insert>
 
-    <select id="selectAllByUserIdPage" resultType="com.entity.BrowserHistoryItem">
-        select h.num_iid         as num_iid,
+    <select id="selectAllByUserIdPage" resultType="com.entity.FavouriteItem">
+        select h.favourite_id    as favourite_id,
+               h.num_iid         as num_iid,
                h.created_date    as created_date,
                p.pic_url         as pic_url,
                p.promotion_price as promotion_price,
                p.price           as price,
                p.title           as title
-        from SailToTMDB.HistoryItems h,
+        from SailToTMDB.FavouriteItems h,
              SailToTMDB.OneBoundApiTaobaoProduct p
         where h.user_id = #{user_id}
           and h.num_iid = p.num_iid
         order by h.created_date desc
     </select>
-    <select id="selectAllByUserSearchPage" resultType="com.entity.BrowserHistoryItem">
-        select h.num_iid         as num_iid,
+    <select id="selectAllByUserSearchPage" resultType="com.entity.FavouriteItem">
+        select h.favourite_id    as favourite_id,
+               h.num_iid         as num_iid,
                h.created_date    as created_date,
                p.pic_url         as pic_url,
                p.promotion_price as promotion_price,
                p.price           as price,
                p.title           as title
-        from SailToTMDB.HistoryItems h,
+        from SailToTMDB.FavouriteItems h,
              SailToTMDB.OneBoundApiTaobaoProduct p
         where h.user_id = #{user_id}
           and h.num_iid = p.num_iid

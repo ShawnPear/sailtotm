@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @Builder
-public class TaobaoGoodDetailVO {
-    String detailJson;
+public class StuffInfoVO {
+    private String stuff_id;
 }

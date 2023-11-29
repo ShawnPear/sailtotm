@@ -1,6 +1,5 @@
-package com.dto;
+package com.dto.Stuff;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -9,22 +8,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRegisterDTO {
+public class StuffLoginDTO {
     /**
      * 邮箱
      */
     private String email;
     /**
-     * first name
-     */
-    private String firstName;
-    /**
-     * last name
-     */
-    private String lastName;
-    /**
-     * password
+     * 密码
      */
     private String password;
 }
-

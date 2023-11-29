@@ -1,10 +1,8 @@
 package com.service;
 
 
-import com.dto.*;
+import com.dto.UserAccount.*;
 import com.entity.User;
-
-import javax.security.auth.login.AccountNotFoundException;
 
 
 public interface UserService {

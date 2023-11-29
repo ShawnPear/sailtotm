@@ -2,7 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mapper.OneBoundApiTaobaoProductMapper">
-    <insert id="insertOrReplace">
+    <select id="selectById" resultType="com.entity.TaobaoGoodList.Product">
+        select detail_url,
+               num_iid,
+               pic_url,
+               price,
+               promotion_price,
+               sales,
+               saller_nick,
+               title,
+               q
+        from OneBoundApiTaobaoProduct
+        where num_iid = #{numIid}
+    </select>
+
+    <insert id="insert">
         insert into OneBoundApiTaobaoProduct (created_date, detail_url, num_iid, pic_url, price,
                                               promotion_price, sales,
                                               saller_nick, title, q)
@@ -13,10 +27,29 @@
                                 detail_url      = #{item.detailUrl},
                                 pic_url         = #{item.picUrl},
                                 price           = #{item.price},
-                                promotion_price = #{item.promotionPrice},
+                                promotion_price =
+                                    #{item.promotionPrice},
                                 sales           = #{item.sales},
                                 saller_nick     = #{item.sellerNick},
                                 title           = #{item.title},
                                 q               = #{q}
     </insert>
+
+    <update id="update">
+        update OneBoundApiTaobaoProduct
+        <set>
+            <if test="created_date!=null">created_date = #{created_date},</if>
+            <if test="item.detailUrl!=null">detail_url = #{item.detailUrl},</if>
+            <if test="item.picUrl!=null">pic_url = #{item.picUrl},</if>
+            <if test="item.price!=null">price = #{item.price},</if>
+            <if test="item.promotionPrice!=null">promotion_price =
+                #{item.promotionPrice},
+            </if>
+            <if test="item.sales!=null">sales = #{item.sales},</if>
+            <if test="item.sellerNick!=null">saller_nick = #{item.sellerNick},</if>
+            <if test="item.title!=null">title = #{item.title},</if>
+            <if test="q!=null">q = #{q},</if>
+        </set>
+        where num_iid = #{item.numIid}
+    </update>
 </mapper>

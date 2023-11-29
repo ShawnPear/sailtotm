@@ -1,6 +1,6 @@
 // Response.java
 
-package com.vo;
+package com.vo.TaobaoGood;
 
 import com.entity.TaobaoGoodList.CallArgs;
 import com.entity.TaobaoGoodList.Items;

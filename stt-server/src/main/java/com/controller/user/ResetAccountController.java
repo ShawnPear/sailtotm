@@ -1,9 +1,9 @@
 package com.controller.user;
 
 import com.constant.MessageConstant;
-import com.dto.UserResetEmailDTO;
-import com.dto.UserResetPasswordDTO;
-import com.dto.UserResetUserDTO;
+import com.dto.UserAccount.UserResetEmailDTO;
+import com.dto.UserAccount.UserResetPasswordDTO;
+import com.dto.UserAccount.UserResetUserDTO;
 import com.result.Result;
 import com.service.UserService;
 import io.swagger.annotations.Api;

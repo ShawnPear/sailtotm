@@ -6,12 +6,13 @@ import com.dto.TaobaoSearchDetailDTO;
 import com.entity.TaobaoGoodList.Product;
 import com.exception.user.OneBoundApiException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.mapper.OneBoundApiTaobaoProductMapper;
+import com.mapper_helper.OneBoundApiTaobaoProductMapperHelper;
 import com.properties.OneBoundProperties;
 import com.service.OneBoundApiService;
 import com.utils.GetUri;
-import com.vo.TaobaoGoodDetailVO;
-import com.vo.TaobaoGoodListVO;
+import com.utils.TimeUtil;
+import com.vo.TaobaoGood.TaobaoGoodDetailVO;
+import com.vo.TaobaoGood.TaobaoGoodListVO;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -21,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,7 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
     private OneBoundProperties obProperties;
 
     @Autowired
-    private OneBoundApiTaobaoProductMapper obApiTaobaoProductMapper;
+    private OneBoundApiTaobaoProductMapperHelper obApiTaobaoProductMapperHelper;
 
     @Autowired
     private CloseableHttpClient httpClient;
@@ -75,13 +76,10 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
             List<Product> itemList = goodList.getItems().getItem();
             for (Product item : itemList) {
                 new Thread(() -> {
-                    LocalDateTime time = LocalDateTime.now();
-                    obApiTaobaoProductMapper.insertOrReplace(item, dto.getQ(), time);
+                    Timestamp time = Timestamp.valueOf(TimeUtil.getLocalDateTime());
+                    obApiTaobaoProductMapperHelper.insertOrUpdate(item, dto.getQ(), time);
                 }).start();
             }
-            //关闭资源
-            response.close();
-            httpClient.close();
 
             return goodList;
         } catch (IOException e) {
@@ -118,14 +116,6 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
             HttpEntity entity = response.getEntity();
             String body = EntityUtils.toString(entity);
 
-            //关闭资源
-            new Thread(() -> {
-                try {
-                    response.close();
-                    httpClient.close();
-                } catch (IOException ignored) {
-                }
-            });
             return TaobaoGoodDetailVO.builder()
                     .detailJson(body)
                     .build();
