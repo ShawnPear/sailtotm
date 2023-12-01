@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mapper.ChinaDeliverDetailMapper">
+
+    <update id="updateById">
+        update SailToTMDB.ChinaDeliverDetails
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="phoneNumber != null">phone_number = #{phoneNumber},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="status != null">`status` = #{status},</if>
+        </set>
+        where deliver_id = #{deliverId}
+    </update>
+</mapper>

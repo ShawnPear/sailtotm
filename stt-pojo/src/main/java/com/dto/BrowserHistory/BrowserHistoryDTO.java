@@ -1,4 +1,4 @@
-package com.dto;
+package com.dto.BrowserHistory;
 
 @lombok.Data
 public class BrowserHistoryDTO {

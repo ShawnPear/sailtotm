@@ -1,7 +1,7 @@
 package com.controller.user;
 
 import com.constant.MessageConstant;
-import com.dto.BrowserHistoryDTO;
+import com.dto.BrowserHistory.BrowserHistoryDTO;
 import com.entity.TaobaoGoodList.Product;
 import com.result.Result;
 import com.service.BrowserHistoryService;

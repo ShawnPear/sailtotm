@@ -15,6 +15,20 @@
         from OneBoundApiTaobaoProduct
         where num_iid = #{numIid}
     </select>
+    <select id="selectByQ" resultType="com.entity.TaobaoGoodList.Product">
+        select detail_url,
+               num_iid,
+               pic_url,
+               price,
+               promotion_price,
+               sales,
+               saller_nick,
+               title,
+               q
+        from OneBoundApiTaobaoProduct
+        where q like #{q}
+        order by created_date desc
+    </select>
 
     <insert id="insert">
         insert into OneBoundApiTaobaoProduct (created_date, detail_url, num_iid, pic_url, price,

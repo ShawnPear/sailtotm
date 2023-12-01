@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mapper.TransportTypeMapper">
+
+    <!-- 插入操作 -->
+    <insert id="add">
+        INSERT INTO SailToTMDB.TransportTypes (transport, price, updated_date)
+        VALUES (#{transport}, #{price}, #{updatedDate})
+    </insert>
+
+    <!-- 删除操作 -->
+    <delete id="remove">
+        DELETE
+        FROM SailToTMDB.TransportTypes
+        WHERE transport_id = #{transport_id}
+    </delete>
+
+    <!-- 更新操作 -->
+    <update id="update">
+        UPDATE SailToTMDB.TransportTypes
+        <set>
+            <if test="transport != null">transport = #{transport},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="updatedDate != null">updated_date = #{updatedDate},</if>
+        </set>
+        WHERE transport_id = #{transportId}
+    </update>
+
+    <!-- 查询操作 -->
+    <select id="getAll" resultType="com.entity.TransportType">
+        SELECT transport_id, transport, price, updated_date
+        FROM SailToTMDB.TransportTypes
+    </select>
+
+</mapper>

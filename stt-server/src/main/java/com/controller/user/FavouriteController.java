@@ -30,23 +30,31 @@ public class FavouriteController {
         } else {
             result = favouriteService.getFavoriteBySearch(user_id, page, page_size, q);
         }
-        return Result.success(result, MessageConstant.SUCCESS);
+        if (!result.getProduct_detail_list().isEmpty()) {
+            return Result.success(result, MessageConstant.SUCCESS);
+        }else{
+            return Result.success(result, MessageConstant.NO_DATA);
+        }
     }
 
     @PostMapping
     public Result addFavourite(@RequestBody FavouriteDTO dto) {
         Product product = Product.builder().build();
         BeanUtils.copyProperties(dto, product);
-        favouriteService.addFavorite(product, dto.getUserId());
-        return Result.success(MessageConstant.SUCCESS);
+        Boolean status = favouriteService.addFavorite(product, dto.getUserId());
+        if (status) {
+            return Result.success(MessageConstant.SUCCESS);
+        } else {
+            return Result.error(MessageConstant.FAIL);
+        }
     }
 
     @DeleteMapping
-    private Result deleteFavourite(@RequestBody FavouriteDelDTO dto) {
+    public Result deleteFavourite(@RequestBody FavouriteDelDTO dto) {
         Boolean status = favouriteService.delFavourite(dto);
         if (status) {
             return Result.success(MessageConstant.SUCCESS);
-        }else{
+        } else {
             return Result.error(MessageConstant.WITHOUT_DATA_CANT_DELETE);
         }
     }

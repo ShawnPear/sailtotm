@@ -76,7 +76,6 @@ public class FavouriteServiceImpl implements FavouriteService {
         LocalDateTime createdTime = LocalDateTime.now();
         oneBoundApiTaobaoProductMapperHelper.insertOrUpdate(product, "", Timestamp.valueOf(createdTime));
         return favouriteMapper.insert(product.getNumIid(), createdTime, userId) > 0;
-
     }
 
     @Override

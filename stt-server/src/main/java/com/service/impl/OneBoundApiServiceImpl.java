@@ -1,8 +1,9 @@
 package com.service.impl;
 
 import com.constant.MessageConstant;
-import com.dto.TaobaoSearchDTO;
-import com.dto.TaobaoSearchDetailDTO;
+import com.dto.Search.TaobaoSearchDTO;
+import com.dto.Search.TaobaoSearchDetailDTO;
+import com.entity.TaobaoGoodList.Items;
 import com.entity.TaobaoGoodList.Product;
 import com.exception.user.OneBoundApiException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -45,6 +46,18 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
     public TaobaoGoodListVO taoBaoSearch(TaobaoSearchDTO dto) {
         String keyWord = dto.getQ();
 
+        /*
+         * 从数据库中取缓存的数据
+         * */
+        List<Product> products = obApiTaobaoProductMapperHelper.selectByQ(dto.getQ(), dto.getPage());
+        if (products.size() >= 40) {
+            TaobaoGoodListVO goodList = new TaobaoGoodListVO();
+            Items items = new Items();
+            items.setItem(products);
+            goodList.setItems(items);
+            return goodList;
+        }
+
         Map<String, Object> query = new HashMap<>();
         query.put("q", keyWord);
         query.put("start_price", dto.getStartPrice());
@@ -80,6 +93,9 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
                     obApiTaobaoProductMapperHelper.insertOrUpdate(item, dto.getQ(), time);
                 }).start();
             }
+
+            List<Product> items = goodList.getItems().getItem();
+            items.addAll(products);
 
             return goodList;
         } catch (IOException e) {

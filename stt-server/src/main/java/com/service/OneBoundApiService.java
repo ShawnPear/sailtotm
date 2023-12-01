@@ -1,7 +1,7 @@
 package com.service;
 
-import com.dto.TaobaoSearchDTO;
-import com.dto.TaobaoSearchDetailDTO;
+import com.dto.Search.TaobaoSearchDTO;
+import com.dto.Search.TaobaoSearchDetailDTO;
 import com.exception.user.OneBoundApiException;
 import com.vo.TaobaoGood.TaobaoGoodDetailVO;
 import com.vo.TaobaoGood.TaobaoGoodListVO;

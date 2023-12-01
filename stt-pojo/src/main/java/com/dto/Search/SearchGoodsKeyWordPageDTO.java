@@ -1,4 +1,4 @@
-package com.dto;
+package com.dto.Search;
 
 @lombok.Data
 public class SearchGoodsKeyWordPageDTO {

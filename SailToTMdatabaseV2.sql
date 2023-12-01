@@ -611,6 +611,20 @@ CREATE TABLE IF NOT EXISTS `SailToTMDB`.`OneBoundApiTaobaoProduct`
 ALTER TABLE `SailToTMDB`.OneBoundApiTaobaoProduct
     ADD `q` VARCHAR(200) NOT NULL;
 
+ALTER TABLE `SearchItems`
+    ADD COLUMN (
+        created_date DATETIME NOT NULL
+        );
+
+ALTER TABLE `SearchItems`
+    ADD COLUMN (
+        updated_date DATETIME NOT NULL
+        );
+
+ALTER TABLE `ExchangeRate` MODIFY rate_id int auto_increment;
+
+ALTER TABLE ChinaDeliverDetails ADD COLUMN status int not null;
+
 
 SET SQL_MODE = @OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;
