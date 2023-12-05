@@ -1,8 +1,10 @@
 package com.controller.user;
 
+import com.annotation.CheckUserId;
 import com.constant.MessageConstant;
 import com.dto.BrowserHistory.BrowserHistoryDTO;
 import com.entity.TaobaoGoodList.Product;
+import com.enumeration.UserIdIntoType;
 import com.result.Result;
 import com.service.BrowserHistoryService;
 import com.vo.BrowserHistory.BrowserHistoryListPageVO;
@@ -21,6 +23,7 @@ public class BrowserHistoryController {
     private BrowserHistoryService browserHistoryService;
 
     @GetMapping("/{user_id}")
+    @CheckUserId(UserIdIntoType.STRING)
     public Result<BrowserHistoryListPageVO> getBrowserHistory(@PathVariable String user_id, String page, String page_size, String q) {
         BrowserHistoryListPageVO result = BrowserHistoryListPageVO.builder().build();
         if (q == null || q.isEmpty()) {
@@ -32,6 +35,7 @@ public class BrowserHistoryController {
     }
 
     @PostMapping
+    @CheckUserId(UserIdIntoType.CLASS)
     public Result addBrowserHistory(@RequestBody BrowserHistoryDTO dto) {
         Product product = Product.builder().build();
         BeanUtils.copyProperties(dto, product);

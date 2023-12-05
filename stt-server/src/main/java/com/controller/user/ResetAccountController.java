@@ -1,6 +1,5 @@
 package com.controller.user;
 
-import com.constant.MessageConstant;
 import com.dto.UserAccount.UserResetEmailDTO;
 import com.dto.UserAccount.UserResetPasswordDTO;
 import com.dto.UserAccount.UserResetUserDTO;
@@ -11,6 +10,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import static com.constant.MessageConstant.*;
 
 @RestController
 @RequestMapping("/user/reset")
@@ -25,9 +26,7 @@ public class ResetAccountController {
     public Result resetPassword(@PathVariable String user_id, @RequestBody UserResetPasswordDTO dto) {
         dto.setUserId(user_id);
         Boolean status = userService.resetPassword(dto);
-        return status
-                ? Result.success(MessageConstant.USER_RESET_PASSWORD_SUCCESS)
-                : Result.error(MessageConstant.USER_RESET_PASSWORD_ERROR);
+        return Result.status(status, USER_RESET_PASSWORD_SUCCESS, USER_RESET_PASSWORD_ERROR);
     }
 
     @PatchMapping("/user_data/{user_id}")
@@ -35,9 +34,8 @@ public class ResetAccountController {
     public Result resetUserData(@PathVariable String user_id, @RequestBody UserResetUserDTO dto) {
         dto.setUserId(user_id);
         Boolean status = userService.updateUserInfo(dto);
-        return status
-                ? Result.success(MessageConstant.USER_RESET_USER_SUCCESS)
-                : Result.error(MessageConstant.USER_RESET_USER_ERROR);
+        return Result.status(status, USER_RESET_USER_SUCCESS, USER_RESET_USER_ERROR);
+
     }
 
     @PatchMapping("/email/{user_id}")
@@ -45,8 +43,6 @@ public class ResetAccountController {
     public Result resetEmail(@PathVariable String user_id, @RequestBody UserResetEmailDTO dto) {
         dto.setUserId(user_id);
         Boolean status = userService.resetEmail(dto);
-        return status
-                ? Result.success(MessageConstant.USER_RESET_EMAIL_SUCCESS)
-                : Result.error(MessageConstant.USER_RESET_EMAIL_ERROR);
+        return Result.status(status, USER_RESET_EMAIL_SUCCESS, USER_RESET_EMAIL_ERROR);
     }
 }

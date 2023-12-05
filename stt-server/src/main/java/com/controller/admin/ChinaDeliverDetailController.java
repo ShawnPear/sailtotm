@@ -30,20 +30,12 @@ public class ChinaDeliverDetailController {
     private Result add(@RequestBody ChinaDeliverDetailDTO dto) {
         dto.setStatus("1");
         Boolean status = service.add(dto);
-        if (status) {
-            return Result.success(MessageConstant.SUCCESS);
-        } else {
-            return Result.error(MessageConstant.FAIL);
-        }
+        return Result.status(status);
     }
 
     @PatchMapping
     public Result update(@RequestBody ChinaDeliverDetailDTO dto) {
         Boolean status = service.update(dto);
-        if (status) {
-            return Result.success(MessageConstant.SUCCESS);
-        } else {
-            return Result.error(MessageConstant.FAIL);
-        }
+        return Result.status(status);
     }
 }

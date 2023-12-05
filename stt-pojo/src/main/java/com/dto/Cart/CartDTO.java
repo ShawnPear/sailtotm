@@ -1,6 +1,13 @@
 package com.dto.Cart;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 @lombok.Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CartDTO {
     private String userId;
     private String numIid;

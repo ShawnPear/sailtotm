@@ -1,7 +1,6 @@
 package com.controller.user;
 
 import com.constant.JwtClaimsConstant;
-import com.constant.MessageConstant;
 import com.dto.UserAccount.UserLoginDTO;
 import com.dto.UserAccount.UserRegisterDTO;
 import com.entity.User;
@@ -18,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.constant.MessageConstant.*;
 
 @RestController
 @RequestMapping("/user")
@@ -39,7 +40,7 @@ public class UserController {
         User user = userService.login(userLoginDTO);
 
         if (user == null) {
-            return Result.error(MessageConstant.USER_LOGIN_ERROR_NOT_EXIST);
+            return Result.error(USER_LOGIN_ERROR_NOT_EXIST);
         }
 
         Map<String, Object> claims = new HashMap<>();
@@ -52,7 +53,7 @@ public class UserController {
                 .userName(user.getUserName())
                 .build();
 
-        return Result.success(userLoginVO, MessageConstant.USER_LOGIN_SUCCESS);
+        return Result.success(userLoginVO, USER_LOGIN_SUCCESS);
     }
 
     @PostMapping("/register")
@@ -62,8 +63,6 @@ public class UserController {
 
         Boolean registerStatus = userService.register(userRegisterDTO);
 
-        return registerStatus
-                ? Result.success(MessageConstant.USER_REGISTER_SUCCESS)
-                : Result.success(MessageConstant.USER_REGISTER_ERROR_EMAIL_EXIST);
+        return Result.status(registerStatus, USER_REGISTER_SUCCESS, USER_REGISTER_ERROR_EMAIL_EXIST);
     }
 }

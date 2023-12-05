@@ -1,5 +1,6 @@
 package com.result;
 
+import com.constant.MessageConstant;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -20,6 +21,36 @@ public class Result<T> implements Serializable {
         Result<T> result = new Result<T>();
         result.code = 1;
         return result;
+    }
+
+    public static <T> Result<T> status(Boolean status, String success, String error, T data) {
+        if (status == null || !status) {
+            return Result.error(error);
+        }
+        return Result.success(data, success);
+    }
+
+    public static <T> Result<T> status(Boolean status, String success, String error) {
+        if (status == null || !status) {
+            return Result.error(error);
+        }
+        return Result.success(success);
+    }
+
+    public static <T> Result<T> status(Boolean status) {
+        String error = MessageConstant.FAIL;
+        String success = MessageConstant.SUCCESS;
+        if (status == null || !status) {
+            return Result.error(error);
+        }
+        return Result.success(success);
+    }
+
+    public static <T> Result<T> dataDetect(Boolean status, String success, String error, T data) {
+        if (status == null || !status) {
+            return Result.success(data, error);
+        }
+        return Result.success(data, success);
     }
 
     public static <T> Result<T> success(T object) {

@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.constant.MessageConstant.STUFF_REGISTER_ERROR_EMAIL_EXIST;
+import static com.constant.MessageConstant.STUFF_REGISTER_SUCCESS;
+
 @RestController
 @RequestMapping("/admin")
 @Api(tags = "admin账户操作接口")
@@ -65,8 +68,6 @@ public class StuffController {
 
         Boolean registerStatus = stuffService.register(stuffRegisterDTO);
 
-        return registerStatus
-                ? Result.success(MessageConstant.STUFF_REGISTER_SUCCESS)
-                : Result.success(MessageConstant.STUFF_REGISTER_ERROR_EMAIL_EXIST);
+        return Result.status(registerStatus,STUFF_REGISTER_SUCCESS,STUFF_REGISTER_ERROR_EMAIL_EXIST);
     }
 }

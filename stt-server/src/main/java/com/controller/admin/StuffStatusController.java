@@ -1,6 +1,5 @@
 package com.controller.admin;
 
-import com.constant.MessageConstant;
 import com.dto.Stuff.StuffStatusChangeDTO;
 import com.result.Result;
 import com.service.StuffService;
@@ -12,6 +11,9 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import static com.constant.MessageConstant.STUFF_STATUS_CHANGE_ERROR;
+import static com.constant.MessageConstant.STUFF_STATUS_CHANGE_SUCCESS;
 
 @RestController
 @RequestMapping("/admin")
@@ -28,8 +30,8 @@ public class StuffStatusController {
             StuffInfoVO stuffInfoVO = StuffInfoVO.builder()
                     .stuff_id(dto.getStuffId())
                     .build();
-            return Result.success(stuffInfoVO, MessageConstant.STUFF_STATUS_CHANGE_SUCCESS);
+            return Result.success(stuffInfoVO, STUFF_STATUS_CHANGE_SUCCESS);
         }
-        return Result.error(MessageConstant.STUFF_STATUS_CHANGE_ERROR);
+        return Result.error(STUFF_STATUS_CHANGE_ERROR);
     }
 }

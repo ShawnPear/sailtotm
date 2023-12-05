@@ -1,6 +1,5 @@
 package com.controller.user;
 
-import com.constant.MessageConstant;
 import com.result.Result;
 import com.service.TransportTypeService;
 import com.vo.TransportTypeVO;
@@ -13,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static com.constant.MessageConstant.NO_DATA;
+import static com.constant.MessageConstant.SUCCESS;
+
 @RestController
 @RequestMapping("/user/transport-type")
 @Api(tags = "运输方式操作接口")
@@ -24,10 +26,6 @@ public class TransportTypeUserController {
     @GetMapping
     public Result<List<TransportTypeVO>> getAll() {
         List<TransportTypeVO> all = service.getAll();
-        if (all.isEmpty()) {
-            return Result.success(all, MessageConstant.NO_DATA);
-        } else {
-            return Result.success(all, MessageConstant.SUCCESS);
-        }
+        return Result.dataDetect(!all.isEmpty(), SUCCESS, NO_DATA, all);
     }
 }

@@ -34,11 +34,7 @@ public class StoreLocationAdminController {
     @PostMapping
     public Result insert(@RequestBody StoreLocationDTO dto) {
         Boolean status = service.add(dto);
-        if (status) {
-            return Result.success(MessageConstant.SUCCESS);
-        } else {
-            return Result.error(MessageConstant.FAIL);
-        }
+        return Result.status(status);
     }
 
     @GetMapping

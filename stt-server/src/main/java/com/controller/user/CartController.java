@@ -1,10 +1,12 @@
 package com.controller.user;
 
+import com.annotation.CheckUserId;
 import com.constant.MessageConstant;
 import com.dto.Cart.CartDTO;
 import com.dto.Cart.CartDelDTO;
 import com.dto.Cart.CartUpdateQuantityDTO;
 import com.entity.TaobaoGoodList.Product;
+import com.enumeration.UserIdIntoType;
 import com.result.Result;
 import com.service.CartService;
 import com.vo.Cart.CartListPageVO;
@@ -23,6 +25,7 @@ public class CartController {
     CartService cartService;
 
     @GetMapping("/{user_id}")
+    @CheckUserId(UserIdIntoType.STRING)
     public Result<CartListPageVO> getByUserId(@PathVariable String user_id, String page, String pageSize, String q) {
         CartListPageVO result = CartListPageVO.builder().build();
         if (q == null || q.isEmpty()) {
@@ -38,34 +41,25 @@ public class CartController {
     }
 
     @PostMapping
+    @CheckUserId(UserIdIntoType.CLASS)
     public Result addCart(@RequestBody CartDTO dto) {
         Product product = Product.builder().build();
         BeanUtils.copyProperties(dto, product);
         Boolean status = cartService.addCart(product, dto.getUserId(), dto.getQuantity());
-        if (status) {
-            return Result.success(MessageConstant.SUCCESS);
-        } else {
-            return Result.error(MessageConstant.FAIL);
-        }
+        return Result.status(status);
     }
 
     @DeleteMapping
+    @CheckUserId(UserIdIntoType.CLASS)
     public Result deleteCart(@RequestBody CartDelDTO dto) {
         Boolean status = cartService.delCart(dto);
-        if (status) {
-            return Result.success(MessageConstant.SUCCESS);
-        } else {
-            return Result.success(MessageConstant.WITHOUT_DATA_CANT_DELETE);
-        }
+        return Result.status(status);
     }
 
     @PatchMapping
+    @CheckUserId(UserIdIntoType.CLASS)
     public Result updateCart(@RequestBody CartUpdateQuantityDTO dto) {
         Boolean status = cartService.updateCart(dto);
-        if (status) {
-            return Result.success(MessageConstant.SUCCESS);
-        } else {
-            return Result.error(MessageConstant.FAIL);
-        }
+        return Result.status(status);
     }
 }

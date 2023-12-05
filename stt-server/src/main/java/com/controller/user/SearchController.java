@@ -1,6 +1,6 @@
 package com.controller.user;
 
-import com.constant.MessageConstant;
+import com.annotation.CheckUserId;
 import com.context.BaseContext;
 import com.dto.Search.SearchGoodsKeyWordPageDTO;
 import com.dto.Search.TaobaoSearchDTO;
@@ -22,6 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Objects;
 
+import static com.constant.MessageConstant.*;
+import static com.enumeration.UserIdIntoType.CLASS;
+import static com.enumeration.UserIdIntoType.STRING;
+
 @RestController
 @RequestMapping("/user")
 @Api(tags = "搜索操作接口")
@@ -35,45 +39,35 @@ public class SearchController {
     SearchHistoryService searchHistoryService;
 
     @GetMapping("/search")
+    @CheckUserId(CLASS)
     public Result<TaobaoGoodListVO> searchByKeyWord(SearchGoodsKeyWordPageDTO dto) {
         if (Objects.equals(dto.getPage(), "") || Objects.equals(dto.getQ(), "")) {
-            throw new ParamMissingException(MessageConstant.PARAM_MISSING_ERROR);
+            throw new ParamMissingException(PARAM_MISSING_ERROR);
         }
-        TaobaoSearchDTO taobaoSearchDTO = TaobaoSearchDTO.builder()
-                .q(dto.getQ())
-                .page(dto.getPage())
-                .startPrice("0")
-                .endPrice("0")
-                .cat("0")
-                .build();
+        TaobaoSearchDTO taobaoSearchDTO = TaobaoSearchDTO.builder().q(dto.getQ()).page(dto.getPage()).startPrice("0").endPrice("0").cat("0").build();
         TaobaoGoodListVO goodList = oneBoundApiService.taoBaoSearch(taobaoSearchDTO);
 
 //        增加搜索历史
         Boolean status = searchHistoryService.addSearchHistory(dto.getQ(), BaseContext.getCurrentId());
-
-        return Result.success(goodList, MessageConstant.USER_SEARCH_SUCCESS);
+        return Result.status(status, USER_SEARCH_SUCCESS, FAIL, goodList);
     }
 
     @GetMapping("/search-item")
     public Result<TaobaoGoodDetailVO> searchDetailByNumIid(String product_id) {
         if (product_id.equals("")) {
-            throw new ParamMissingException(MessageConstant.PARAM_MISSING_ERROR);
+            throw new ParamMissingException(PARAM_MISSING_ERROR);
         }
-        TaobaoSearchDetailDTO taobaoSearchDetailDTO = TaobaoSearchDetailDTO.builder()
-                .numIid(product_id)
-                .build();
+        TaobaoSearchDetailDTO taobaoSearchDetailDTO = TaobaoSearchDetailDTO.builder().numIid(product_id).build();
         TaobaoGoodDetailVO taobaoGoodDetail = oneBoundApiService.taoBaoSearchDetail(taobaoSearchDetailDTO);
         return Result.success(taobaoGoodDetail);
     }
 
     @GetMapping("/search-history/{user_id}")
+    @CheckUserId(STRING)
     public Result<SearchHistoryListPageVO> getSearchHistoryPage(@PathVariable String user_id, String page, String page_size) {
         SearchHistoryListPageVO result;
         result = searchHistoryService.getSearchHistory(user_id, page, page_size);
-        if (!result.getSearchList().isEmpty()) {
-            return Result.success(result, MessageConstant.SUCCESS);
-        } else {
-            return Result.success(result, MessageConstant.NO_DATA);
-        }
+        return Result.dataDetect(!result.getSearchList().isEmpty(),
+                SUCCESS, NO_DATA, result);
     }
 }

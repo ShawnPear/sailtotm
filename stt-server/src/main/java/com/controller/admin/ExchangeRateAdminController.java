@@ -22,11 +22,7 @@ public class ExchangeRateAdminController {
     @PatchMapping
     public Result updateRate(@RequestBody ExchangeRateDTO dto) {
         Boolean status = service.updateExchangeRate(dto);
-        if (status) {
-            return Result.success(MessageConstant.SUCCESS);
-        } else {
-            return Result.error(MessageConstant.FAIL);
-        }
+        return Result.status(status);
     }
 
     @GetMapping

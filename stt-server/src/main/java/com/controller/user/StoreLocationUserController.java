@@ -1,7 +1,6 @@
 package com.controller.user;
 
 
-import com.constant.MessageConstant;
 import com.exception.user.IdNotExistException;
 import com.result.Result;
 import com.service.StoreLocationService;
@@ -15,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.constant.MessageConstant.FAIL;
+import static com.constant.MessageConstant.SUCCESS;
 
 @RestController
 @RequestMapping("/user/store-location")
@@ -32,11 +34,11 @@ public class StoreLocationUserController {
                 StoreLocationVO add = service.getAllById(location_id);
                 all.add(add);
             } catch (Exception e) {
-                throw new IdNotExistException(MessageConstant.FAIL);
+                throw new IdNotExistException(FAIL);
             }
         } else {
             all = service.getAllPage(page, page_size);
         }
-        return Result.success(all, MessageConstant.SUCCESS);
+        return Result.success(all, SUCCESS);
     }
 }

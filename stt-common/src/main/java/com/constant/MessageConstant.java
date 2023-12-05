@@ -1,6 +1,8 @@
 package com.constant;
 
 public class MessageConstant {
+    public static final String OPE_ID_NOT_SAME_ERROR = "you just could operator your own account";
+    public static final String PAY_PASSWORD_ERROR = "pay passowrd error";
     public static final String NO_DATA = "no data";
     public static final String USER_LOGIN_SUCCESS = "Successful login";
     public static final String USER_LOGIN_ERROR_NOT_EXIST = "Email is not registered";
