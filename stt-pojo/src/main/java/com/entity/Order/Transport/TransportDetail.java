@@ -1,4 +1,4 @@
-package com.entity;
+package com.entity.Order.Transport;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +23,7 @@ public class TransportDetail {
     private Double weight;
     private Double estimatedTransportCost;
     private Double transportCost;
-    private Integer transportCostPaidStatus;
+    private Integer transportStatus;
     private LocalDateTime transportCostPaidDate;
     private LocalDateTime measureDate;
 }

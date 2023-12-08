@@ -5,7 +5,7 @@
 
 
     <insert id="insert">
-        insert into SailToTMDB.HistoryItems (user_id, num_iid, created_date)
+        insert into sailtotmdb.HistoryItems (user_id, num_iid, created_date)
         VALUES (#{user_id},
                 #{num_iid},
                 #{created_time});
@@ -18,8 +18,8 @@
                p.promotion_price as promotion_price,
                p.price           as price,
                p.title           as title
-        from SailToTMDB.HistoryItems h,
-             SailToTMDB.OneBoundApiTaobaoProduct p
+        from sailtotmdb.HistoryItems h,
+             sailtotmdb.OneBoundApiTaobaoProduct p
         where h.user_id = #{user_id}
           and h.num_iid = p.num_iid
         order by h.created_date desc
@@ -31,8 +31,8 @@
                p.promotion_price as promotion_price,
                p.price           as price,
                p.title           as title
-        from SailToTMDB.HistoryItems h,
-             SailToTMDB.OneBoundApiTaobaoProduct p
+        from sailtotmdb.HistoryItems h,
+             sailtotmdb.OneBoundApiTaobaoProduct p
         where h.user_id = #{user_id}
           and h.num_iid = p.num_iid
           and p.title LIKE #{q}

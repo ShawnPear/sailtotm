@@ -1,4 +1,4 @@
-package com.entity;
+package com.entity.Order.Buy;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

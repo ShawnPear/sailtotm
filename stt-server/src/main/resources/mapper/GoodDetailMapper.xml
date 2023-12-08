@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mapper.GoodDetailMapper">
+    <insert id="insertGoodDetail" parameterType="com.entity.Order.Good.GoodDetail" useGeneratedKeys="true"
+            keyProperty="goodDetailId">
+        insert into sailtotmdb.GoodsDetails (quantity, num_iid, properties, properties_name)
+        values (#{quantity},
+                #{numIid},
+                #{properties},
+                #{propertiesName});
+    </insert>
+</mapper>

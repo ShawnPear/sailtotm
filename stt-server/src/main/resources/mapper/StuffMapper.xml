@@ -17,7 +17,7 @@
     </insert>
 
     <update id="updateStatusByStuffId">
-        update SailToTMDB.Stuff
+        update sailtotmdb.Stuff
         <set>
             <if test="roleId!=null">role_id = #{roleId},</if>
             <if test="locationId!=null">location_id = #{locationId},</if>

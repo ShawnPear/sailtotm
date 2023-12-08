@@ -5,7 +5,7 @@ import com.entity.TaobaoGoodList.Product;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.mapper.BrowserHistoryMapper;
-import com.mapper_helper.OneBoundApiTaobaoProductMapperHelper;
+import com.mapper.mapper_helper.OneBoundApiTaobaoProductMapperHelper;
 import com.service.BrowserHistoryService;
 import com.vo.BrowserHistory.BrowserHistoryItemVO;
 import com.vo.BrowserHistory.BrowserHistoryListPageVO;

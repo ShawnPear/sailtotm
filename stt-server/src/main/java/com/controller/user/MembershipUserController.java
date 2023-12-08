@@ -26,12 +26,12 @@ public class MembershipUserController {
     @Autowired
     MembershipService service;
 
-    @GetMapping("/{userId}")
+    @GetMapping("/{user_id}")
     @CheckUserId(STRING)
-    Result<MembershipVO> getMembership(@PathVariable String userId) {
-        if (userId == null || userId.isEmpty())
+    Result<MembershipVO> getMembership(@PathVariable String user_id) {
+        if (user_id == null || user_id.isEmpty())
             return Result.error(PARAM_MISSING_ERROR);
-        MembershipVO vo = service.getByUserId(userId);
+        MembershipVO vo = service.getByUserId(user_id);
         return Result.success(vo);
     }
 

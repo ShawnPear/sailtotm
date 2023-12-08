@@ -8,7 +8,7 @@ import com.entity.TaobaoGoodList.Product;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.mapper.CartMapper;
-import com.mapper_helper.OneBoundApiTaobaoProductMapperHelper;
+import com.mapper.mapper_helper.OneBoundApiTaobaoProductMapperHelper;
 import com.service.CartService;
 import com.vo.Cart.CartItemVO;
 import com.vo.Cart.CartListPageVO;

@@ -25,7 +25,6 @@ import static com.enumeration.UserIdIntoType.STRING;
 public class UserIdValidationAspect {
 
     public UserIdValidationAspect() {
-        System.out.println("UserIdValidationAspect");
     }
 
     @Pointcut("@annotation(com.annotation.CheckUserId)") // 定义切点，拦截带有 @CheckUserId 注解的方法

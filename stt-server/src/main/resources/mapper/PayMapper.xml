@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mapper.PayMapper">
+
+    <insert id="insertPayHistory" useGeneratedKeys="true"
+            keyProperty="payId">
+        insert into sailtotmdb.PayHistory (created_date, pay_amount, pay_type, stuff_id, pay_sum_id,
+                                           pay_out_or_in)
+        values (#{createdDate},
+                #{payAmount},
+                #{payType},
+                #{stuffId},
+                #{paySumId},
+                #{payOutOrIn})
+    </insert>
+
+    <insert id="generatePaySum" useGeneratedKeys="true" keyProperty="paySumId">
+        insert into sailtotmdb.PaySum (pay_now, pay_expect, created_date, updated_date)
+        values (#{payNow},
+                #{payExpect},
+                #{createdDate},
+                #{updatedDate})
+    </insert>
+
+    <update id="checkPaySum">
+        update sailtotmdb.PaySum
+        set pay_now      = (((select IFNULL(sum(sailtotmdb.PayHistory.pay_amount), 0)
+                              from sailtotmdb.PayHistory
+                              where PayHistory.pay_sum_id = #{paySumId}
+                                and pay_out_or_in = 1)
+            -
+                             (select IFNULL(sum(sailtotmdb.PayHistory.pay_amount), 0)
+                              from sailtotmdb.PayHistory
+                              where PayHistory.pay_sum_id = #{paySumId}
+                                and pay_out_or_in = 0))),
+            updated_date = #{updatedDate}
+        where pay_sum_id = #{paySumId}
+    </update>
+
+
+</mapper>

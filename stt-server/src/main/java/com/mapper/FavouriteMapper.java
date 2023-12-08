@@ -15,6 +15,6 @@ public interface FavouriteMapper {
 
     public Page<FavouriteItem> selectAllByUserSearchPage(String user_id, String q);
 
-    @Delete("delete from SailToTMDB.FavouriteItems where user_id = #{userId} and favourite_id = #{favouriteId}")
+    @Delete("delete from sailtotmdb.FavouriteItems where user_id = #{userId} and favourite_id = #{favouriteId}")
     public Integer delete(String userId, Integer favouriteId);
 }

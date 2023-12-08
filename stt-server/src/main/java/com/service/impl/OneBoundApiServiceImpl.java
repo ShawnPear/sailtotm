@@ -7,7 +7,7 @@ import com.entity.TaobaoGoodList.Items;
 import com.entity.TaobaoGoodList.Product;
 import com.exception.user.OneBoundApiException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.mapper_helper.OneBoundApiTaobaoProductMapperHelper;
+import com.mapper.mapper_helper.OneBoundApiTaobaoProductMapperHelper;
 import com.properties.OneBoundProperties;
 import com.service.OneBoundApiService;
 import com.utils.GetUri;

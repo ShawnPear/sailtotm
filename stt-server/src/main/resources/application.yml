@@ -1,6 +1,10 @@
 server:
   port: 8080
   address: 0.0.0.0
+  ssl:
+    key-store: classpath:api.yasyl.com.pfx
+    key-store-type: JKS
+    key-store-password: ex2hmsjf
 
 spring:
   profiles:

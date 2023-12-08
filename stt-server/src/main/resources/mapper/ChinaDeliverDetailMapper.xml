@@ -4,7 +4,7 @@
 <mapper namespace="com.mapper.ChinaDeliverDetailMapper">
 
     <update id="updateById">
-        update SailToTMDB.ChinaDeliverDetails
+        update sailtotmdb.ChinaDeliverDetails
         <set>
             <if test="name != null">name = #{name},</if>
             <if test="phoneNumber != null">phone_number = #{phoneNumber},</if>

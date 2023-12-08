@@ -5,20 +5,20 @@
 
     <!-- 插入操作 -->
     <insert id="add">
-        INSERT INTO SailToTMDB.TransportTypes (transport, price, updated_date)
+        INSERT INTO sailtotmdb.TransportTypes (transport, price, updated_date)
         VALUES (#{transport}, #{price}, #{updatedDate})
     </insert>
 
     <!-- 删除操作 -->
     <delete id="remove">
         DELETE
-        FROM SailToTMDB.TransportTypes
+        FROM sailtotmdb.TransportTypes
         WHERE transport_id = #{transport_id}
     </delete>
 
     <!-- 更新操作 -->
     <update id="update">
-        UPDATE SailToTMDB.TransportTypes
+        UPDATE sailtotmdb.TransportTypes
         <set>
             <if test="transport != null">transport = #{transport},</if>
             <if test="price != null">price = #{price},</if>
@@ -30,7 +30,7 @@
     <!-- 查询操作 -->
     <select id="getAll" resultType="com.entity.TransportType">
         SELECT transport_id, transport, price, updated_date
-        FROM SailToTMDB.TransportTypes
+        FROM sailtotmdb.TransportTypes
     </select>
 
 </mapper>

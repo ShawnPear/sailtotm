@@ -35,7 +35,7 @@ public class MembershipServiceImpl implements MembershipService {
     @Override
     public MembershipVO getByUserId(String userId) {
         Membership membership = mapper.selectByUserId(userId);
-        MembershipVO vo = MembershipVO.builder().balance(String.valueOf(membership.getBalance())).membershipId(String.valueOf(membership.getMembershipId())).supportDate(String.valueOf(ChronoUnit.DAYS.between(LocalDateTime.now(), membership.getCreatedDate()) + 1)).build();
+        MembershipVO vo = MembershipVO.builder().balance(String.valueOf(membership.getBalance())).membershipId(String.valueOf(membership.getMembershipId())).supportDate(String.valueOf(ChronoUnit.DAYS.between(membership.getCreatedDate(), LocalDateTime.now()) + 1)).build();
         return vo;
     }
 

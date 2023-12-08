@@ -1,4 +1,4 @@
-package com.entity;
+package com.entity.Order.Pay;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +14,10 @@ import java.time.LocalDateTime;
 public class PayHistory {
     private Integer payId;
     private LocalDateTime createdDate;
-    private Double paySum;
+    private Double payAmount;
     private Integer payType;
     private Integer stuffId;
+    private LocalDateTime updatedDate;
+    private Integer paySumId;
+    private Integer payOutOrIn;
 }

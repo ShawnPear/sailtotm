@@ -1,4 +1,4 @@
-package com.entity;
+package com.entity.Order;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,13 +14,12 @@ import java.time.LocalDateTime;
 public class Order {
     private Integer orderId;
     private Integer userId;
-    private Integer stuffId;
     private Integer goodDetailId;
     private Integer transportDetailId;
     private Integer chinaDetailId;
-    private Integer payId;
+    private Integer paySumId;
     private Integer statusId;
     private Integer pickupCode;
     private LocalDateTime createdDate;
-    private Double payExpect;
+    private LocalDateTime updatedDate;
 }

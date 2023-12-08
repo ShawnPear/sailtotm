@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mapper.OrderMapper">
+
+    <insert id="submit">
+        insert into sailtotmdb.Orders (order_id, user_id, good_detail_id, transport_detail_id, china_detail_id,
+                                       status_id, pickup_code, created_date, pay_sum_id, updated_date)
+        VALUES (#{orderId},
+                #{userId},
+                #{goodDetailId},
+                #{transportDetailId},
+                #{chinaDetailId},
+                #{statusId},
+                #{pickupCode},
+                #{createdDate},
+                #{paySumId},
+                #{updatedDate});
+    </insert>
+    <select id="getByIdPage" resultType="com.entity.OrderBaseInfo">
+        select O.order_id                  as orderId,
+               O.status_id                 as status,
+               O.created_date              as createdDate,
+               PH.pay_expect               as totalPrice,
+               PH.updated_date             as paidDate,
+               TD.location_id              as locationId,
+               GD.num_iid                  as numIid,
+               OBATP.pic_url               as picUrl,
+               OBATP.promotion_price       as promotionPrice,
+               OBATP.price                 as price,
+               OBATP.title                 as title,
+               GD.properties               as properties,
+               GD.properties_name          as propertiesName,
+               GD.quantity                 as quantity,
+               TD.transport_cost           as transportPrice,
+               TD.transport_detail_id      as transportType,
+               TD.estimated_transport_cost as estimatedTransportPrice
+        from sailtotmdb.Orders O
+                 LEFT JOIN sailtotmdb.PaySum PH on PH.pay_sum_id = O.pay_sum_id
+                 LEFT JOIN sailtotmdb.TransportDetails TD on TD.transport_detail_id = O.transport_detail_id
+                 LEFT JOIN sailtotmdb.GoodsDetails GD on GD.good_detail_id = O.good_detail_id
+                 LEFT JOIN sailtotmdb.OneBoundApiTaobaoProduct OBATP on OBATP.num_iid = GD.num_iid
+        where O.user_id = #{userId}
+        order by O.created_date desc
+    </select>
+
+    <select id="getByIdPageQ" resultType="com.entity.OrderBaseInfo">
+        select O.order_id                  as orderId,
+               O.status_id                 as status,
+               O.created_date              as createdDate,
+               PH.pay_expect               as totalPrice,
+               PH.updated_date             as paidDate,
+               TD.location_id              as locationId,
+               GD.num_iid                  as numIid,
+               OBATP.pic_url               as picUrl,
+               OBATP.promotion_price       as promotionPrice,
+               OBATP.price                 as price,
+               OBATP.title                 as title,
+               GD.properties               as properties,
+               GD.properties_name          as propertiesName,
+               GD.quantity                 as quantity,
+               TD.transport_cost           as transportPrice,
+               TD.transport_detail_id      as transportType,
+               TD.estimated_transport_cost as estimatedTransportPrice
+        from sailtotmdb.Orders O
+                 LEFT JOIN sailtotmdb.PaySum PH on PH.pay_sum_id = O.pay_sum_id
+                 LEFT JOIN sailtotmdb.TransportDetails TD on TD.transport_detail_id = O.transport_detail_id
+                 LEFT JOIN sailtotmdb.GoodsDetails GD on GD.good_detail_id = O.good_detail_id
+                 LEFT JOIN sailtotmdb.OneBoundApiTaobaoProduct OBATP on OBATP.num_iid = GD.num_iid
+        where O.user_id = #{userId}
+          and OBATP.title LIKE #{q}
+        order by O.created_date desc
+    </select>
+    <select id="getOrderInfoByOrderId" resultType="com.entity.OrderExtraInfo">
+        select O.order_id                  as orderId,
+               OBATP.pic_url               as picUrl,
+               GD.num_iid                  as numIid,
+               OBATP.promotion_price       as promotionPrice,
+               OBATP.price                 as price,
+               OBATP.title                 as title,
+               O.status_id                 as status,
+               O.created_date              as createdDate,
+               PH.pay_expect               as totalPrice,
+               PH.updated_date             as paidDate,
+               TD.location_id              as locationId,
+               GD.properties               as properties,
+               GD.properties_name          as propertiesName,
+               GD.quantity                 as quantity,
+               TD.transport_cost           as transportPrice,
+               TD.transport_detail_id      as transportType,
+               TD.estimated_transport_cost as estimatedTransportPrice,
+               O.pickup_code               as pickupCode,
+               TD.width                    as width,
+               TD.length                   as length,
+               TD.height                   as height,
+               TD.weight                   as weight,
+               O.user_id                   as userId,
+               U.user_name                 as userName
+        from sailtotmdb.Orders O
+                 LEFT JOIN sailtotmdb.PaySum PH on PH.pay_sum_id = O.pay_sum_id
+                 LEFT JOIN sailtotmdb.TransportDetails TD on TD.transport_detail_id = O.transport_detail_id
+                 LEFT JOIN sailtotmdb.GoodsDetails GD on GD.good_detail_id = O.good_detail_id
+                 LEFT JOIN sailtotmdb.OneBoundApiTaobaoProduct OBATP on OBATP.num_iid = GD.num_iid
+                 LEFT JOIN sailtotmdb.Users U on O.user_id = U.user_id
+        where O.order_id = #{orderId}
+    </select>
+    <select id="getOrderInfoByUserId" resultType="com.entity.OrderExtraInfo">
+        select O.order_id                  as orderId,
+               OBATP.pic_url               as picUrl,
+               GD.num_iid                  as numIid,
+               OBATP.promotion_price       as promotionPrice,
+               OBATP.price                 as price,
+               OBATP.title                 as title,
+               O.status_id                 as status,
+               O.created_date              as createdDate,
+               PH.pay_expect               as totalPrice,
+               PH.updated_date             as paidDate,
+               TD.location_id              as locationId,
+               GD.properties               as properties,
+               GD.properties_name          as propertiesName,
+               GD.quantity                 as quantity,
+               TD.transport_cost           as transportPrice,
+               TD.transport_detail_id      as transportType,
+               TD.estimated_transport_cost as estimatedTransportPrice,
+               O.pickup_code               as pickupCode,
+               TD.width                    as width,
+               TD.length                   as length,
+               TD.height                   as height,
+               TD.weight                   as weight,
+               O.user_id                   as userId,
+               U.user_name                 as userName
+        from sailtotmdb.Orders O
+                 LEFT JOIN sailtotmdb.PaySum PH on PH.pay_sum_id = O.pay_sum_id
+                 LEFT JOIN sailtotmdb.TransportDetails TD on TD.transport_detail_id = O.transport_detail_id
+                 LEFT JOIN sailtotmdb.GoodsDetails GD on GD.good_detail_id = O.good_detail_id
+                 LEFT JOIN sailtotmdb.OneBoundApiTaobaoProduct OBATP on OBATP.num_iid = GD.num_iid
+                 LEFT JOIN sailtotmdb.Users U on O.user_id = U.user_id
+        where O.user_id = #{userId}
+        order by O.created_date desc
+    </select>
+</mapper>

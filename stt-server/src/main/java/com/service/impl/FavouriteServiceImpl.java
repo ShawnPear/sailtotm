@@ -6,7 +6,7 @@ import com.entity.TaobaoGoodList.Product;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.mapper.FavouriteMapper;
-import com.mapper_helper.OneBoundApiTaobaoProductMapperHelper;
+import com.mapper.mapper_helper.OneBoundApiTaobaoProductMapperHelper;
 import com.service.FavouriteService;
 import com.vo.Favourite.FavouriteItemVO;
 import com.vo.Favourite.FavouriteListPageVO;

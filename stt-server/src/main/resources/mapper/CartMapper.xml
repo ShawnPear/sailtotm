@@ -4,7 +4,7 @@
 <mapper namespace="com.mapper.CartMapper">
 
     <insert id="insert">
-        insert into SailToTMDB.CartItems (user_id, quantity, created_date, num_iid)
+        insert into sailtotmdb.CartItems (user_id, quantity, created_date, num_iid)
         VALUES (#{user_id},
                 #{quantity},
                 #{created_time},
@@ -20,8 +20,8 @@
                p.price           as price,
                p.title           as title,
                h.quantity        as quantity
-        from SailToTMDB.CartItems h,
-             SailToTMDB.OneBoundApiTaobaoProduct p
+        from sailtotmdb.CartItems h,
+             sailtotmdb.OneBoundApiTaobaoProduct p
         where h.user_id = #{user_id}
           and h.num_iid = p.num_iid
         order by h.created_date desc
@@ -35,8 +35,8 @@
                p.price           as price,
                p.title           as title,
                h.quantity        as quantity
-        from SailToTMDB.CartItems h,
-             SailToTMDB.OneBoundApiTaobaoProduct p
+        from sailtotmdb.CartItems h,
+             sailtotmdb.OneBoundApiTaobaoProduct p
         where h.user_id = #{user_id}
           and h.num_iid = p.num_iid
           and p.title LIKE #{q}

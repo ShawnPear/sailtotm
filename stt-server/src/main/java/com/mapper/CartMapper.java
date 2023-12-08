@@ -17,10 +17,10 @@ public interface CartMapper {
 
     public Page<CartItem> selectAllByUserSearchPage(String user_id, String q);
 
-    @Delete("delete from SailToTMDB.CartItems where user_id = #{userId} and cart_id = #{cartId}")
+    @Delete("delete from sailtotmdb.CartItems where user_id = #{userId} and cart_id = #{cartId}")
     public Integer delete(String userId, Integer cartId);
 
-    @Update("update SailToTMDB.CartItems set quantity = #{quantity} " +
+    @Update("update sailtotmdb.CartItems set quantity = #{quantity} " +
             "where cart_id = #{cartId} and user_id = #{userId}")
     public Integer updateQuantityById(CartUpdateQuantity cart);
 }

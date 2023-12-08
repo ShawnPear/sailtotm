@@ -8,9 +8,9 @@ import org.apache.ibatis.annotations.Update;
 @Mapper
 public interface InterestRateMapper {
 
-    @Update("update SailToTMDB.InterestRate set interest_rate = #{interestRate}")
+    @Update("update sailtotmdb.InterestRate set interest_rate = #{interestRate}")
     public Boolean update(InterestRate rate);
 
-    @Select("select * from SailToTMDB.InterestRate limit 1")
+    @Select("select * from sailtotmdb.InterestRate limit 1")
     public InterestRate selectNewest();
 }

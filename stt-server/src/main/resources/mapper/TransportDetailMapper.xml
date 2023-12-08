@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mapper.TransportDetailMapper">
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="transportDetailId">
+        insert into sailtotmdb.TransportDetails (stuff_id, carrier_id, transport_id, location_id, width, height, length,
+                                                 weight,
+                                                 estimated_transport_cost, transport_cost, transport_status,
+                                                 transport_cost_paid_date, measure_date)
+        values (#{stuffId},
+                #{carrierId},
+                #{transportId},
+                #{locationId},
+                #{width},
+                #{height},
+                #{length},
+                #{weight},
+                #{estimatedTransportCost},
+                #{transportCost},
+                #{transportStatus},
+                #{transportCostPaidDate},
+                #{measureDate})
+    </insert>
+</mapper>

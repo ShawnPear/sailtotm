@@ -1,4 +1,4 @@
-package com.mapper_helper;
+package com.mapper.mapper_helper;
 
 import com.entity.TaobaoGoodList.Product;
 import com.github.pagehelper.Page;
