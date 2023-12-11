@@ -2,12 +2,14 @@ package com.controller.user;
 
 import com.annotation.CheckUserId;
 import com.dto.OrderDTO;
+import com.dto.OrderListDTO;
 import com.result.Result;
 import com.service.OrderService;
 import com.vo.Order.OrderBaseListPageVO;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import static com.constant.MessageConstant.NO_DATA;
@@ -37,8 +39,14 @@ public class OrderUserController {
 
     @PostMapping
     @CheckUserId(CLASS)
-    public Result submitOrder(@RequestBody OrderDTO dto) {
-        Boolean status = service.submitOrder(dto);
+    @Transactional
+    public Result submitOrder(@RequestBody OrderListDTO dto) {
+        Integer cnt = Integer.valueOf(dto.getOrderCnt());
+        Boolean status = true;
+        for (Integer i = 0; i < cnt; i++) {
+            OrderDTO order = dto.getOrderList().get(i);
+            status &= service.submitOrder(order);
+        }
         return Result.status(status);
     }
 

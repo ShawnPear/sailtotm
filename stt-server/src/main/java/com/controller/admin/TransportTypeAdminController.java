@@ -1,5 +1,6 @@
 package com.controller.admin;
 
+import com.annotation.AdminLicence;
 import com.dto.TransportTypeDTO;
 import com.result.Result;
 import com.service.TransportTypeService;
@@ -29,12 +30,14 @@ public class TransportTypeAdminController {
     }
 
     @PutMapping
+    @AdminLicence
     public Result update(@RequestBody TransportTypeDTO dto) {
         Boolean status = service.update(dto);
         return Result.status(status);
     }
 
     @PostMapping
+    @AdminLicence
     public Result add(@RequestBody TransportTypeDTO dto) {
         Boolean status = service.add(dto);
         return Result.status(status);

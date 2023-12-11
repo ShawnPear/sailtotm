@@ -1,7 +1,12 @@
 package com.constant;
 
 public class MessageConstant {
+    public static final String RIGHT = "right";
+    public static final String NO = "no";
+    public static final String MISS_OR_ERROR_OF_TOKEN = "miss or error of token";
+    public static final String ACCESS_RESTRICT = "access restrict";
     public static final String CANT_CANCEL_PAY_ORDER = "cant cancel order";
+    public static final String NO_REGISTER_MAMBERSHIP = "no register membership";
     public static final String NO_ORDER = "no this order";
     public static final String ORDER_SUBMIT_ERROR = "it occur something error";
     public static final String OPE_ID_NOT_SAME_ERROR = "you just could operator your own account";

@@ -1,5 +1,6 @@
 package com.controller.admin;
 
+import com.annotation.AdminLicence;
 import com.constant.MessageConstant;
 import com.dto.InterestRateDTO;
 import com.result.Result;
@@ -20,6 +21,7 @@ public class InterestRateAdminController {
     InterestRateService service;
 
     @PatchMapping
+    @AdminLicence
     public Result updateRate(@RequestBody InterestRateDTO dto) {
         Boolean status = service.updateInterestRate(dto);
         return Result.status(status);

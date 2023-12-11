@@ -22,4 +22,14 @@
                 #{transportCostPaidDate},
                 #{measureDate})
     </insert>
+    <update id="modifySize">
+        update sailtotmdb.TransportDetails
+        set width                   = #{width},
+            TransportDetails.height = #{height},
+            TransportDetails.length = #{length},
+            TransportDetails.weight = #{weight}
+        where transport_detail_id = (select Orders.transport_detail_id
+                                     from sailtotmdb.Orders
+                                     where order_id = #{id})
+    </update>
 </mapper>

@@ -40,4 +40,18 @@
           and p.title LIKE #{q}
         order by h.created_date desc
     </select>
+    <select id="selectById" resultType="com.entity.FavouriteItem">
+        select h.favourite_id    as favourite_id,
+               h.num_iid         as num_iid,
+               h.created_date    as created_date,
+               p.pic_url         as pic_url,
+               p.promotion_price as promotion_price,
+               p.price           as price,
+               p.title           as title
+        from sailtotmdb.FavouriteItems h,
+             sailtotmdb.OneBoundApiTaobaoProduct p
+        where p.num_iid = #{numIid}
+          and h.user_id = #{userId}
+        limit 1;
+    </select>
 </mapper>

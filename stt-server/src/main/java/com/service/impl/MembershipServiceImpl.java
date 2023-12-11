@@ -6,6 +6,7 @@ import com.dto.MembershipDTO;
 import com.dto.PasswordChangeDTO;
 import com.entity.Membership;
 import com.entity.MembershipHistory;
+import com.exception.user.AccountNotFoundException;
 import com.exception.user.IdNotExistException;
 import com.exception.user.ParamMissingException;
 import com.exception.user.PasswordErrorException;
@@ -24,8 +25,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.constant.MessageConstant.ID_NOT_EXIST_ERROR;
-import static com.constant.MessageConstant.PAY_PASSWORD_ERROR;
+import static com.constant.MessageConstant.*;
 
 @Service
 public class MembershipServiceImpl implements MembershipService {
@@ -35,6 +35,7 @@ public class MembershipServiceImpl implements MembershipService {
     @Override
     public MembershipVO getByUserId(String userId) {
         Membership membership = mapper.selectByUserId(userId);
+        if(membership == null)throw new AccountNotFoundException(NO_REGISTER_MAMBERSHIP);
         MembershipVO vo = MembershipVO.builder().balance(String.valueOf(membership.getBalance())).membershipId(String.valueOf(membership.getMembershipId())).supportDate(String.valueOf(ChronoUnit.DAYS.between(membership.getCreatedDate(), LocalDateTime.now()) + 1)).build();
         return vo;
     }

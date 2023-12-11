@@ -1,6 +1,8 @@
 package com.interceptor;
+
 import com.constant.JwtClaimsConstant;
 import com.context.BaseContext;
+import com.exception.user.MissingTokenException;
 import com.properties.JwtProperties;
 import com.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -13,6 +15,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static com.constant.MessageConstant.MISS_OR_ERROR_OF_TOKEN;
+
 /**
  * jwt令牌校验的拦截器
  */
@@ -23,6 +27,7 @@ public class JwtTokenUserInterceptor implements HandlerInterceptor {
     @Autowired
     private JwtProperties jwtProperties;
 
+    @Override
     /**
      * 校验jwt
      *
@@ -39,22 +44,36 @@ public class JwtTokenUserInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        //1、从请求头中获取令牌
+        //1、从请求头中获取令
         String token = request.getHeader(jwtProperties.getUserTokenName());
 
         //2、校验令牌
         try {
             log.info("jwt校验:{}", token);
-            Claims claims = JwtUtil.parseJWT(jwtProperties.getUserSecretKey(), token);
+            Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
             Long userId = Long.valueOf(claims.get(JwtClaimsConstant.USER_ID).toString());
-            log.info("当前用户的id:{}", userId);
             BaseContext.setCurrentId(userId);
+            log.info("当前用户id：{}", userId);
             //3、通过，放行
             return true;
         } catch (Exception ex) {
             //4、不通过，响应401状态码
             response.setStatus(401);
-            return false;
+            throw new MissingTokenException(MISS_OR_ERROR_OF_TOKEN);
         }
+    }
+
+    /**
+     * 防止本地线程内存泄漏
+     *
+     * @param request
+     * @param response
+     * @param handler
+     * @param ex
+     * @throws Exception
+     */
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        BaseContext.removeCurrentId();
     }
 }

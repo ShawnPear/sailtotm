@@ -1,6 +1,7 @@
 package com.controller.admin;
 
 
+import com.annotation.AdminLicence;
 import com.constant.MessageConstant;
 import com.dto.StoreLocationDTO;
 import com.result.Result;
@@ -22,6 +23,7 @@ public class StoreLocationAdminController {
     StoreLocationService service;
 
     @PutMapping
+    @AdminLicence
     public Result update(@RequestBody StoreLocationDTO dto) {
         Boolean status = service.update(dto);
         if (status) {
@@ -32,6 +34,7 @@ public class StoreLocationAdminController {
     }
 
     @PostMapping
+    @AdminLicence
     public Result insert(@RequestBody StoreLocationDTO dto) {
         Boolean status = service.add(dto);
         return Result.status(status);

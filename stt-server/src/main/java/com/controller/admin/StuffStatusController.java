@@ -1,5 +1,6 @@
 package com.controller.admin;
 
+import com.annotation.AdminLicence;
 import com.dto.Stuff.StuffStatusChangeDTO;
 import com.result.Result;
 import com.service.StuffService;
@@ -24,6 +25,7 @@ public class StuffStatusController {
     StuffService stuffService;
 
     @PatchMapping(value = {"/stuff-status", "/stuff-role", "/stuff-location"})
+    @AdminLicence
     public Result<StuffInfoVO> changeStatus(@RequestBody StuffStatusChangeDTO dto) {
         Boolean status = stuffService.changeStuffStatus(dto);
         if (status) {

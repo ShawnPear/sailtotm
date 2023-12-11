@@ -7,4 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface TransportDetailMapper {
 
     public Boolean add(TransportDetail transportDetail);
+
+    public Boolean modifySize(Integer id, Integer width, Integer height, Integer length, Double weight);
 }

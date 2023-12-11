@@ -13,4 +13,6 @@ public interface FavouriteService {
     public Boolean addFavorite(Product product, String userId);
 
     public Boolean delFavourite(FavouriteDelDTO dto);
+
+    Boolean isFavourite(String userId, String numIid);
 }

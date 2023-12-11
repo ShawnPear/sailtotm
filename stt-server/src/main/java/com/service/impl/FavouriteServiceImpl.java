@@ -83,4 +83,10 @@ public class FavouriteServiceImpl implements FavouriteService {
         Boolean status = favouriteMapper.delete(dto.getUserId(), Integer.valueOf(dto.getFavouriteId())) != 0;
         return status;
     }
+
+    @Override
+    public Boolean isFavourite(String userId, String numIid) {
+        FavouriteItem favouriteItem = favouriteMapper.selectById(numIid, userId);
+        return favouriteItem != null;
+    }
 }

@@ -17,4 +17,6 @@ public interface FavouriteMapper {
 
     @Delete("delete from sailtotmdb.FavouriteItems where user_id = #{userId} and favourite_id = #{favouriteId}")
     public Integer delete(String userId, Integer favouriteId);
+
+    public FavouriteItem selectById(String numIid, String userId);
 }

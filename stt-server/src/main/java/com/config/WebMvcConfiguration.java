@@ -1,7 +1,7 @@
 package com.config;
 
 
-import com.interceptor.JwtTokenAdminInterceptor;
+import com.interceptor.JwtTokenStuffInterceptor;
 import com.interceptor.JwtTokenUserInterceptor;
 import com.json.JacksonObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -29,10 +29,10 @@ import java.util.List;
 @Slf4j
 public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     @Autowired
-    private JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
+    private JwtTokenUserInterceptor jwtTokenUserInterceptor;
 
     @Autowired
-    private JwtTokenUserInterceptor jwtTokenUserInterceptor;
+    private JwtTokenStuffInterceptor jwtTokenStuffInterceptor;
 
     /**
      * 注册自定义拦截器
@@ -42,10 +42,11 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     protected void addInterceptors(InterceptorRegistry registry) {
         log.info("开始注册自定义拦截器...");
         //后台
-        registry.addInterceptor(jwtTokenAdminInterceptor)
+        registry.addInterceptor(jwtTokenStuffInterceptor)
                 .addPathPatterns("/admin/**")
                 .excludePathPatterns("/admin/login")
                 .excludePathPatterns("/admin/register");
+
         //客户端
         registry.addInterceptor(jwtTokenUserInterceptor)
                 .addPathPatterns("/user/**")

@@ -1,5 +1,6 @@
 package com.controller.admin;
 
+import com.annotation.AdminLicence;
 import com.constant.JwtClaimsConstant;
 import com.constant.MessageConstant;
 import com.dto.Stuff.StuffLoginDTO;
@@ -63,6 +64,7 @@ public class StuffController {
 
     @PostMapping("/register")
     @ApiOperation("管理员注册")
+    @AdminLicence
     public Result register(@RequestBody StuffRegisterDTO stuffRegisterDTO) {
         log.info("管理员注册：{}", stuffRegisterDTO.getEmail());
 

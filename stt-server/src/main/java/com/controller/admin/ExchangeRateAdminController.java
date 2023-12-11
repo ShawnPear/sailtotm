@@ -1,5 +1,6 @@
 package com.controller.admin;
 
+import com.annotation.AdminLicence;
 import com.constant.MessageConstant;
 import com.dto.ExchangeRateDTO;
 import com.result.Result;
@@ -20,6 +21,7 @@ public class ExchangeRateAdminController {
     ExchangeRateService service;
 
     @PatchMapping
+    @AdminLicence
     public Result updateRate(@RequestBody ExchangeRateDTO dto) {
         Boolean status = service.updateExchangeRate(dto);
         return Result.status(status);

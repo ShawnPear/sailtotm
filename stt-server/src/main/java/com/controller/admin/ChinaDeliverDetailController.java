@@ -1,5 +1,6 @@
 package com.controller.admin;
 
+import com.annotation.AdminLicence;
 import com.constant.MessageConstant;
 import com.dto.ChinaDeliverDetailDTO;
 import com.result.Result;
@@ -27,6 +28,7 @@ public class ChinaDeliverDetailController {
     }
 
     @PostMapping
+    @AdminLicence
     private Result add(@RequestBody ChinaDeliverDetailDTO dto) {
         dto.setStatus("1");
         Boolean status = service.add(dto);
@@ -34,6 +36,7 @@ public class ChinaDeliverDetailController {
     }
 
     @PatchMapping
+    @AdminLicence
     public Result update(@RequestBody ChinaDeliverDetailDTO dto) {
         Boolean status = service.update(dto);
         return Result.status(status);
