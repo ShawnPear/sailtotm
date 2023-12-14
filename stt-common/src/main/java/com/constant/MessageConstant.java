@@ -1,6 +1,7 @@
 package com.constant;
 
 public class MessageConstant {
+    public static final String TRANSLATOR_ERROR = "translator error";
     public static final String RIGHT = "right";
     public static final String NO = "no";
     public static final String MISS_OR_ERROR_OF_TOKEN = "miss or error of token";

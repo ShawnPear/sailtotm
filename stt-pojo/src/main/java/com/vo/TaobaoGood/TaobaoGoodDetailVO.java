@@ -1,10 +1,15 @@
 package com.vo.TaobaoGood;
 
-import lombok.Builder;
-import lombok.Data;
 
-@Data
+import com.entity.TaobaoGoodList.TaobaoGoodDetail.TaobaoGoodDetail;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
+@lombok.Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class TaobaoGoodDetailVO {
-    String detailJson;
+    private TaobaoGoodDetail item;
 }

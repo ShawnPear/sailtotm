@@ -17,5 +17,5 @@ public class CartDTO {
     private String price;
     private Integer quantity;
     private String properties;
-    private String properties_name;
+    private String propertiesName;
 }

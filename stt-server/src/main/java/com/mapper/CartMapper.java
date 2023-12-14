@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Mapper
 public interface CartMapper {
-    public Integer insert(String num_iid, LocalDateTime created_time, String user_id, int quantity);
+    public Integer insert(String num_iid, LocalDateTime created_time, String user_id, int quantity, String properties, String propertiesName);
 
     public Page<CartItem> selectAllByUserIdPage(String user_id);
 

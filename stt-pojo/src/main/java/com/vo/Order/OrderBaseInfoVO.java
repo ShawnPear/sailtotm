@@ -26,6 +26,7 @@ public class OrderBaseInfoVO {
     private String transportPrice;
     private String estimatedTransportPrice;
     private Integer transportType;
+    private String pickupCode;
 
     public OrderBaseInfoVO(OrderExtraInfo extraData) {
         this.productDetail = new ProductSimpleDetailVO(extraData);

@@ -1,15 +1,12 @@
 package com.service.impl;
 
-import com.constant.MessageConstant;
 import com.dto.AdminTopUpDto;
 import com.dto.MembershipDTO;
 import com.dto.PasswordChangeDTO;
 import com.entity.Membership;
 import com.entity.MembershipHistory;
-import com.exception.user.AccountNotFoundException;
-import com.exception.user.IdNotExistException;
-import com.exception.user.ParamMissingException;
-import com.exception.user.PasswordErrorException;
+import com.enumeration.MembershipBalanceHistoryType;
+import com.exception.user.*;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.mapper.MembershipMapper;
@@ -35,7 +32,7 @@ public class MembershipServiceImpl implements MembershipService {
     @Override
     public MembershipVO getByUserId(String userId) {
         Membership membership = mapper.selectByUserId(userId);
-        if(membership == null)throw new AccountNotFoundException(NO_REGISTER_MAMBERSHIP);
+        if (membership == null) throw new AccountNotFoundException(NO_REGISTER_MAMBERSHIP);
         MembershipVO vo = MembershipVO.builder().balance(String.valueOf(membership.getBalance())).membershipId(String.valueOf(membership.getMembershipId())).supportDate(String.valueOf(ChronoUnit.DAYS.between(membership.getCreatedDate(), LocalDateTime.now()) + 1)).build();
         return vo;
     }
@@ -44,9 +41,15 @@ public class MembershipServiceImpl implements MembershipService {
     public Boolean add(MembershipDTO dto) {
         try {
             Membership membership = Membership.builder().balance(0.0).password(PasswordUtil.getMD5Password(dto.getPassword())).userId(Integer.valueOf(dto.getUserId())).createdDate(LocalDateTime.now()).build();
-            return mapper.add(membership);
+            Membership membership1 = mapper.selectByUserId(dto.getUserId());
+            if (membership1 == null)
+                return mapper.add(membership);
+            else
+                throw new AccountExistException(ID_EXIST_ERROR);
+        } catch (AccountExistException e) {
+            throw new AccountExistException(ID_EXIST_ERROR);
         } catch (Exception e) {
-            throw new ParamMissingException(MessageConstant.PARAM_MISSING_ERROR);
+            throw new ParamMissingException(PARAM_MISSING_ERROR);
         }
     }
 
@@ -67,9 +70,9 @@ public class MembershipServiceImpl implements MembershipService {
     @Override
     public Boolean topUp(AdminTopUpDto dto) {
         MembershipHistory history = MembershipHistory.builder().membershipId(Integer.valueOf(dto.getMembershipId())).userId(Integer.valueOf(dto.getUserId())).stuffId(Integer.valueOf(dto.getStuffId())).statusId(Integer.valueOf(dto.getStatus())).createdDate(LocalDateTime.now()).build();
-        if (history.getStatusId() == 1) {
+        if (history.getStatusId() == MembershipBalanceHistoryType.CHARGE) {
             history.setChange(Double.valueOf(dto.getChange()));
-        } else {
+        } else if (history.getStatusId() == MembershipBalanceHistoryType.COST) {
             history.setChange(-Double.parseDouble(dto.getChange()));
         }
         Boolean status = mapper.topUpMoney(history) && mapper.topUpMoneyAddHistory(history);

@@ -18,4 +18,6 @@ public class CartItem {
     private String promotionPrice;
     private String price;
     private String title;
+    private String properties;
+    private String propertiesName;
 }

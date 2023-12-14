@@ -6,24 +6,20 @@ import com.entity.Order.Good.GoodDetail;
 import com.entity.Order.Order;
 import com.entity.Order.Pay.PayHistory;
 import com.entity.Order.Transport.TransportDetail;
-import com.entity.OrderBaseInfo;
-import com.entity.OrderExtraInfo;
-import com.entity.OrderStatusChange;
-import com.entity.PaySum;
+import com.entity.*;
 import com.entity.TaobaoGoodList.Product;
 import com.enumeration.OrderStatusType;
 import com.enumeration.PayOutOrInType;
 import com.enumeration.PayType;
+import com.enumeration.TranslatorType;
 import com.exception.user.OrderException;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.mapper.GoodDetailMapper;
-import com.mapper.OrderMapper;
-import com.mapper.PayMapper;
-import com.mapper.TransportDetailMapper;
+import com.mapper.*;
 import com.mapper.mapper_helper.OneBoundApiTaobaoProductMapperHelper;
 import com.mapper.mapper_helper.PickUpBaseMapperHelper;
 import com.service.OrderService;
+import com.service.TranslatorService;
 import com.vo.Order.OrderBaseInfoVO;
 import com.vo.Order.OrderBaseListPageVO;
 import com.vo.Order.OrderExtraInfoVO;
@@ -62,6 +58,12 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     PickUpBaseMapperHelper pickUpBaseMapperHelper;
 
+    @Autowired
+    TranslatorDictMapper translatorDictMapper;
+
+    @Autowired
+    TranslatorService translatorService;
+
 
     @Override
     public Boolean submitOrder(OrderDTO dto) {
@@ -72,7 +74,9 @@ public class OrderServiceImpl implements OrderService {
             Product product = Product.builder().build();
             BeanUtils.copyProperties(dto, product);
 
-            GoodDetail goodDetail = GoodDetail.builder().quantity(quantity).numIid(product.getNumIid()).propertiesName(dto.getPropertiesName()).properties(dto.getProperties()).build();
+            GoodDetail goodDetail = GoodDetail.builder().quantity(quantity).numIid(product.getNumIid()).build();
+            goodDetail.setProperties(getProp2String(dto.getPropertiesList()));
+            goodDetail.setPropertiesName(getPropNameRu2Zh(dto.getPropertiesNameList()));
             TransportDetail transportDetail = TransportDetail.builder().transportStatus(0).locationId(Integer.valueOf(dto.getLocation())).transportId(Integer.valueOf(dto.getTransportType())).build();
             PaySum paySum = PaySum.builder().payNow(0.0).payExpect(expectPaySum).createdDate(LocalDateTime.now()).updatedDate(LocalDateTime.now()).build();
 
@@ -86,6 +90,7 @@ public class OrderServiceImpl implements OrderService {
                     .goodDetailId(goodDetail.getGoodDetailId())
                     .transportDetailId(transportDetail.getTransportDetailId())
                     .paySumId(paySum.getPaySumId())
+                    .pickupCode(pickUpBaseMapperHelper.usePickUpCode())
                     .statusId(NoPay)
                     .createdDate(LocalDateTime.now())
                     .updatedDate(LocalDateTime.now())
@@ -192,8 +197,45 @@ public class OrderServiceImpl implements OrderService {
                 .newStatus(newStatus)
                 .build());
         status &= orderMapper.setOrderStatus(orderId, newStatus, LocalDateTime.now());
-        Integer pickupCode = pickUpBaseMapperHelper.usePickUpCode();
-        status &= orderMapper.loadPickupCode(orderId, pickupCode);
         return status;
+    }
+
+    @Override
+    public String getProp2String(List<String> propertiesList) {
+        StringBuffer sb = new StringBuffer(propertiesList.get(0));
+        for (int i = 1; i < propertiesList.size(); i++) {
+            sb.append(";");
+            sb.append(propertiesList.get(i));
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String getPropNameRu2Zh(List<PropertiesName> propertiesNameList) {
+        StringBuffer sb = new StringBuffer();
+        PropertiesName name = propertiesNameList.get(0);
+        tranNameAppendString(name, sb);
+        for (int i = 1; i < propertiesNameList.size(); i++) {
+            name = propertiesNameList.get(i);
+            sb.append(";");
+            tranNameAppendString(name, sb);
+        }
+        return sb.toString();
+    }
+
+    private void tranNameAppendString(PropertiesName name, StringBuffer sb) {
+        TranslatorDict translatorDict = name.getPropertiesNameItem();
+        String propVal = "";
+        if (translatorDict.getZh().isEmpty()) {
+            propVal = translatorDict.getZh();
+        } else {
+            TranslatorDict dict = translatorDictMapper.selectById(translatorDict.getTranslatorId());
+            if (dict != null) {
+                propVal = dict.getZh();
+            } else {
+                propVal = translatorService.translatorCache(dict.getRu(), TranslatorType.RU2ZH);
+            }
+        }
+        sb.append(name.getProperties()).append(":").append(propVal);
     }
 }

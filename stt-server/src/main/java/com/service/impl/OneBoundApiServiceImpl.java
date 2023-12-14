@@ -3,15 +3,25 @@ package com.service.impl;
 import com.constant.MessageConstant;
 import com.dto.Search.TaobaoSearchDTO;
 import com.dto.Search.TaobaoSearchDetailDTO;
+import com.entity.PropertiesName;
 import com.entity.TaobaoGoodList.Items;
 import com.entity.TaobaoGoodList.Product;
+import com.entity.TaobaoGoodList.TaobaoGoodDetail.Prop;
+import com.entity.TaobaoGoodList.TaobaoGoodDetail.Sku;
+import com.entity.TaobaoGoodList.TaobaoGoodDetail.TaobaoGoodDetail;
+import com.entity.TranslatorDict;
+import com.enumeration.TranslatorType;
 import com.exception.user.OneBoundApiException;
+import com.exception.user.TranslatorException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.mapper.TranslatorDictMapper;
 import com.mapper.mapper_helper.OneBoundApiTaobaoProductMapperHelper;
 import com.properties.OneBoundProperties;
 import com.service.OneBoundApiService;
+import com.service.TranslatorService;
 import com.utils.GetUri;
 import com.utils.TimeUtil;
+import com.vo.TaobaoGood.TaobaoGoodDetailRawJsonVO;
 import com.vo.TaobaoGood.TaobaoGoodDetailVO;
 import com.vo.TaobaoGood.TaobaoGoodListVO;
 import org.apache.http.HttpEntity;
@@ -24,9 +34,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.CountDownLatch;
 
 @Service
 public class OneBoundApiServiceImpl implements OneBoundApiService {
@@ -34,18 +43,21 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
     @Autowired
     JsonMapper jsonMapper;
     @Autowired
+    TranslatorService translator;
+    @Autowired
     private OneBoundProperties obProperties;
-
     @Autowired
     private OneBoundApiTaobaoProductMapperHelper obApiTaobaoProductMapperHelper;
 
     @Autowired
     private CloseableHttpClient httpClient;
 
+    @Autowired
+    private TranslatorDictMapper dictMapper;
+
     @Override
     public TaobaoGoodListVO taoBaoSearch(TaobaoSearchDTO dto) {
         String keyWord = dto.getQ();
-
         /*
          * 从数据库中取缓存的数据
          * */
@@ -87,6 +99,17 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
             TaobaoGoodListVO goodList = jsonMapper.readValue(body, TaobaoGoodListVO.class);
             //缓存到数据库去
             List<Product> itemList = goodList.getItems().getItem();
+            List<String> translatorList = new ArrayList<>();
+            for (Product item : itemList) {
+                translatorList.add(item.getSellerNick());
+                translatorList.add(item.getTitle());
+            }
+            translator.translator(translatorList, TranslatorType.ZH2RU);
+            int index = 0;
+            for (Product item : itemList) {
+                item.setSellerNick(translatorList.get(index++));
+                item.setTitle(translatorList.get(index++));
+            }
             for (Product item : itemList) {
                 new Thread(() -> {
                     Timestamp time = Timestamp.valueOf(TimeUtil.getLocalDateTime());
@@ -104,7 +127,7 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
     }
 
     @Override
-    public TaobaoGoodDetailVO taoBaoSearchDetail(TaobaoSearchDetailDTO dto) throws OneBoundApiException {
+    public TaobaoGoodDetailRawJsonVO taoBaoSearchDetail(TaobaoSearchDetailDTO dto) throws OneBoundApiException {
         String numIid = dto.getNumIid();
 
         Map<String, Object> query = new HashMap<>();
@@ -132,11 +155,102 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
             HttpEntity entity = response.getEntity();
             String body = EntityUtils.toString(entity);
 
-            return TaobaoGoodDetailVO.builder()
+            return TaobaoGoodDetailRawJsonVO.builder()
                     .detailJson(body)
                     .build();
         } catch (IOException e) {
             throw new OneBoundApiException(MessageConstant.OneBoundApi_SEARCH_ERROR);
         }
+    }
+
+    @Override
+    public TaobaoGoodDetailVO parseToDetail(String detailJson) {
+        try {
+            TaobaoGoodDetailVO taobaoGoodDetail = jsonMapper.readValue(detailJson, TaobaoGoodDetailVO.class);
+            return taobaoGoodDetail;
+        } catch (Exception e) {
+            throw new OneBoundApiException(MessageConstant.FAIL);
+        }
+    }
+
+    @Override
+    public TaobaoGoodDetailVO translatorDetail(TaobaoGoodDetailVO vo) {
+        Map<String, TranslatorDict> tranDict = new HashMap<>();
+        List<String> tranList = new ArrayList<>();
+
+        TaobaoGoodDetail item = vo.getItem();
+
+        tranList.add(item.getTitle());
+
+        List<Prop> props = item.getProps();
+        for (Prop prop : props) {
+            tranList.add(prop.getName());
+            tranList.add(prop.getValue());
+        }
+
+        Map<String, String> propsList = null;
+        if (item.getPropsList() instanceof Map) {
+            propsList = (Map<String, String>) item.getPropsList();
+            Set<Map.Entry<String, String>> entrySet = propsList.entrySet();
+            for (Map.Entry<String, String> me : entrySet) {
+                tranDict.put(me.getValue(), TranslatorDict.builder()
+                        .zh(me.getValue())
+                        .build());
+            }
+        }
+
+        List<Sku> skuList = item.getSkus().getSku();
+        for (Sku sku : skuList) {
+            List<String> pId = new ArrayList<>(Arrays.asList(sku.getProperties().split(";")));
+            List<PropertiesName> tranP = new ArrayList<>();
+            sku.setPropertiesNameList(tranP);
+
+            sku.setPropertiesList(pId);
+            String[] pValList = sku.getPropertiesName().split(";");
+            for (int j = 0; j < pValList.length; j++) {
+                tranP.add(PropertiesName.builder().build());
+
+                String pVal = pValList[j];
+
+                String[] tempVal = pVal.split(":");
+                String prop = tempVal[0] + ":" + tempVal[1];
+                String val = tempVal[2] + ":" + tempVal[3];
+
+                if (tranDict.get(val) == null)
+                    tranDict.put(val, TranslatorDict.builder().zh(val).build());
+
+                tranP.get(j).setProperties(prop);
+                tranP.get(j).setPropertiesNameItem(tranDict.get(val));
+            }
+        }
+
+        tranList = translator.translator(tranList, TranslatorType.ZH2RU);
+        tranDict = translator.translator(tranDict, TranslatorType.ZH2RU);
+
+        int index = 0;
+        Iterator<String> tranIter = tranList.iterator();
+        item.setTitle(tranList.get(index++));
+        for (Prop prop : props) {
+            prop.setName(tranList.get(index++));
+            prop.setValue(tranList.get(index++));
+        }
+
+        CountDownLatch translatorMapperLatch = new CountDownLatch(tranDict.size());
+
+        Set<Map.Entry<String, TranslatorDict>> tranDictEntry = tranDict.entrySet();
+        for (Map.Entry<String, TranslatorDict> me : tranDictEntry) {
+            new Thread(() -> {
+                dictMapper.insert(me.getValue());
+                translatorMapperLatch.countDown();
+            }).start();
+        }
+
+        try {
+            translatorMapperLatch.await();
+        } catch (InterruptedException e) {
+            throw new TranslatorException(MessageConstant.TRANSLATOR_ERROR);
+        }
+
+        return vo;
     }
 }

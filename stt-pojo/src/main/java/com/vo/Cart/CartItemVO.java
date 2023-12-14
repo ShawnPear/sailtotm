@@ -13,6 +13,8 @@ public class CartItemVO {
     private Integer cartId;
     private String createdDate;
     private Integer quantity;
+    private String properties;
+    private String propertiesName;
     private ProductSimpleDetailVO productDetail;
 }
 

@@ -43,6 +43,8 @@ public class CartServiceImpl implements CartService {
                     .cartId(item.getCartId())
                     .createdDate(item.getCreatedDate())
                     .productDetail(psdVO)
+                    .propertiesName(item.getPropertiesName())
+                    .properties(item.getProperties())
                     .quantity(item.getQuantity())
                     .build());
         }
@@ -65,6 +67,8 @@ public class CartServiceImpl implements CartService {
                     .cartId(item.getCartId())
                     .createdDate(item.getCreatedDate())
                     .productDetail(psdVO)
+                    .propertiesName(item.getPropertiesName())
+                    .properties(item.getProperties())
                     .quantity(item.getQuantity())
                     .build());
         }
@@ -76,10 +80,10 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Boolean addCart(Product product, String userId, Integer quantity) {
+    public Boolean addCart(Product product, String userId, Integer quantity, String properties, String propertiesName) {
         LocalDateTime createdTime = LocalDateTime.now();
         oneBoundApiTaobaoProductMapperHelper.insertOrUpdate(product, "", Timestamp.valueOf(createdTime));
-        return cartMapper.insert(product.getNumIid(), createdTime, userId, quantity) > 0;
+        return cartMapper.insert(product.getNumIid(), createdTime, userId, quantity, properties, propertiesName) > 0;
     }
 
     @Override

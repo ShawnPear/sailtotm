@@ -45,7 +45,7 @@ public class CartController {
     public Result addCart(@RequestBody CartDTO dto) {
         Product product = Product.builder().build();
         BeanUtils.copyProperties(dto, product);
-        Boolean status = cartService.addCart(product, dto.getUserId(), dto.getQuantity());
+        Boolean status = cartService.addCart(product, dto.getUserId(), dto.getQuantity(), dto.getProperties(), dto.getPropertiesName());
         return Result.status(status);
     }
 

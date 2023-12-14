@@ -34,7 +34,8 @@
                GD.quantity                 as quantity,
                TD.transport_cost           as transportPrice,
                TD.transport_detail_id      as transportType,
-               TD.estimated_transport_cost as estimatedTransportPrice
+               TD.estimated_transport_cost as estimatedTransportPrice,
+               O.pickup_code               as pickupCode
         from sailtotmdb.Orders O
                  LEFT JOIN sailtotmdb.PaySum PH on PH.pay_sum_id = O.pay_sum_id
                  LEFT JOIN sailtotmdb.TransportDetails TD on TD.transport_detail_id = O.transport_detail_id
@@ -61,7 +62,8 @@
                GD.quantity                 as quantity,
                TD.transport_cost           as transportPrice,
                TD.transport_detail_id      as transportType,
-               TD.estimated_transport_cost as estimatedTransportPrice
+               TD.estimated_transport_cost as estimatedTransportPrice,
+               O.pickup_code               as pickupCode
         from sailtotmdb.Orders O
                  LEFT JOIN sailtotmdb.PaySum PH on PH.pay_sum_id = O.pay_sum_id
                  LEFT JOIN sailtotmdb.TransportDetails TD on TD.transport_detail_id = O.transport_detail_id

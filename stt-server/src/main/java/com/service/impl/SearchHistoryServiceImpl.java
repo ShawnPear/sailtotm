@@ -1,10 +1,12 @@
 package com.service.impl;
 
 import com.entity.SearchItem;
+import com.enumeration.TranslatorType;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.mapper.SearchItemMapper;
 import com.service.SearchHistoryService;
+import com.service.TranslatorService;
 import com.vo.ProductSimpleDetailVO;
 import com.vo.SearchHIstory.SearchHistoryListPageVO;
 import com.vo.SearchHIstory.SearchItemVO;
@@ -22,17 +24,26 @@ public class SearchHistoryServiceImpl implements SearchHistoryService {
     @Autowired
     SearchItemMapper searchItemMapper;
 
+    @Autowired
+    TranslatorService translator;
+
     @Override
     public SearchHistoryListPageVO getSearchHistory(String userId, String page, String pageSize) {
         PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(pageSize));
         Page<SearchItem> searchItems = searchItemMapper.selectPage(userId);
         List<SearchItemVO> result = new ArrayList<>();
+        List<String> translatorList = new ArrayList<>();
+        for (SearchItem item : searchItems.getResult()) {
+            translatorList.add(item.getSearch());
+        }
+        translatorList = translator.translator(translatorList, TranslatorType.ZH2RU);
+        int index = 0;
         for (SearchItem item : searchItems.getResult()) {
             ProductSimpleDetailVO psdVO = ProductSimpleDetailVO.builder().build();
             BeanUtils.copyProperties(item, psdVO);
             result.add(SearchItemVO.builder()
                     .updatedDate(item.getUpdatedDate())
-                    .q(item.getSearch())
+                    .q(translatorList.get(index++))
                     .build());
         }
         return SearchHistoryListPageVO.builder()

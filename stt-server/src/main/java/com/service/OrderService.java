@@ -2,10 +2,13 @@ package com.service;
 
 import com.dto.OrderDTO;
 import com.dto.PayDTO;
+import com.entity.PropertiesName;
 import com.vo.Order.OrderBaseListPageVO;
 import com.vo.Order.OrderExtraInfoVO;
 import com.vo.Order.OrderExtraListPageVO;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 public interface OrderService {
 
@@ -26,4 +29,8 @@ public interface OrderService {
     Boolean pay(PayDTO dto);
 
     Boolean beginOrderTransactional(String orderId, String userId, String stuffId);
+
+    String getProp2String(List<String> propertiesList);
+
+    String getPropNameRu2Zh(List<PropertiesName> propertiesNameList);
 }

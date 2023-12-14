@@ -55,3 +55,13 @@ onebound:
   key: t8629095275
   secret: 20230825
   scheme: https
+azure-translator:
+  host: api.cognitive.microsofttranslator.com
+  translator: /translate
+  api-version: 3.0
+  china: zh
+  russia: ru
+  Ocp-Apim-Subscription-Key1: a117c8da77c24209a4d0271d1ed8ac59
+  Ocp-Apim-Subscription-Key2: 837b477e93d948d29cdfd00468faf2ea
+  Ocp-Apim-Subscription-Region: southeastasia
+  scheme: https

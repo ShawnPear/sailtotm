@@ -11,6 +11,12 @@
     <groupId>com</groupId>
     <artifactId>sail-to-tm</artifactId>
     <packaging>pom</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+    </dependencies>
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>stt-common</module>

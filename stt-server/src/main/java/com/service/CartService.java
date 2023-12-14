@@ -10,7 +10,7 @@ public interface CartService {
 
     public CartListPageVO getCartBySearch(String userId, String page, String pageSize, String q);
 
-    public Boolean addCart(Product product, String userId, Integer quantity);
+    public Boolean addCart(Product product, String userId, Integer quantity, String properties, String propertiesName);
 
     public Boolean delCart(CartDelDTO dto);
 
