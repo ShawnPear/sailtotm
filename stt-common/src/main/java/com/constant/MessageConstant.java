@@ -1,6 +1,10 @@
 package com.constant;
 
 public class MessageConstant {
+    public static final String EMAIL_ACTIVATE_HAS_TIME_OUT = "email_activate_has_time_out";
+    public static final String NO_ENOUGH_BALANCE = "no enough balance";
+    public static final String EMAIL_VERIFY_TITLE = "Проверка почтового ящика.";
+    public static final String NO_METHOED = "me methoed";
     public static final String TRANSLATOR_ERROR = "translator error";
     public static final String RIGHT = "right";
     public static final String NO = "no";

@@ -4,22 +4,21 @@
 <mapper namespace="com.mapper.UserMapper">
     <insert id="insert">
         insert into Users (email, user_name, password, first_name, updated_date, last_name, created_date)
-        values (#{email}, #{userName}, #{password}, #{name.firstName}, #{updatedDate}, #{name.lastName}, #{createdDate})
+        values (#{email}, #{userName}, #{password}, #{firstName}, #{updatedDate}, #{lastName}, #{createdDate})
     </insert>
     <update id="updateByUserId">
         update Users
         <set>
             <if test="userName != null">user_name = #{userName},</if>
-            <if test="name != null">
-                <if test="name.firstName != null">first_name = #{name.firstName},</if>
-                <if test="name.lastName != null">last_name = #{name.lastName},</if>
-            </if>
-            <if test="updatedDate != null">update_date = #{updatedDate}</if>
-            <if test="phone != null">phone_number = #{phone}</if>
-            <if test="password != null">password = #{password}</if>
-            <if test="email != null">email = #{email}</if>
-            <if test="dateOfBirth != null">date_of_birth = #{dateOfBirth}</if>
-            <if test="createdDate != null">created_date = #{createdDate}</if>
+            <if test="firstName != null">first_name = #{firstName},</if>
+            <if test="lastName != null">last_name = #{lastName},</if>
+            <if test="updatedDate != null">updated_date = #{updatedDate},</if>
+            <if test="phone != null">phone_number = #{phone},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="dateOfBirth != null">date_of_birth = #{dateOfBirth},</if>
+            <if test="createdDate != null">created_date = #{createdDate},</if>
+            <if test="enable != null">enable = #{enable},</if>
         </set>
         where user_id = #{userId}
     </update>

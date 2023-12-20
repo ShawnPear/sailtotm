@@ -8,7 +8,7 @@ server:
 
 spring:
   profiles:
-    active: dev
+    active: pre
   main:
     allow-circular-references: true
   datasource:
@@ -17,6 +17,17 @@ spring:
       url: jdbc:mysql://${sky.datasource.host}:${sky.datasource.port}/${sky.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
       username: ${sky.datasource.username}
       password: ${sky.datasource.password}
+  mail:
+    host: smtp-mail.outlook.com
+    port: 587
+    username: no-reply.yasyl@outlook.com
+    password: SailToTM@123
+    from: no-reply.yasyl@outlook.com
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
 
 pagehelper:
   reasonable: false
@@ -48,6 +59,8 @@ sailtotm:
     user-secret-key: sailtotm
     user-ttl: 720000000000
     user-token-name: Authorization
+    email-secret-key: sailtotm-email-activate
+    email-ttl: 7200000
 onebound:
   host: api-gw.onebound.cn
   taobao-search: /taobao/item_search

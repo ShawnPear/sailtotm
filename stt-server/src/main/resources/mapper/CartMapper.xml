@@ -48,4 +48,24 @@
           and p.title LIKE #{q}
         order by h.created_date desc
     </select>
+
+    <select id="selectAllByUserId" resultType="com.entity.CartItem">
+        select h.cart_id         as cart_id,
+               h.num_iid         as num_iid,
+               h.created_date    as created_date,
+               p.pic_url         as pic_url,
+               p.promotion_price as promotion_price,
+               p.price           as price,
+               p.title           as title,
+               h.quantity        as quantity,
+               h.properties      as properties,
+               h.properties_name as propertiesName
+        from sailtotmdb.CartItems h,
+             sailtotmdb.OneBoundApiTaobaoProduct p
+        where h.user_id = #{userId}
+          and h.num_iid = #{numIid}
+          and properties_name = #{propertiesName}
+        order by h.created_date desc
+        limit 1
+    </select>
 </mapper>

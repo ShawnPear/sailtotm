@@ -13,4 +13,8 @@ public interface BrowserHistoryMapper {
     public Page<BrowserHistoryItem> selectAllByUserIdPage(String user_id);
 
     public Page<BrowserHistoryItem> selectAllByUserSearchPage(String user_id, String q);
+
+    public BrowserHistoryItem getLatestOne(String user_id);
+
+    public Boolean updateTime(String numIid, LocalDateTime updatedTime, String userId);
 }

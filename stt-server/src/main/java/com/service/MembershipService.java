@@ -2,6 +2,7 @@ package com.service;
 
 import com.dto.AdminTopUpDto;
 import com.dto.MembershipDTO;
+import com.dto.MembershipPayDTO;
 import com.dto.PasswordChangeDTO;
 import com.vo.MembershipHistoryVO;
 import com.vo.MembershipVO;
@@ -20,4 +21,7 @@ public interface MembershipService {
     Boolean topUp(AdminTopUpDto dto);
 
     List<MembershipHistoryVO> getHistoryByUserId(String userId, String status, String page, String pageSize);
+
+    @Transactional
+    Boolean pay(MembershipPayDTO build);
 }

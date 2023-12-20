@@ -9,6 +9,8 @@ import com.entity.TaobaoGoodList.Product;
 import com.enumeration.UserIdIntoType;
 import com.result.Result;
 import com.service.CartService;
+import com.service.SkuPropService;
+import com.vo.Cart.CartItemVO;
 import com.vo.Cart.CartListPageVO;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,9 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
     @Autowired
     CartService cartService;
+
+    @Autowired
+    SkuPropService skuPropService;
 
     @GetMapping("/{user_id}")
     @CheckUserId(UserIdIntoType.STRING)
@@ -45,7 +50,19 @@ public class CartController {
     public Result addCart(@RequestBody CartDTO dto) {
         Product product = Product.builder().build();
         BeanUtils.copyProperties(dto, product);
-        Boolean status = cartService.addCart(product, dto.getUserId(), dto.getQuantity(), dto.getProperties(), dto.getPropertiesName());
+        dto.setProperties(skuPropService.getProp2String(dto.getPropertiesList()));
+        dto.setPropertiesName(skuPropService.getPropNameRu2Zh(dto.getPropertiesNameList()));
+        CartItemVO cartByProduct = cartService.getCartByProduct(dto.getNumIid(), dto.getUserId(), dto.getPropertiesName());
+        Boolean status;
+        if (cartByProduct == null) {
+            status = cartService.addCart(product, dto.getUserId(), dto.getQuantity(), dto.getProperties(), dto.getPropertiesName());
+        } else {
+            status = cartService.updateCart(CartUpdateQuantityDTO.builder()
+                    .cartId(String.valueOf(cartByProduct.getCartId()))
+                    .quantity(cartByProduct.getQuantity() + dto.getQuantity())
+                    .userId(dto.getUserId())
+                    .build());
+        }
         return Result.status(status);
     }
 

@@ -45,4 +45,10 @@ public class ResetAccountController {
         Boolean status = userService.resetEmail(dto);
         return Result.status(status, USER_RESET_EMAIL_SUCCESS, USER_RESET_EMAIL_ERROR);
     }
+
+//    @PatchMapping("/new-password")
+//    @ApiOperation("重置密码")
+//    public Result newPassword(){
+//
+//    }
 }

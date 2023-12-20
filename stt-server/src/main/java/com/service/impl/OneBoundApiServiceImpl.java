@@ -3,7 +3,6 @@ package com.service.impl;
 import com.constant.MessageConstant;
 import com.dto.Search.TaobaoSearchDTO;
 import com.dto.Search.TaobaoSearchDetailDTO;
-import com.entity.PropertiesName;
 import com.entity.TaobaoGoodList.Items;
 import com.entity.TaobaoGoodList.Product;
 import com.entity.TaobaoGoodList.TaobaoGoodDetail.Prop;
@@ -12,12 +11,12 @@ import com.entity.TaobaoGoodList.TaobaoGoodDetail.TaobaoGoodDetail;
 import com.entity.TranslatorDict;
 import com.enumeration.TranslatorType;
 import com.exception.user.OneBoundApiException;
-import com.exception.user.TranslatorException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.mapper.TranslatorDictMapper;
 import com.mapper.mapper_helper.OneBoundApiTaobaoProductMapperHelper;
 import com.properties.OneBoundProperties;
 import com.service.OneBoundApiService;
+import com.service.SkuPropService;
 import com.service.TranslatorService;
 import com.utils.GetUri;
 import com.utils.TimeUtil;
@@ -35,7 +34,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.*;
-import java.util.concurrent.CountDownLatch;
 
 @Service
 public class OneBoundApiServiceImpl implements OneBoundApiService {
@@ -54,6 +52,9 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
 
     @Autowired
     private TranslatorDictMapper dictMapper;
+
+    @Autowired
+    private SkuPropService skuPropService;
 
     @Override
     public TaobaoGoodListVO taoBaoSearch(TaobaoSearchDTO dto) {
@@ -201,56 +202,20 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
 
         List<Sku> skuList = item.getSkus().getSku();
         for (Sku sku : skuList) {
-            List<String> pId = new ArrayList<>(Arrays.asList(sku.getProperties().split(";")));
-            List<PropertiesName> tranP = new ArrayList<>();
-            sku.setPropertiesNameList(tranP);
-
-            sku.setPropertiesList(pId);
-            String[] pValList = sku.getPropertiesName().split(";");
-            for (int j = 0; j < pValList.length; j++) {
-                tranP.add(PropertiesName.builder().build());
-
-                String pVal = pValList[j];
-
-                String[] tempVal = pVal.split(":");
-                String prop = tempVal[0] + ":" + tempVal[1];
-                String val = tempVal[2] + ":" + tempVal[3];
-
-                if (tranDict.get(val) == null)
-                    tranDict.put(val, TranslatorDict.builder().zh(val).build());
-
-                tranP.get(j).setProperties(prop);
-                tranP.get(j).setPropertiesNameItem(tranDict.get(val));
-            }
+            tranDict = skuPropService.extractSkuToTranDict(sku, tranDict);
         }
 
         tranList = translator.translator(tranList, TranslatorType.ZH2RU);
-        tranDict = translator.translator(tranDict, TranslatorType.ZH2RU);
+        tranDict = translator.translatorCache(tranDict, TranslatorType.ZH2RU);
 
         int index = 0;
-        Iterator<String> tranIter = tranList.iterator();
         item.setTitle(tranList.get(index++));
         for (Prop prop : props) {
             prop.setName(tranList.get(index++));
             prop.setValue(tranList.get(index++));
         }
-
-        CountDownLatch translatorMapperLatch = new CountDownLatch(tranDict.size());
-
-        Set<Map.Entry<String, TranslatorDict>> tranDictEntry = tranDict.entrySet();
-        for (Map.Entry<String, TranslatorDict> me : tranDictEntry) {
-            new Thread(() -> {
-                dictMapper.insert(me.getValue());
-                translatorMapperLatch.countDown();
-            }).start();
-        }
-
-        try {
-            translatorMapperLatch.await();
-        } catch (InterruptedException e) {
-            throw new TranslatorException(MessageConstant.TRANSLATOR_ERROR);
-        }
-
+        
         return vo;
     }
+
 }

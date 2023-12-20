@@ -50,7 +50,7 @@
                p.title           as title
         from sailtotmdb.FavouriteItems h,
              sailtotmdb.OneBoundApiTaobaoProduct p
-        where p.num_iid = #{numIid}
+        where h.num_iid = #{numIid}
           and h.user_id = #{userId}
         limit 1;
     </select>

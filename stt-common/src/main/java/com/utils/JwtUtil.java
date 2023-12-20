@@ -53,6 +53,10 @@ public class JwtUtil {
                 .setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8))
                 // 设置需要解析的jwt
                 .parseClaimsJws(token).getBody();
+        long currentTime = System.currentTimeMillis();
+        if (claims.getExpiration().getTime() < currentTime) {
+            return null;
+        }
         return claims;
     }
 

@@ -55,8 +55,8 @@ public class StuffController {
                 .stuffid(String.valueOf(stuff.getStuffId()))
                 .token(token)
                 .roleid(String.valueOf(stuff.getRoleId()))
-                .lastName(stuff.getName().getLastName())
-                .firstName(stuff.getName().getFirstName())
+                .lastName(stuff.getLastName())
+                .firstName(stuff.getFirstName())
                 .build();
 
         return Result.success(stuffLoginVO, MessageConstant.STUFF_LOGIN_SUCCESS);

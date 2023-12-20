@@ -18,6 +18,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class BrowserHistoryServiceImpl implements BrowserHistoryService {
@@ -69,6 +70,11 @@ public class BrowserHistoryServiceImpl implements BrowserHistoryService {
 
     @Override
     public Boolean addBrowserHistory(Product product, String userId) {
+        BrowserHistoryItem latestOne = browserHistoryMapper.getLatestOne(userId);
+        if(Objects.equals(latestOne.getNumIid(), product.getNumIid())){
+            LocalDateTime updatedTime = LocalDateTime.now();
+            return browserHistoryMapper.updateTime(product.getNumIid(),updatedTime,userId);
+        }
         LocalDateTime createdTime = LocalDateTime.now();
         oneBoundApiTaobaoProductMapperHelper.insertOrUpdate(product, "", Timestamp.valueOf(createdTime));
         return browserHistoryMapper.insert(product.getNumIid(), createdTime, userId) > 0;

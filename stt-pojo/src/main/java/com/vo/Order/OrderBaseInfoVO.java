@@ -27,6 +27,9 @@ public class OrderBaseInfoVO {
     private String estimatedTransportPrice;
     private Integer transportType;
     private String pickupCode;
+    private String locationAddress;
+    private String locationContact;
+    private String locationWorktime;
 
     public OrderBaseInfoVO(OrderExtraInfo extraData) {
         this.productDetail = new ProductSimpleDetailVO(extraData);

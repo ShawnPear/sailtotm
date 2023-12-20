@@ -8,7 +8,7 @@ public class OrderStatusType {
     public final static int CnToTmWaitSent = 4;
     public final static int CnToTmInTransit = 5;
     public final static int TmInLocation = 6;
-    public final static int TmFinishStorage = 7;
+    public final static int TmWaitPickup = 7;
     public final static int FinishPickUp = 8;
 
 }

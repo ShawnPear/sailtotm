@@ -23,4 +23,6 @@ public interface CartMapper {
     @Update("update sailtotmdb.CartItems set quantity = #{quantity} " +
             "where cart_id = #{cartId} and user_id = #{userId}")
     public Integer updateQuantityById(CartUpdateQuantity cart);
+
+    public CartItem selectAllByUserId(String userId, String numIid,String propertiesName);
 }

@@ -2,6 +2,7 @@ package com.service.impl;
 
 import com.dto.AdminTopUpDto;
 import com.dto.MembershipDTO;
+import com.dto.MembershipPayDTO;
 import com.dto.PasswordChangeDTO;
 import com.entity.Membership;
 import com.entity.MembershipHistory;
@@ -73,6 +74,14 @@ public class MembershipServiceImpl implements MembershipService {
         if (history.getStatusId() == MembershipBalanceHistoryType.CHARGE) {
             history.setChange(Double.valueOf(dto.getChange()));
         } else if (history.getStatusId() == MembershipBalanceHistoryType.COST) {
+            Membership membership = mapper.selectByUserId(dto.getUserId());
+            if (membership.getMembershipId() != Integer.parseInt(dto.getMembershipId())) {
+                throw new AccountNotFoundException(ID_NOT_EXIST_ERROR);
+            }
+            Double balance = membership.getBalance();
+            if (balance < Double.parseDouble(dto.getChange())) {
+                throw new BaseException(NO_ENOUGH_BALANCE);
+            }
             history.setChange(-Double.parseDouble(dto.getChange()));
         }
         Boolean status = mapper.topUpMoney(history) && mapper.topUpMoneyAddHistory(history);
@@ -93,5 +102,33 @@ public class MembershipServiceImpl implements MembershipService {
             list.add(MembershipHistoryVO.builder().change(String.valueOf(membershipHistory.getChange())).statusId(String.valueOf(membershipHistory.getStatusId())).createdDate(String.valueOf(membershipHistory.getCreatedDate())).build());
         }
         return list;
+    }
+
+    @Override
+    public Boolean pay(MembershipPayDTO dto) {
+        Membership membership = mapper.selectByUserId(dto.getUserId());
+        if (membership.getMembershipId() != Integer.parseInt(dto.getMembershipId())) {
+            throw new AccountNotFoundException(ID_NOT_EXIST_ERROR);
+        }
+        String password = membership.getPassword();
+        String md5Password = PasswordUtil.getMD5Password(dto.getPassword());
+        if (!password.equals(md5Password)) {
+            throw new PasswordErrorException(PAY_PASSWORD_ERROR);
+        }
+        Double balance = membership.getBalance();
+        if (balance < Double.parseDouble(dto.getActualPay())) {
+            throw new BaseException(NO_ENOUGH_BALANCE);
+        }
+        MembershipHistory history = MembershipHistory.builder()
+                .membershipId(Integer.valueOf(dto.getMembershipId()))
+                .userId(Integer.valueOf(dto.getUserId()))
+                .statusId(MembershipBalanceHistoryType.COST)
+                .createdDate(LocalDateTime.now())
+                .stuffId(Integer.valueOf(dto.getDefaultStuff()))
+                .change(-Double.parseDouble(dto.getActualPay()))
+                .build();
+        Boolean status = mapper.topUpMoney(history);
+        status &= mapper.topUpMoneyAddHistory(history);
+        return status;
     }
 }

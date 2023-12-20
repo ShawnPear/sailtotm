@@ -12,4 +12,7 @@ import lombok.NoArgsConstructor;
 public class StoreLocationVO {
     public Integer locationId;
     public String location;
+    private String address;
+    private String contact;
+    private String worktime;
 }

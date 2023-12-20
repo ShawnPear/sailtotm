@@ -23,4 +23,7 @@ public class JwtProperties {
     private long userTtl;
     private String userTokenName;
 
+    private String emailSecretKey;
+    private long emailTtl;
+
 }

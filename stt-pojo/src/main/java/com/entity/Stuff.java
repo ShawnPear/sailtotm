@@ -14,7 +14,8 @@ public class Stuff {
     private LocalDateTime createdDate;
     private String email;
     private long locationId;
-    private Name name;
+    private String firstName;
+    private String lastName;
     private String password;
     private String phone;
     private LocalDateTime resignDate;

@@ -3,6 +3,7 @@ package com.service;
 
 import com.dto.UserAccount.*;
 import com.entity.User;
+import com.vo.UserVO;
 
 
 public interface UserService {
@@ -15,4 +16,12 @@ public interface UserService {
     Boolean resetEmail(UserResetEmailDTO dto);
 
     Boolean updateUserInfo(UserResetUserDTO dto);
+
+    String generateEmailActivateKey(String email);
+
+    Boolean verifyEmailActivateKey(String token, String email);
+
+    Boolean activate(String email);
+
+    UserVO getByUserId(String userId);
 }

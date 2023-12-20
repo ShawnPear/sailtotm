@@ -4,7 +4,6 @@ import com.constant.MessageConstant;
 import com.dto.Stuff.StuffLoginDTO;
 import com.dto.Stuff.StuffRegisterDTO;
 import com.dto.Stuff.StuffStatusChangeDTO;
-import com.entity.Name;
 import com.entity.Stuff;
 import com.entity.StuffStatusChange;
 import com.exception.user.AccountExistException;
@@ -63,10 +62,8 @@ public class StuffServiceImpl implements StuffService {
                 .createdDate(LocalDateTime.now())
                 .email(dto.getEmail())
                 .locationId(Long.parseLong(dto.getLocationId()))
-                .name(Name.builder()
-                        .firstName(dto.getFirstName())
-                        .lastName(dto.getLastName())
-                        .build())
+                .firstName(dto.getFirstName())
+                .lastName(dto.getLastName())
                 .password(md5password)
                 .phone(dto.getPhoneNumber())
                 .roleId(Long.parseLong(dto.getRoleId()))

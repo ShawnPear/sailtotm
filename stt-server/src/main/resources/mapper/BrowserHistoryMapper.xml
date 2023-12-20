@@ -10,6 +10,12 @@
                 #{num_iid},
                 #{created_time});
     </insert>
+    <update id="updateTime">
+        update sailtotmdb.HistoryItems
+        set created_date = #{updatedTime}
+        where user_id = #{userId}
+          and num_iid = #{numIid}
+    </update>
 
     <select id="selectAllByUserIdPage" resultType="com.entity.BrowserHistoryItem">
         select h.num_iid         as num_iid,
@@ -37,5 +43,18 @@
           and h.num_iid = p.num_iid
           and p.title LIKE #{q}
         order by h.created_date desc
+    </select>
+    <select id="getLatestOne" resultType="com.entity.BrowserHistoryItem">
+        select h.num_iid         as num_iid,
+               h.created_date    as created_date,
+               p.pic_url         as pic_url,
+               p.promotion_price as promotion_price,
+               p.price           as price,
+               p.title           as title
+        from sailtotmdb.HistoryItems h,
+             sailtotmdb.OneBoundApiTaobaoProduct p
+        where h.user_id = #{user_id}
+        order by h.created_date desc
+        limit 1
     </select>
 </mapper>

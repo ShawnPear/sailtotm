@@ -1,8 +1,11 @@
 package com.dto.Cart;
 
+import com.entity.PropertiesName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @lombok.Data
 @Builder
@@ -18,4 +21,6 @@ public class CartDTO {
     private Integer quantity;
     private String properties;
     private String propertiesName;
+    private List<String> propertiesList;
+    private List<PropertiesName> propertiesNameList;
 }

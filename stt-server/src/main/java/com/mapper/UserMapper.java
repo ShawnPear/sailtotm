@@ -1,7 +1,6 @@
 package com.mapper;
 
 import com.entity.User;
-import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -17,4 +16,7 @@ public interface UserMapper {
     User getByUserId(Long id);
 
     Boolean updateByUserId(User user);
+
+    @Update("update sailtotmdb.Users set enable = #{enable} where email = #{email}")
+    Boolean updateActivateStatusByEmail(String email,int enable);
 }

@@ -35,4 +35,7 @@ public class OrderExtraInfo {
     private String weight;
     private String userId;
     private String userName;
+    private String locationAddress;
+    private String locationContact;
+    private String locationWorktime;
 }

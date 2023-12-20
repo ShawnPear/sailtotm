@@ -1,6 +1,6 @@
 package com.enumeration;
 
 public class PayType {
-    public final static int MEMBERSHIP = 1;
-    public final static int OFFLINE = 2;
+    public final static String MEMBERSHIP = "1";
+    public final static String OFFLINE = "2";
 }

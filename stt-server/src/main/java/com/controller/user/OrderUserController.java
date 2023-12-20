@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import static com.constant.MessageConstant.NO_DATA;
-import static com.constant.MessageConstant.SUCCESS;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.constant.MessageConstant.*;
 import static com.enumeration.UserIdIntoType.CLASS;
 import static com.enumeration.UserIdIntoType.STRING;
 
@@ -28,26 +30,27 @@ public class OrderUserController {
 
     @GetMapping("/{user_id}")
     @CheckUserId(STRING)
-    public Result<OrderBaseListPageVO> getAllById(@PathVariable String user_id, String page, String page_size, String q) {
+    public Result<OrderBaseListPageVO> getAllById(@PathVariable String user_id, String page, String page_size, String q,String status) {
         OrderBaseListPageVO listVO;
         if (q == null || q.isEmpty())
-            listVO = service.getByIdPage(user_id, page, page_size);
+            listVO = service.getByIdPage(user_id, page, page_size,status);
         else
-            listVO = service.getByIdPageQ(user_id, page, page_size, q);
+            listVO = service.getByIdPageQ(user_id, page, page_size, q,status);
         return Result.dataDetect(!listVO.getOrder_detail_list().isEmpty(), SUCCESS, NO_DATA, listVO);
     }
 
     @PostMapping
     @CheckUserId(CLASS)
     @Transactional
-    public Result submitOrder(@RequestBody OrderListDTO dto) {
+    public Result<List<Integer>> submitOrder(@RequestBody OrderListDTO dto) {
         Integer cnt = Integer.valueOf(dto.getOrderCnt());
         Boolean status = true;
+        List<Integer> orderIdList = new ArrayList<>();
         for (Integer i = 0; i < cnt; i++) {
             OrderDTO order = dto.getOrderList().get(i);
-            status &= service.submitOrder(order);
+            orderIdList.add(service.submitOrder(order));
         }
-        return Result.status(status);
+        return Result.status(status, SUCCESS, FAIL, orderIdList);
     }
 
     @DeleteMapping

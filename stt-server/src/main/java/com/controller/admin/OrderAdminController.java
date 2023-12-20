@@ -1,6 +1,7 @@
 package com.controller.admin;
 
 import com.dto.PayDTO;
+import com.enumeration.PayType;
 import com.result.Result;
 import com.service.OrderService;
 import com.vo.Order.OrderExtraInfoVO;
@@ -35,6 +36,7 @@ public class OrderAdminController {
 
     @PostMapping("/pay")
     public Result dealPay(@RequestBody PayDTO dto) {
+        dto.setPayType(String.valueOf(PayType.OFFLINE));
         boolean status = service.pay(dto);
         return Result.success(status);
     }

@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StoreLocation {
-    public Integer locationId;
-    public String location;
+    private Integer locationId;
+    private String location;
+    private String address;
+    private String contact;
+    private String worktime;
 }

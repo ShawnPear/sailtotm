@@ -1,22 +1,28 @@
 package com.service.impl;
 
+import com.constant.JwtClaimsConstant;
 import com.constant.MessageConstant;
 import com.dto.UserAccount.*;
-import com.entity.Name;
 import com.entity.User;
 import com.exception.user.AccountExistException;
 import com.exception.user.AccountNotFoundException;
 import com.exception.user.EmailFormatErrorException;
 import com.exception.user.PasswordErrorException;
 import com.mapper.UserMapper;
+import com.properties.JwtProperties;
 import com.service.UserService;
 import com.utils.EmailUtil;
+import com.utils.JwtUtil;
+import com.vo.UserVO;
+import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.utils.PasswordUtil.getMD5Password;
 
@@ -26,6 +32,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    JwtProperties jwtProperties;
 
     @Override
     public User login(UserLoginDTO userLoginDTO) {
@@ -60,10 +69,8 @@ public class UserServiceImpl implements UserService {
         LocalDateTime createdDate = LocalDateTime.now();
         User user = User.builder()
                 .email(userRegisterDTO.getEmail())
-                .name(Name.builder()
-                        .firstName(userRegisterDTO.getFirstName())
-                        .lastName(userRegisterDTO.getLastName())
-                        .build())
+                .firstName(userRegisterDTO.getFirstName())
+                .lastName(userRegisterDTO.getLastName())
                 .password(md5password)
                 .userName(name)
                 .createdDate(createdDate)
@@ -108,6 +115,7 @@ public class UserServiceImpl implements UserService {
                 .userId(id)
                 .email(dto.getNewEmail())
                 .updatedDate(LocalDateTime.now())
+                .enable(false)
                 .build();
         Boolean status = userMapper.updateByUserId(user1);
         return status;
@@ -125,8 +133,42 @@ public class UserServiceImpl implements UserService {
                 .updatedDate(LocalDateTime.now())
                 .build();
         BeanUtils.copyProperties(dto, user1);
-        user1.setName(Name.builder().firstName(dto.getFirstName()).lastName(dto.getLastName()).build());
         Boolean status = userMapper.updateByUserId(user1);
         return status;
+    }
+
+    @Override
+    public String generateEmailActivateKey(String email) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(JwtClaimsConstant.EMAIL, email);
+        String token = JwtUtil.createJWT(jwtProperties.getEmailSecretKey(), jwtProperties.getEmailTtl(), claims);
+        return token;
+    }
+
+    @Override
+    public Boolean verifyEmailActivateKey(String token, String email) {
+        Claims claims = JwtUtil.parseJWT(jwtProperties.getEmailSecretKey(), token);
+        if (claims == null) {
+            return false;
+        }
+        String email2 = claims.get(JwtClaimsConstant.EMAIL).toString();
+        return email2.equals(email);
+    }
+
+    @Override
+    public Boolean activate(String email) {
+        return userMapper.updateActivateStatusByEmail(email, 1);
+    }
+
+    @Override
+    public UserVO getByUserId(String userId) {
+        User user = userMapper.getByUserId(Long.valueOf(userId));
+        if (user == null) {
+            throw new AccountNotFoundException(MessageConstant.USER_NOT_EXIST);
+        }
+        UserVO vo = UserVO.builder().build();
+        BeanUtils.copyProperties(user, vo);
+
+        return vo;
     }
 }

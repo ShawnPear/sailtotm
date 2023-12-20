@@ -5,16 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PayDTO {
-    private String orderId;
-    private String password;
-    private String membershipId;
+@Data
+public class MembershipPayDTO {
     private String userId;
-    private String stuffId;
+    private String membershipId;
+    private String password;
     private String actualPay;
-    private String payType;
+    private String defaultStuff;
 }

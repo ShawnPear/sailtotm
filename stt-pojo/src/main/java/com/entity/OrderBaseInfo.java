@@ -27,4 +27,7 @@ public class OrderBaseInfo {
     private Integer transportType;
     private String estimatedTransportPrice;
     private String pickupCode;
+    private String locationAddress;
+    private String locationContact;
+    private String locationWorktime;
 }

@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mapper.OrderMapper">
 
-    <insert id="submit">
+    <insert id="submit" keyProperty="orderId" useGeneratedKeys="true">
         insert into sailtotmdb.Orders (order_id, user_id, good_detail_id, transport_detail_id, china_detail_id,
                                        status_id, pickup_code, created_date, pay_sum_id, updated_date)
         VALUES (#{orderId},
@@ -35,12 +35,16 @@
                TD.transport_cost           as transportPrice,
                TD.transport_detail_id      as transportType,
                TD.estimated_transport_cost as estimatedTransportPrice,
-               O.pickup_code               as pickupCode
+               O.pickup_code               as pickupCode,
+               SL.address                  as locationAddress,
+               SL.contact                  as locationContact,
+               SL.worktime                 as locationWorktime
         from sailtotmdb.Orders O
                  LEFT JOIN sailtotmdb.PaySum PH on PH.pay_sum_id = O.pay_sum_id
                  LEFT JOIN sailtotmdb.TransportDetails TD on TD.transport_detail_id = O.transport_detail_id
                  LEFT JOIN sailtotmdb.GoodsDetails GD on GD.good_detail_id = O.good_detail_id
                  LEFT JOIN sailtotmdb.OneBoundApiTaobaoProduct OBATP on OBATP.num_iid = GD.num_iid
+                 LEFT JOIN sailtotmdb.StoreLocations SL on TD.location_id = SL.location_id
         where O.user_id = #{userId}
         order by O.created_date desc
     </select>
@@ -63,12 +67,16 @@
                TD.transport_cost           as transportPrice,
                TD.transport_detail_id      as transportType,
                TD.estimated_transport_cost as estimatedTransportPrice,
-               O.pickup_code               as pickupCode
+               O.pickup_code               as pickupCode,
+               SL.address                  as locationAddress,
+               SL.contact                  as locationContact,
+               SL.worktime                 as locationWorktime
         from sailtotmdb.Orders O
                  LEFT JOIN sailtotmdb.PaySum PH on PH.pay_sum_id = O.pay_sum_id
                  LEFT JOIN sailtotmdb.TransportDetails TD on TD.transport_detail_id = O.transport_detail_id
                  LEFT JOIN sailtotmdb.GoodsDetails GD on GD.good_detail_id = O.good_detail_id
                  LEFT JOIN sailtotmdb.OneBoundApiTaobaoProduct OBATP on OBATP.num_iid = GD.num_iid
+                 LEFT JOIN sailtotmdb.StoreLocations SL on TD.location_id = SL.location_id
         where O.user_id = #{userId}
           and OBATP.title LIKE #{q}
         order by O.created_date desc
@@ -97,13 +105,17 @@
                TD.height                   as height,
                TD.weight                   as weight,
                O.user_id                   as userId,
-               U.user_name                 as userName
+               U.user_name                 as userName,
+               SL.address                  as locationAddress,
+               SL.contact                  as locationContact,
+               SL.worktime                 as locationWorktime
         from sailtotmdb.Orders O
                  LEFT JOIN sailtotmdb.PaySum PH on PH.pay_sum_id = O.pay_sum_id
                  LEFT JOIN sailtotmdb.TransportDetails TD on TD.transport_detail_id = O.transport_detail_id
                  LEFT JOIN sailtotmdb.GoodsDetails GD on GD.good_detail_id = O.good_detail_id
                  LEFT JOIN sailtotmdb.OneBoundApiTaobaoProduct OBATP on OBATP.num_iid = GD.num_iid
                  LEFT JOIN sailtotmdb.Users U on O.user_id = U.user_id
+                 LEFT JOIN sailtotmdb.StoreLocations SL on TD.location_id = SL.location_id
         where O.order_id = #{orderId}
     </select>
     <select id="getOrderInfoByUserId" resultType="com.entity.OrderExtraInfo">
@@ -130,13 +142,17 @@
                TD.height                   as height,
                TD.weight                   as weight,
                O.user_id                   as userId,
-               U.user_name                 as userName
+               U.user_name                 as userName,
+               SL.address                  as locationAddress,
+               SL.contact                  as locationContact,
+               SL.worktime                 as locationWorktime
         from sailtotmdb.Orders O
                  LEFT JOIN sailtotmdb.PaySum PH on PH.pay_sum_id = O.pay_sum_id
                  LEFT JOIN sailtotmdb.TransportDetails TD on TD.transport_detail_id = O.transport_detail_id
                  LEFT JOIN sailtotmdb.GoodsDetails GD on GD.good_detail_id = O.good_detail_id
                  LEFT JOIN sailtotmdb.OneBoundApiTaobaoProduct OBATP on OBATP.num_iid = GD.num_iid
                  LEFT JOIN sailtotmdb.Users U on O.user_id = U.user_id
+                 LEFT JOIN sailtotmdb.StoreLocations SL on TD.location_id = SL.location_id
         where O.user_id = #{userId}
         order by O.created_date desc
     </select>
