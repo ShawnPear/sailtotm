@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.mapper.OrderMapper">
+<mapper namespace="com.yasyl.sailtotm.mapper.OrderMapper">
 
     <insert id="submit" keyProperty="orderId" useGeneratedKeys="true">
         insert into sailtotmdb.Orders (user_id, good_detail_id, transport_detail_id, china_detail_id,
@@ -16,7 +16,7 @@
                 #{paySumId},
                 #{updatedDate});
     </insert>
-    <select id="getByIdPage" resultType="com.entity.OrderBaseInfo">
+    <select id="getByIdPage" resultType="com.yasyl.sailtotm.entity.OrderBaseInfo">
         select O.order_id                  as orderId,
                O.status_id                 as status,
                O.created_date              as createdDate,
@@ -48,7 +48,7 @@
         order by O.created_date desc
     </select>
 
-    <select id="getByIdPageQ" resultType="com.entity.OrderBaseInfo">
+    <select id="getByIdPageQ" resultType="com.yasyl.sailtotm.entity.OrderBaseInfo">
         select O.order_id                  as orderId,
                O.status_id                 as status,
                O.created_date              as createdDate,
@@ -80,7 +80,7 @@
           and OBATP.title LIKE #{q}
         order by O.created_date desc
     </select>
-    <select id="getOrderInfoByOrderId" resultType="com.entity.OrderExtraInfo">
+    <select id="getOrderInfoByOrderId" resultType="com.yasyl.sailtotm.entity.OrderExtraInfo">
         select O.order_id                  as orderId,
                OBATP.pic_url               as picUrl,
                GD.num_iid                  as numIid,
@@ -117,7 +117,7 @@
                  LEFT JOIN sailtotmdb.StoreLocations SL on TD.location_id = SL.location_id
         where O.order_id = #{orderId}
     </select>
-    <select id="getOrderInfoByUserId" resultType="com.entity.OrderExtraInfo">
+    <select id="getOrderInfoByUserId" resultType="com.yasyl.sailtotm.entity.OrderExtraInfo">
         select O.order_id                  as orderId,
                OBATP.pic_url               as picUrl,
                GD.num_iid                  as numIid,

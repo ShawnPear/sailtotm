@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.mapper.CartMapper">
+<mapper namespace="com.yasyl.sailtotm.mapper.CartMapper">
 
     <insert id="insert">
         insert into sailtotmdb.CartItems (user_id, quantity, created_date, num_iid, properties, properties_name)
@@ -13,7 +13,7 @@
                 #{propertiesName});
     </insert>
 
-    <select id="selectAllByUserIdPage" resultType="com.entity.CartItem">
+    <select id="selectAllByUserIdPage" resultType="com.yasyl.sailtotm.entity.CartItem">
         select h.cart_id         as cart_id,
                h.num_iid         as num_iid,
                h.created_date    as created_date,
@@ -30,7 +30,7 @@
           and h.num_iid = p.num_iid
         order by h.created_date desc
     </select>
-    <select id="selectAllByUserSearchPage" resultType="com.entity.CartItem">
+    <select id="selectAllByUserSearchPage" resultType="com.yasyl.sailtotm.entity.CartItem">
         select h.cart_id         as cart_id,
                h.num_iid         as num_iid,
                h.created_date    as created_date,
@@ -49,7 +49,7 @@
         order by h.created_date desc
     </select>
 
-    <select id="selectAllByUserId" resultType="com.entity.CartItem">
+    <select id="selectAllByUserId" resultType="com.yasyl.sailtotm.entity.CartItem">
         select h.cart_id         as cart_id,
                h.num_iid         as num_iid,
                h.created_date    as created_date,

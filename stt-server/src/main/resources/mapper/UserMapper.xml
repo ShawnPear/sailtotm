@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.mapper.UserMapper">
+<mapper namespace="com.yasyl.sailtotm.mapper.UserMapper">
     <insert id="insert">
         insert into Users (email, user_name, password, first_name, updated_date, last_name, created_date)
         values (#{email}, #{userName}, #{password}, #{firstName}, #{updatedDate}, #{lastName}, #{createdDate})

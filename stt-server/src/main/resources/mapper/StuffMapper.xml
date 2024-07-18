@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.mapper.StuffMapper">
+<mapper namespace="com.yasyl.sailtotm.mapper.StuffMapper">
 
     <insert id="insert">
         INSERT INTO Stuff (role_id, location_id, status_id, first_name, last_name, email, phone_number,
@@ -19,12 +19,12 @@
         </set>
         where stuff_id = #{stuffId}
     </update>
-    <select id="getByEmail" resultType="com.entity.Stuff">
+    <select id="getByEmail" resultType="com.yasyl.sailtotm.entity.Stuff">
         select *
         from Stuff
         where email = #{email}
     </select>
-    <select id="getById" resultType="com.entity.Stuff">
+    <select id="getById" resultType="com.yasyl.sailtotm.entity.Stuff">
         select *
         from Stuff
         where stuff_id = #{stuffId}

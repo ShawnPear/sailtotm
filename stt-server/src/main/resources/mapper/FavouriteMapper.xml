@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.mapper.FavouriteMapper">
+<mapper namespace="com.yasyl.sailtotm.mapper.FavouriteMapper">
 
 
     <insert id="insert">
@@ -11,7 +11,7 @@
                 #{created_time});
     </insert>
 
-    <select id="selectAllByUserIdPage" resultType="com.entity.FavouriteItem">
+    <select id="selectAllByUserIdPage" resultType="com.yasyl.sailtotm.entity.FavouriteItem">
         select h.favourite_id    as favourite_id,
                h.num_iid         as num_iid,
                h.created_date    as created_date,
@@ -25,7 +25,7 @@
           and h.num_iid = p.num_iid
         order by h.created_date desc
     </select>
-    <select id="selectAllByUserSearchPage" resultType="com.entity.FavouriteItem">
+    <select id="selectAllByUserSearchPage" resultType="com.yasyl.sailtotm.entity.FavouriteItem">
         select h.favourite_id    as favourite_id,
                h.num_iid         as num_iid,
                h.created_date    as created_date,
@@ -40,7 +40,7 @@
           and p.title LIKE #{q}
         order by h.created_date desc
     </select>
-    <select id="selectById" resultType="com.entity.FavouriteItem">
+    <select id="selectById" resultType="com.yasyl.sailtotm.entity.FavouriteItem">
         select h.favourite_id    as favourite_id,
                h.num_iid         as num_iid,
                h.created_date    as created_date,

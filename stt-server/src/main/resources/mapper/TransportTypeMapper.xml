@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.mapper.TransportTypeMapper">
+<mapper namespace="com.yasyl.sailtotm.mapper.TransportTypeMapper">
 
     <!-- 插入操作 -->
     <insert id="add">
@@ -28,7 +28,7 @@
     </update>
 
     <!-- 查询操作 -->
-    <select id="getAll" resultType="com.entity.TransportType">
+    <select id="getAll" resultType="com.yasyl.sailtotm.entity.TransportType">
         SELECT transport_id, transport, price, updated_date
         FROM sailtotmdb.TransportTypes
     </select>
