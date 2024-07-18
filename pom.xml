@@ -22,6 +22,11 @@
         <module>stt-common</module>
         <module>stt-pojo</module>
         <module>stt-server</module>
+        <module>stt_ddd_app</module>
+        <module>stt_ddd_client</module>
+        <module>stt_ddd_common</module>
+        <module>stt_ddd_domain</module>
+        <module>stt_ddd_infra</module>
     </modules>
     <properties>
         <mybatis.spring>2.2.0</mybatis.spring>
