@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Component
 @Scope("prototype")
-public class TranslatorPost extends HttpPost {
+public class TranslatorMicrosoftPost extends HttpPost {
     @Autowired
     AzureTranslatorProperties translatorProperties;
 

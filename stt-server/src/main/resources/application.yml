@@ -1,22 +1,27 @@
 server:
   port: 8080
   address: 0.0.0.0
-  ssl:
-    key-store: classpath:api.yasyl.com.pfx
-    key-store-type: JKS
-    key-store-password: ex2hmsjf
+#  ssl:
+#    key-store: classpath:api.sailtotm.com.pfx
+#    key-store-type: JKS
+#    key-store-password: oeldehb8
 
 spring:
-  profiles:
-    active: pre
   main:
     allow-circular-references: true
+    log-startup-info: false
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
+  elasticsearch:
+    uris: 118.31.50.178:9200
   datasource:
     druid:
-      driver-class-name: ${sky.datasource.driver-class-name}
-      url: jdbc:mysql://${sky.datasource.host}:${sky.datasource.port}/${sky.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
-      username: ${sky.datasource.username}
-      password: ${sky.datasource.password}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://118.31.50.178:3306/sailtotmdb?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      username: sailtotmdb
+      password: SailToTMDB123
   mail:
     host: smtp-mail.outlook.com
     port: 587
@@ -28,6 +33,7 @@ spring:
         smtp:
           starttls:
             enable: true
+
 
 pagehelper:
   reasonable: false
@@ -47,6 +53,7 @@ logging:
         mapper: debug
         service: info
         controller: info
+#  config: classpath:log4j.xml
 
 sailtotm:
   jwt:
@@ -61,6 +68,7 @@ sailtotm:
     user-token-name: Authorization
     email-secret-key: sailtotm-email-activate
     email-ttl: 7200000
+
 onebound:
   host: api-gw.onebound.cn
   taobao-search: /taobao/item_search
@@ -68,13 +76,24 @@ onebound:
   key: t8629095275
   secret: 20230825
   scheme: https
-azure-translator:
-  host: api.cognitive.microsofttranslator.com
-  translator: /translate
-  api-version: 3.0
-  china: zh
-  russia: ru
-  Ocp-Apim-Subscription-Key1: a117c8da77c24209a4d0271d1ed8ac59
-  Ocp-Apim-Subscription-Key2: 837b477e93d948d29cdfd00468faf2ea
-  Ocp-Apim-Subscription-Region: southeastasia
-  scheme: https
+
+translator:
+  use: translatorYoudao
+  azure-translator:
+    host: api.cognitive.microsofttranslator.com
+    translator: /translate
+    api-version: 3.0
+    china: zh
+    russia: ru
+    Ocp-Apim-Subscription-Key1: a117c8da77c24209a4d0271d1ed8ac59
+    Ocp-Apim-Subscription-Key2: 837b477e93d948d29cdfd00468faf2ea
+    Ocp-Apim-Subscription-Region: southeastasia
+    scheme: https
+
+  youdao-translator:
+    Youdao-Url: https://openapi.youdao.com/v2/api
+    App-Key: 597345f5fb02a536
+    App-Secret: 4VDJUrAfatUYAvbKA0vr8I72XqwWxZiT
+
+es:
+  One-Bound-Api-Search-DB: one_bound_api_taobao_product

@@ -600,7 +600,7 @@ CREATE TABLE IF NOT EXISTS `SailToTMDB`.`OneBoundApiTaobaoProduct`
     price           FLOAT         NOT NULL,
     promotion_price FLOAT         NOT NULL,
     sales           INT,
-    saller_nick     VARCHAR(100),
+    seller_nick     VARCHAR(100),
     title           VARCHAR(1000) NOT NULL,
     PRIMARY KEY (`num_iid`)
 )

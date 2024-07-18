@@ -23,6 +23,7 @@ public class AdminLicenceAspect {
     public void adminLicenceAnnotation() {
     }
 
+    
     @Before("adminLicenceAnnotation()")
     public void preCheck() {
         if (BaseContext.getCurrentStuffRole() != RoleType.ADMIN) {

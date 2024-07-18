@@ -27,7 +27,7 @@ public class TaobaoGoodDetail {
     private Object propsList;
     private Skus skus;
     private String title;
-    private Video video;
+//    private List<Video> video;
     private String desc;
     private String descShort;
     private List<String> descImg;

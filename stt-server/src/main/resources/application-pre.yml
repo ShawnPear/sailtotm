@@ -1,8 +1,0 @@
-sky:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    host: 47.242.167.153
-    port: 3306
-    database: sailtotmdb
-    username: SailToTMDB
-    password: SailToTMDB123

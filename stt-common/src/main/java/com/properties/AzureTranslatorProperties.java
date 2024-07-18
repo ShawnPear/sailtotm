@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "azure-translator")
+@ConfigurationProperties(prefix = "translator.azure-translator")
 @Data
 public class AzureTranslatorProperties {
     private String host;

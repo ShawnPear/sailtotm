@@ -59,10 +59,10 @@ public class CartServiceImpl implements CartService {
                     .properties(item.getProperties())
                     .quantity(item.getQuantity())
                     .build();
-            skuPropService.extractSkuToTranDict(cartItemVO, tranDict);
+//            skuPropService.extractSkuToTranDict(cartItemVO, tranDict);
             result.add(cartItemVO);
         }
-        translator.translatorCache(tranDict, TranslatorType.ZH2RU);
+//        translator.translatorCache(tranDict, TranslatorType.ZH2RU);
         return CartListPageVO.builder()
                 .page(page)
                 .pageSize(String.valueOf(CartItems.getPageSize()))
@@ -100,6 +100,9 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Boolean addCart(Product product, String userId, Integer quantity, String properties, String propertiesName) {
+        if (quantity == null) {
+            quantity = 1;
+        }
         LocalDateTime createdTime = LocalDateTime.now();
         oneBoundApiTaobaoProductMapperHelper.insertOrUpdate(product, "", Timestamp.valueOf(createdTime));
         return cartMapper.insert(product.getNumIid(), createdTime, userId, quantity, properties, propertiesName) > 0;

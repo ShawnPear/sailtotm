@@ -46,9 +46,15 @@ public class ResetAccountController {
         return Result.status(status, USER_RESET_EMAIL_SUCCESS, USER_RESET_EMAIL_ERROR);
     }
 
-//    @PatchMapping("/new-password")
+//    @GetMapping("/new-password")
 //    @ApiOperation("重置密码")
 //    public Result newPassword(){
+//
+//    }
+
+//    @GetMapping("/new-memberhsip-password")
+//    @ApiOperation("重置会员密码")
+//    public Result newMemberhsipPassword() {
 //
 //    }
 }

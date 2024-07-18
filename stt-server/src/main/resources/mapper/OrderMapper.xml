@@ -4,10 +4,9 @@
 <mapper namespace="com.mapper.OrderMapper">
 
     <insert id="submit" keyProperty="orderId" useGeneratedKeys="true">
-        insert into sailtotmdb.Orders (order_id, user_id, good_detail_id, transport_detail_id, china_detail_id,
+        insert into sailtotmdb.Orders (user_id, good_detail_id, transport_detail_id, china_detail_id,
                                        status_id, pickup_code, created_date, pay_sum_id, updated_date)
-        VALUES (#{orderId},
-                #{userId},
+        VALUES (#{userId},
                 #{goodDetailId},
                 #{transportDetailId},
                 #{chinaDetailId},

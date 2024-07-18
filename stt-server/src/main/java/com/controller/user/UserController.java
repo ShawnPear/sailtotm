@@ -19,7 +19,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,14 +51,15 @@ public class UserController {
     @ApiOperation("用户登录")
     public Result<UserLoginVO> login(UserLoginDTO userLoginDTO) {
         log.info("用户登录：{}", userLoginDTO.getEmail());
-
+        log.info("1");
         User user = userService.login(userLoginDTO);
-
+        log.info("2");
         if (user == null) {
             return Result.error(USER_LOGIN_ERROR_NOT_EXIST);
         }
-
+        log.info("3");
         Map<String, Object> claims = new HashMap<>();
+        log.info("4");
         claims.put(JwtClaimsConstant.USER_ID, user.getUserId());
         String token = JwtUtil.createJWT(jwtProperties.getUserSecretKey(), jwtProperties.getUserTtl(), claims);
 
@@ -68,7 +68,7 @@ public class UserController {
                 .token(token)
                 .userName(user.getUserName())
                 .build();
-
+        log.info("5");
         return Result.success(userLoginVO, USER_LOGIN_SUCCESS);
     }
 
@@ -96,11 +96,11 @@ public class UserController {
 
     @GetMapping("/register/activate")
     @ApiOperation("进行邮箱验证")
-    public ModelAndView mailActivate(String email, String key) {
+    public Result mailActivate(String email, String key) {
         Boolean status = userService.verifyEmailActivateKey(key, email);
         if (status) {
             status = userService.activate(email);
         }
-        return status ? new ModelAndView("verified") : new ModelAndView("failed");
+        return Result.status(status);
     }
 }

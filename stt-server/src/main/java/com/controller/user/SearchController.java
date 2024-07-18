@@ -1,12 +1,16 @@
 package com.controller.user;
 
 import com.annotation.CheckUserId;
+import com.annotation.Translator;
 import com.context.BaseContext;
 import com.dto.Search.SearchGoodsKeyWordPageDTO;
 import com.dto.Search.TaobaoSearchDTO;
 import com.dto.Search.TaobaoSearchDetailDTO;
+import com.enumeration.TranType;
 import com.enumeration.TranslatorType;
+import com.exception.user.OneBoundApiException;
 import com.exception.user.ParamMissingException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mapper.TranslatorDictMapper;
 import com.result.Result;
 import com.service.OneBoundApiService;
@@ -27,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Objects;
 
 import static com.constant.MessageConstant.*;
-import static com.enumeration.UserIdIntoType.CLASS;
 import static com.enumeration.UserIdIntoType.STRING;
 
 @RestController
@@ -49,7 +52,8 @@ public class SearchController {
     TranslatorDictMapper translatorDictMapper;
 
     @GetMapping("/search")
-    @CheckUserId(CLASS)
+    @Translator(type = TranType.in, tranType = TranslatorType.RU2ZH
+            , inputParams = {"dto.q"})
     public Result<TaobaoGoodListVO> searchByKeyWord(SearchGoodsKeyWordPageDTO dto) {
         String zhQ = translator.translatorCache(dto.getQ(), TranslatorType.RU2ZH);
         if (Objects.equals(dto.getPage(), "") || Objects.equals(dto.getQ(), "")) {
@@ -58,9 +62,9 @@ public class SearchController {
         TaobaoSearchDTO taobaoSearchDTO = TaobaoSearchDTO.builder().q(zhQ).page(dto.getPage()).startPrice("0").endPrice("0").cat("0").build();
         TaobaoGoodListVO goodList = oneBoundApiService.taoBaoSearch(taobaoSearchDTO);
 
-//        增加搜索历史
-        Boolean status = searchHistoryService.addSearchHistory(dto.getQ(), BaseContext.getCurrentId());
-        return Result.status(status, USER_SEARCH_SUCCESS, FAIL, goodList);
+        Long useId = BaseContext.getCurrentId();
+        searchHistoryService.addSearchHistory(dto.getQ(), useId);
+        return Result.status(goodList != null, USER_SEARCH_SUCCESS, FAIL, goodList);
     }
 
     @GetMapping("/search-item")
@@ -78,10 +82,19 @@ public class SearchController {
         if (product_id.equals("")) {
             throw new ParamMissingException(PARAM_MISSING_ERROR);
         }
-        TaobaoSearchDetailDTO taobaoSearchDetailDTO = TaobaoSearchDetailDTO.builder().numIid(product_id).build();
-        TaobaoGoodDetailRawJsonVO taobaoGoodDetail = oneBoundApiService.taoBaoSearchDetail(taobaoSearchDetailDTO);
-        TaobaoGoodDetailVO raw = oneBoundApiService.parseToDetail(taobaoGoodDetail.getDetailJson());
-        raw = oneBoundApiService.translatorDetail(raw);
+        TaobaoGoodDetailVO raw = null;
+        try {
+            System.out.println(1);
+            TaobaoSearchDetailDTO taobaoSearchDetailDTO = TaobaoSearchDetailDTO.builder().numIid(product_id).build();
+            System.out.println(2);
+            TaobaoGoodDetailRawJsonVO taobaoGoodDetail = oneBoundApiService.taoBaoSearchDetail(taobaoSearchDetailDTO);
+            System.out.println(3);
+            raw = oneBoundApiService.parseToDetail(taobaoGoodDetail.getDetailJson());
+            System.out.println(4);
+            raw = oneBoundApiService.translatorDetail(raw);
+        } catch (OneBoundApiException | JsonProcessingException e) {
+            e.printStackTrace();
+        }
         return Result.success(raw);
     }
 

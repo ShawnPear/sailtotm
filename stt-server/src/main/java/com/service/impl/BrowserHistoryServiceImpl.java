@@ -71,7 +71,7 @@ public class BrowserHistoryServiceImpl implements BrowserHistoryService {
     @Override
     public Boolean addBrowserHistory(Product product, String userId) {
         BrowserHistoryItem latestOne = browserHistoryMapper.getLatestOne(userId);
-        if(Objects.equals(latestOne.getNumIid(), product.getNumIid())){
+        if(latestOne!= null && Objects.equals(latestOne.getNumIid(), product.getNumIid())){
             LocalDateTime updatedTime = LocalDateTime.now();
             return browserHistoryMapper.updateTime(product.getNumIid(),updatedTime,userId);
         }

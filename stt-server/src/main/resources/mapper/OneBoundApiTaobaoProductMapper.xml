@@ -9,9 +9,11 @@
                price,
                promotion_price,
                sales,
-               saller_nick,
+               seller_nick,
                title,
-               q
+               q,
+               seller_nick_zh,
+               title_zh
         from OneBoundApiTaobaoProduct
         where num_iid = #{numIid}
     </select>
@@ -22,31 +24,44 @@
                price,
                promotion_price,
                sales,
-               saller_nick,
+               seller_nick,
                title,
-               q
+               q,
+               seller_nick_zh,
+               title_zh
         from OneBoundApiTaobaoProduct
         where q like #{q}
+        order by created_date desc
+    </select>
+    <select id="selectAllProduct" resultType="com.entity.OneBoundApiTaobaoProduct">
+        select detail_url,
+               num_iid,
+               pic_url,
+               price,
+               promotion_price,
+               sales,
+               seller_nick,
+               title,
+               q,
+               created_date,
+               seller_nick_zh,
+               title_zh
+        from OneBoundApiTaobaoProduct
         order by created_date desc
     </select>
 
     <insert id="insert">
         insert into OneBoundApiTaobaoProduct (created_date, detail_url, num_iid, pic_url, price,
                                               promotion_price, sales,
-                                              saller_nick, title, q)
+                                              seller_nick, title, q,
+                                              seller_nick_zh,
+                                              title_zh)
         VALUES (#{created_date}, #{item.detailUrl}, #{item.numIid}, #{item.picUrl}, #{item.price},
                 #{item.promotionPrice}, #{item.sales},
-                #{item.sellerNick}, #{item.title}, #{q})
-        ON DUPLICATE KEY UPDATE created_date    = #{created_date},
-                                detail_url      = #{item.detailUrl},
-                                pic_url         = #{item.picUrl},
-                                price           = #{item.price},
-                                promotion_price =
-                                    #{item.promotionPrice},
-                                sales           = #{item.sales},
-                                saller_nick     = #{item.sellerNick},
-                                title           = #{item.title},
-                                q               = #{q}
+                #{item.sellerNick}, #{item.title}, #{q},
+                #{item.sellerNickZh},
+                #{item.titleZh})
+
     </insert>
 
     <update id="update">
@@ -60,9 +75,11 @@
                 #{item.promotionPrice},
             </if>
             <if test="item.sales!=null">sales = #{item.sales},</if>
-            <if test="item.sellerNick!=null">saller_nick = #{item.sellerNick},</if>
+            <if test="item.sellerNick!=null">seller_nick = #{item.sellerNick},</if>
             <if test="item.title!=null">title = #{item.title},</if>
             <if test="q!=null">q = #{q},</if>
+            <if test="item.sellerNickZh!=null">seller_nick_zh = #{item.sellerNickZh},</if>
+            <if test="item.titleZh!=null">title_zh = #{item.titleZh,}</if>
         </set>
         where num_iid = #{item.numIid}
     </update>

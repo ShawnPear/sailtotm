@@ -147,12 +147,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean verifyEmailActivateKey(String token, String email) {
-        Claims claims = JwtUtil.parseJWT(jwtProperties.getEmailSecretKey(), token);
-        if (claims == null) {
+        try {
+            Claims claims = JwtUtil.parseJWT(jwtProperties.getEmailSecretKey(), token);
+            if (claims == null) {
+                return false;
+            }
+            String email2 = claims.get(JwtClaimsConstant.EMAIL).toString();
+            return email2.equals(email);
+        }catch (Exception e){
             return false;
         }
-        String email2 = claims.get(JwtClaimsConstant.EMAIL).toString();
-        return email2.equals(email);
     }
 
     @Override

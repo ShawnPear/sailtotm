@@ -28,6 +28,7 @@ public class SkuPropServiceImpl implements SkuPropService {
 
     @Override
     public String getProp2String(List<String> propertiesList) {
+        if (propertiesList == null) return "";
         StringBuffer sb = new StringBuffer(propertiesList.get(0));
         for (int i = 1; i < propertiesList.size(); i++) {
             sb.append(";");
@@ -38,6 +39,7 @@ public class SkuPropServiceImpl implements SkuPropService {
 
     @Override
     public String getPropNameRu2Zh(List<PropertiesName> propertiesNameList) {
+        if (propertiesNameList == null) return "";
         StringBuffer sb = new StringBuffer();
         PropertiesName name = propertiesNameList.get(0);
         tranNameAppendString(name, sb);
@@ -62,8 +64,8 @@ public class SkuPropServiceImpl implements SkuPropService {
             String propertiesName = (String) getPropertiesName.invoke(skuObject);
             List<String> pId = new ArrayList<>(Arrays.asList(properties.split(";")));
             List<PropertiesName> tranP = new ArrayList<>();
-            setPropertiesNameList.invoke(skuObject,tranP);
-            setPropertiesList.invoke(skuObject,pId);
+            setPropertiesNameList.invoke(skuObject, tranP);
+            setPropertiesList.invoke(skuObject, pId);
             String[] pValList = propertiesName.split(";");
             for (int j = 0; j < pValList.length; j++) {
                 tranP.add(PropertiesName.builder().build());

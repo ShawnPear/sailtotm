@@ -12,6 +12,7 @@ public class EmailUtil {
     }
 
     public static String getActivateEmailContent(String email,String key) {
+        String uri = "https://www.yasyl.com/activate?email=" + email + "&key=" + key + "";
         return "<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
                 "  <head>\n" +
@@ -69,7 +70,7 @@ public class EmailUtil {
                 "        Нажмите на ссылку ниже чтобы завершить верификацию\n" +
                 "      </div>\n" +
                 "      <div class=\"text-center my-3\">\n" +
-                "        <a href=\""+"https://api.yasyl.com:8080/user/register/activate?email=" + email + "&key=" + key + " \">Проверка.</a >\n" +
+                "        <a href=\"" + uri + " \">"+uri+"</a >\n" +
                 "      </div>\n" +
                 "      <div class=\"bottom\">YASYL.COM</div>\n" +
                 "    </div>\n" +

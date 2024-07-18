@@ -17,4 +17,6 @@ public class Product {
     private long sales;
     private String sellerNick;
     private String title;
+    private String sellerNickZh;
+    private String titleZh;
 }

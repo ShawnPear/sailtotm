@@ -10,7 +10,9 @@ import com.entity.TaobaoGoodList.TaobaoGoodDetail.Sku;
 import com.entity.TaobaoGoodList.TaobaoGoodDetail.TaobaoGoodDetail;
 import com.entity.TranslatorDict;
 import com.enumeration.TranslatorType;
+import com.es.OneBoundApiTaobaoProductESV1;
 import com.exception.user.OneBoundApiException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.mapper.TranslatorDictMapper;
 import com.mapper.mapper_helper.OneBoundApiTaobaoProductMapperHelper;
@@ -23,6 +25,7 @@ import com.utils.TimeUtil;
 import com.vo.TaobaoGood.TaobaoGoodDetailRawJsonVO;
 import com.vo.TaobaoGood.TaobaoGoodDetailVO;
 import com.vo.TaobaoGood.TaobaoGoodListVO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -36,23 +39,23 @@ import java.sql.Timestamp;
 import java.util.*;
 
 @Service
+@Slf4j
 public class OneBoundApiServiceImpl implements OneBoundApiService {
 
     @Autowired
-    JsonMapper jsonMapper;
+    private JsonMapper jsonMapper;
     @Autowired
-    TranslatorService translator;
+    private TranslatorService translator;
+    @Autowired
+    private OneBoundApiTaobaoProductESV1 productES;
     @Autowired
     private OneBoundProperties obProperties;
     @Autowired
     private OneBoundApiTaobaoProductMapperHelper obApiTaobaoProductMapperHelper;
-
     @Autowired
     private CloseableHttpClient httpClient;
-
     @Autowired
     private TranslatorDictMapper dictMapper;
-
     @Autowired
     private SkuPropService skuPropService;
 
@@ -63,6 +66,7 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
          * 从数据库中取缓存的数据
          * */
         List<Product> products = obApiTaobaoProductMapperHelper.selectByQ(dto.getQ(), dto.getPage());
+        log.info("搜索关键词{}，第{}页，从ES中获取数据{}条", dto.getQ(), dto.getPage(), products.size());
         if (products.size() >= 40) {
             TaobaoGoodListVO goodList = new TaobaoGoodListVO();
             Items items = new Items();
@@ -70,6 +74,7 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
             goodList.setItems(items);
             return goodList;
         }
+
 
         Map<String, Object> query = new HashMap<>();
         query.put("q", keyWord);
@@ -93,7 +98,7 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
 
             //获取服务端返回的状态码
             int statusCode = response.getStatusLine().getStatusCode();
-            System.out.println("服务端返回的状态码为：" + statusCode);
+//            System.out.println("服务端返回的状态码为：" + statusCode);
 
             HttpEntity entity = response.getEntity();
             String body = EntityUtils.toString(entity);
@@ -102,6 +107,8 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
             List<Product> itemList = goodList.getItems().getItem();
             List<String> translatorList = new ArrayList<>();
             for (Product item : itemList) {
+                item.setSellerNickZh(item.getSellerNick());
+                item.setTitleZh(item.getTitle());
                 translatorList.add(item.getSellerNick());
                 translatorList.add(item.getTitle());
             }
@@ -111,16 +118,17 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
                 item.setSellerNick(translatorList.get(index++));
                 item.setTitle(translatorList.get(index++));
             }
-            for (Product item : itemList) {
-                new Thread(() -> {
+
+            new Thread(() -> {
+                for (Product item : itemList) {
                     Timestamp time = Timestamp.valueOf(TimeUtil.getLocalDateTime());
                     obApiTaobaoProductMapperHelper.insertOrUpdate(item, dto.getQ(), time);
-                }).start();
-            }
+                }
+            }).start();
 
             List<Product> items = goodList.getItems().getItem();
             items.addAll(products);
-
+            log.info("搜索关键词{}，第{}页，从万邦API中获取数据{}条", dto.getQ(), dto.getPage(), itemList.size());
             return goodList;
         } catch (IOException e) {
             throw new OneBoundApiException(MessageConstant.OneBoundApi_SEARCH_ERROR);
@@ -151,7 +159,7 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
 
             //获取服务端返回的状态码
             int statusCode = response.getStatusLine().getStatusCode();
-            System.out.println("服务端返回的状态码为：" + statusCode);
+//            System.out.println("服务端返回的状态码为：" + statusCode);
 
             HttpEntity entity = response.getEntity();
             String body = EntityUtils.toString(entity);
@@ -165,12 +173,12 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
     }
 
     @Override
-    public TaobaoGoodDetailVO parseToDetail(String detailJson) {
+    public TaobaoGoodDetailVO parseToDetail(String detailJson) throws JsonProcessingException {
         try {
             TaobaoGoodDetailVO taobaoGoodDetail = jsonMapper.readValue(detailJson, TaobaoGoodDetailVO.class);
             return taobaoGoodDetail;
         } catch (Exception e) {
-            throw new OneBoundApiException(MessageConstant.FAIL);
+            throw e;
         }
     }
 
@@ -184,9 +192,11 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
         tranList.add(item.getTitle());
 
         List<Prop> props = item.getProps();
-        for (Prop prop : props) {
-            tranList.add(prop.getName());
-            tranList.add(prop.getValue());
+        if (props != null) {
+            for (Prop prop : props) {
+                tranList.add(prop.getName());
+                tranList.add(prop.getValue());
+            }
         }
 
         Map<String, String> propsList = null;
@@ -210,11 +220,13 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
 
         int index = 0;
         item.setTitle(tranList.get(index++));
-        for (Prop prop : props) {
-            prop.setName(tranList.get(index++));
-            prop.setValue(tranList.get(index++));
+        if (props != null) {
+            for (Prop prop : props) {
+                prop.setName(tranList.get(index++));
+                prop.setValue(tranList.get(index++));
+            }
         }
-        
+
         return vo;
     }
 

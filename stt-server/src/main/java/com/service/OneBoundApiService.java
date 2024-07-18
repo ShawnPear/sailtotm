@@ -2,6 +2,7 @@ package com.service;
 
 import com.dto.Search.TaobaoSearchDTO;
 import com.dto.Search.TaobaoSearchDetailDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.vo.TaobaoGood.TaobaoGoodDetailVO;
 import com.exception.user.OneBoundApiException;
 import com.vo.TaobaoGood.TaobaoGoodDetailRawJsonVO;
@@ -13,7 +14,7 @@ public interface OneBoundApiService {
 
     public TaobaoGoodDetailRawJsonVO taoBaoSearchDetail(TaobaoSearchDetailDTO dto) throws OneBoundApiException;
 
-    TaobaoGoodDetailVO parseToDetail(String detailJson);
+    TaobaoGoodDetailVO parseToDetail(String detailJson) throws JsonProcessingException;
 
     @Transactional
     TaobaoGoodDetailVO translatorDetail(TaobaoGoodDetailVO vo);
