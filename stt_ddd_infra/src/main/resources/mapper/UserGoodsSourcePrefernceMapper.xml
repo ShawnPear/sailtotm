@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yasyl.sailtotm.infra.dal.dao.UserGoodsSourcePrefernceMapper">
+    <insert id="insert" keyProperty="userId" useGeneratedKeys="true">
+        INSERT INTO UserGoodsSourcePrefernce (user_id, tb, pdd, jd, valid, ctime, utime, common_ext)
+        VALUES (#{userId},
+                #{tb},
+                #{pdd},
+                #{jd},
+                #{valid},
+                unix_timestamp(),
+                unix_timestamp(),
+                #{commonExt});
+    </insert>
+    
+    <update id="update">
+        UPDATE UserGoodsSourcePrefernce
+        SET utime      = unix_timestamp(),
+            tb         = #{tb},
+            pdd        = #{pdd},
+            jd         = #{jd},
+            valid      = #{valid},
+            common_ext = #{commonExt}
+        WHERE user_id = #{userId};
+    </update>
+    
+    <select id="queryByUserId" resultType="com.yasyl.sailtotm.infra.dal.entity.UserGoodsSourcePreferencePO">
+        SELECT user_id    as userId,
+               tb         as tb,
+               pdd        as pdd,
+               jd         as jd,
+               valid      as valid,
+               ctime      as ctime,
+               utime      as utime,
+               common_ext as commonExt
+        FROM UserGoodsSourcePrefernce
+        WHERE user_id = #{userId}
+    </select>
+</mapper>
