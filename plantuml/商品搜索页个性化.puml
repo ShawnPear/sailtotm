@@ -1,0 +1,70 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+participant 用户 as u
+participant 前端 as f
+participant 语言转换中俄互译 as trans
+participant 后端 as b
+participant SpringTask as t
+participant Redis as r
+participant MySQL as m
+participant Elasticsearch as e
+participant 第三方API as api
+
+u -> f : 通过关键词搜索商品
+f -> b : search
+b -> trans : 俄转中
+trans -> b : 获得中文关键词
+
+==查询或初始化-用户已有历史商品浏览偏好==
+alt 用户已有历史商品浏览偏好
+    else
+    alt calUserGoodsPreference
+    else 数据缓存在Redis中
+        b -> r : get
+        r -> b : return
+    else 数据不在Redis中
+        b -> m : select
+        m -> b : return
+        b -> r : set
+    end
+else 用户无历史商品浏览偏好
+    b -> b : 初始化initUserGoodsPreference
+    b -> r : set 
+end
+
+==基于关键词搜索商品列表==
+b -> b : 计算淘宝、拼多多、京东三者商品搜索数量（默认1:1:1)
+alt 分别搜索商品（先从es，数量不足时调用第三方API）
+else es中满足筛选阈值的商品数量足够
+b -> e : search by keyWord
+e -> b : return GoodsList
+else 数量不足
+b -> api : cal by keyWord
+api -> b : return GoodsList
+    alt 线程池同步
+        b -> e : 异步同步第三方API商品进行缓存
+    end
+end
+b -> b : 将不同来源商品的显示顺序进行resort（打乱）
+
+b -> trans : return 商品列表（中文）
+trans -> b : return 商品列表（俄文）
+b -> f 
+f -> u
+
+==定时任务同步Redis -> MySQL==
+alt 每1分钟自动同步一次数据
+    t -> r : 获得用户浏览数据变更List
+    alt for userId : List
+        t -> r : 通过userId获得偏好数据
+        r -> t : return
+        t -> m : update数据
+        m -> t : return
+    end
+    t -> r : 清空用户浏览数据变更List
+end
+
+@enduml

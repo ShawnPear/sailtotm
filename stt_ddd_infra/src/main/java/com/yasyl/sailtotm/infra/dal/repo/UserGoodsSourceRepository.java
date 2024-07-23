@@ -36,6 +36,5 @@ public class UserGoodsSourceRepository implements IUserGoodsSourceRepository {
     @Override
     public boolean insertUserGoodsSource(GoodSourceStaticDO goodSourceStaticDO) {
         return mapper.insert(UserGoodsSourceDalConverter.convert2UserGoodsSourcePreferencePO(goodSourceStaticDO));
-        ;
     }
 }

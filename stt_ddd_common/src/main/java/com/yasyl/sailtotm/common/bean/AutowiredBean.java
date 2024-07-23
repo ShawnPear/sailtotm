@@ -1,4 +1,4 @@
-package com.yasyl.sailtotm.properties;
+package com.yasyl.sailtotm.common.bean;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -9,13 +9,11 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AutowiredBean {
-
     @Bean
     public JsonMapper jsonMapper() {
         JsonMapper jsonMapper = new JsonMapper();

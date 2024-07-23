@@ -84,13 +84,9 @@ public class SearchController {
         }
         TaobaoGoodDetailVO raw = null;
         try {
-            System.out.println(1);
             TaobaoSearchDetailDTO taobaoSearchDetailDTO = TaobaoSearchDetailDTO.builder().numIid(product_id).build();
-            System.out.println(2);
             TaobaoGoodDetailRawJsonVO taobaoGoodDetail = oneBoundApiService.taoBaoSearchDetail(taobaoSearchDetailDTO);
-            System.out.println(3);
             raw = oneBoundApiService.parseToDetail(taobaoGoodDetail.getDetailJson());
-            System.out.println(4);
             raw = oneBoundApiService.translatorDetail(raw);
         } catch (OneBoundApiException | JsonProcessingException e) {
             e.printStackTrace();

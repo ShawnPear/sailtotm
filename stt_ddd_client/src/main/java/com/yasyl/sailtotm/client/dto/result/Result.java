@@ -1,6 +1,5 @@
 package com.yasyl.sailtotm.client.dto.result;
 
-import com.yasyl.sailtotm.common.constant.MessageConstant;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -38,8 +37,8 @@ public class Result<T> implements Serializable {
     }
 
     public static <T> Result<T> status(Boolean status) {
-        String error = MessageConstant.FAIL;
-        String success = MessageConstant.SUCCESS;
+        String error = "fail";
+        String success = "success";
         if (status == null || !status) {
             return Result.error(error);
         }

@@ -1,0 +1,95 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+participant 用户 as u
+participant 前端 as f
+participant 语言转换中俄互译 as trans
+participant 后端 as b
+participant SpringTask as t
+participant Redis as r
+participant MySQL as m
+participant Elasticsearch as e
+participant 第三方API as api
+
+u -> f : 登录首页
+f -> b : recommend
+
+==获取5个用户Top搜索关键词==
+b -> m : insert with sort limit 5
+m -> b
+
+==查询或初始化-用户已有历史商品浏览偏好==
+alt 用户已有历史商品浏览偏好
+    else
+    alt calUserGoodsPreference
+    else 数据缓存在Redis中
+        b -> r : get
+        r -> b : return
+    else 数据不在Redis中
+        b -> m : select
+        m -> b : return
+        b -> r : set
+    end
+else 用户无历史商品浏览偏好
+    b -> b : 初始化initUserGoodsPreference
+    b -> r : set 
+end
+
+==基于关键词搜索商品列表==
+b -> b : 计算淘宝、拼多多、京东三者商品搜索数量（默认1:1:1)
+alt 分别搜索商品（先从es，数量不足时调用第三方API）
+else es中满足筛选阈值的商品数量足够
+b -> e : search by keyWord
+e -> b : return GoodsList
+else 数量不足
+b -> api : cal by keyWord
+api -> b : return GoodsList
+    alt 线程池同步
+        b -> e : 异步同步第三方API商品进行缓存
+    end
+end
+
+==用户搜索关键词不足5个，调用兜底方案==
+alt 根据用户搜索历史个性化推荐，搜索词少于5个
+b -> r : 请求200个高频商品的id（zset）（分页返回，每40一页）
+b -> r : 根据id从redis中，获取所有用户搜索的高频商品中的前200个（分页返回，每40一页）
+r -> b : 高频商品list
+end
+
+b -> b : 将不同来源商品的显示顺序进行resort（打乱）
+
+b -> trans : return 商品列表（中文）
+trans -> b : return 商品列表（俄文）
+b -> f 
+f -> u
+
+
+==用户搜索,记录关键词==
+u -> f : 搜索
+f -> b : search
+b -> trans : 俄转中
+trans -> b : 获得中文关键词
+b -> m : 记录用户搜索的关键词以及累加搜索次数（MySQL)
+
+==用户查看商品详情，记录浏览历史==
+u -> f : 点击商品详情页
+f -> b : searchForDetail，请求详情页数据
+alt 先从缓存中搜索，再请求第三方api
+else redis中有数据
+b -> r : 从redis中获取数据
+else redis中没有数据
+b -> api : 向第三方api请求实时数据
+api -> b
+end
+alt 异步缓存，商品详情数据
+b -> redis : 缓存数据，记录商品详情数据（String）
+b -> reids : 记录某商品所有用户总的浏览次数（zset）
+end
+b -> trans : return 商品列表（中文）
+trans -> b : return 商品列表（俄文）
+b -> f 
+f -> u
+
+@enduml

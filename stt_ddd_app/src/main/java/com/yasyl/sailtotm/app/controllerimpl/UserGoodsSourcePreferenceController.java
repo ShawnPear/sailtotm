@@ -74,5 +74,6 @@ public class UserGoodsSourcePreferenceController implements IUserGoodsSourcePref
         } catch (UserGoodSourceException e1){
             processUserGoodsSourceService.initUserGoodsSource(userId);
         }
+        return Result.success();
     }
 }
