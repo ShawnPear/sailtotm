@@ -9,4 +9,11 @@
         <property name="maxPoolSize" value="200" />
         <property name="queueCapacity" value="200" />
     </bean>
+
+    <!--词典同步线程池-->
+    <bean id="translatorSyncThreadPool" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="5" />
+        <property name="maxPoolSize" value="200" />
+        <property name="queueCapacity" value="200" />
+    </bean>
 </beans>
