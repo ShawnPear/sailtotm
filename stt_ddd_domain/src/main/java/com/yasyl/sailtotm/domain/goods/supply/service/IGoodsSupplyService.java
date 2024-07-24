@@ -11,5 +11,5 @@ import com.yasyl.sailtotm.domain.goods.supply.model.response.GoodSimpleListRespo
  **/
 public interface IGoodsSupplyService {
 
-    GoodSimpleListResponse batchSearchGoodSimple(String keyWords, GoodQueryEnum mode,  int size,int page);
+    GoodSimpleListResponse batchSearchGoodSimple(String keyWords, GoodQueryEnum mode, int size, int page);
 }

@@ -20,6 +20,12 @@
 
         <dependency>
             <groupId>com.yasyl.sailtotm</groupId>
+            <artifactId>stt_ddd_domain</artifactId>
+            <version>2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.yasyl.sailtotm</groupId>
             <artifactId>stt-pojo</artifactId>
             <version>2.0</version>
         </dependency>

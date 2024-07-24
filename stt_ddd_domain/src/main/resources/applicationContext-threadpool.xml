@@ -16,4 +16,11 @@
         <property name="maxPoolSize" value="200" />
         <property name="queueCapacity" value="200" />
     </bean>
+
+    <!--es同步线程池-->
+    <bean id="goodsCacheSyncThreadPool" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="5" />
+        <property name="maxPoolSize" value="200" />
+        <property name="queueCapacity" value="200" />
+    </bean>
 </beans>

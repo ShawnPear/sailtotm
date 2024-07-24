@@ -2,6 +2,8 @@ package com.yasyl.sailtotm.domain.goods.supply.ability;
 
 import com.yasyl.sailtotm.domain.goods.supply.entity.GoodSimpleDO;
 
+import java.util.List;
+
 /**
  * @program: SailToTm
  * @description:
@@ -9,5 +11,7 @@ import com.yasyl.sailtotm.domain.goods.supply.entity.GoodSimpleDO;
  * @create: 2024-07-23 22:37
  **/
 public interface ICacheGoodsSimpleAbility {
-    GoodSimpleDO search(String numIid);
+    List<GoodSimpleDO> search(String key,int page,int size);
+
+    void sync(String key, List<GoodSimpleDO> goodSimpleDO);
 }

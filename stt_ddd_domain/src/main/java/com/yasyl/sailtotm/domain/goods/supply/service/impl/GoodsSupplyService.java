@@ -1,17 +1,17 @@
 package com.yasyl.sailtotm.domain.goods.supply.service.impl;
 
-import com.yasyl.sailtotm.domain.goods.supply.entity.GoodQueryEnum;
 import com.yasyl.sailtotm.common.exception.repo.RedisException;
 import com.yasyl.sailtotm.common.exception.repo.SearchException;
 import com.yasyl.sailtotm.domain.goods.supply.ability.ICacheGoodsSimpleAbility;
 import com.yasyl.sailtotm.domain.goods.supply.ability.INetworkGoodsSimpleAbility;
+import com.yasyl.sailtotm.domain.goods.supply.entity.GoodQueryEnum;
 import com.yasyl.sailtotm.domain.goods.supply.entity.GoodSimpleDO;
 import com.yasyl.sailtotm.domain.goods.supply.model.response.GoodSimpleListResponse;
 import com.yasyl.sailtotm.domain.goods.supply.service.IGoodsSupplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @program: SailToTm
@@ -30,26 +30,30 @@ public class GoodsSupplyService implements IGoodsSupplyService {
 
 
     @Override
-    public GoodSimpleListResponse batchSearchGoodSimple(String keyWords, GoodQueryEnum mode, int size,int page) {
-        GoodSimpleDO detailDO;
+    public GoodSimpleListResponse batchSearchGoodSimple(String keyWords, GoodQueryEnum mode, int size, int page) {
+        List<GoodSimpleDO> detailDO;
+        boolean getFromNetwork = false;
         if (mode == GoodQueryEnum.CACHE_ONLY || mode == GoodQueryEnum.COMBINE) {
             try {
-                detailDO = cacheGoodsSimpleAbility.search(keyWords);
+                detailDO = cacheGoodsSimpleAbility.search(keyWords,page,size);
             } catch (RedisException e) {
-                detailDO = networkGoodsSimpleAbility.search(keyWords);
+                detailDO = networkGoodsSimpleAbility.search(keyWords,page,size);
+                getFromNetwork = true;
             }
         } else if (mode == GoodQueryEnum.NETWORK_ONLY) {
-            detailDO = networkGoodsSimpleAbility.search(keyWords);
+            detailDO = networkGoodsSimpleAbility.search(keyWords,page,size);
+            getFromNetwork = true;
         } else {
             throw new SearchException("错误的搜索类型");
         }
         if (detailDO == null) {
             throw new SearchException("numIid错误");
         }
-        ArrayList<GoodSimpleDO> items = new ArrayList<>();
-        items.add(detailDO);
+        if (getFromNetwork) {
+            cacheGoodsSimpleAbility.sync(keyWords, detailDO);
+        }
         GoodSimpleListResponse response = GoodSimpleListResponse.builder()
-                .item(items)
+                .item(detailDO)
                 .build();
         return response;
     }

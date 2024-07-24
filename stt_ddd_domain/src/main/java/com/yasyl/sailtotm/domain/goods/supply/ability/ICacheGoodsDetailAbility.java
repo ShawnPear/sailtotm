@@ -9,7 +9,7 @@ import com.yasyl.sailtotm.domain.goods.supply.entity.GoodDetailDO;
  * @create: 2024-07-23 21:30
  **/
 public interface ICacheGoodsDetailAbility {
-    void store(GoodDetailDO goodDetailDO);
+    void store(String numIid,GoodDetailDO goodDetailDO);
 
     GoodDetailDO query(String numIid);
 }

@@ -1,11 +1,11 @@
 package com.yasyl.sailtotm.domain.goods.supply.service.impl;
 
-import com.yasyl.sailtotm.domain.goods.supply.entity.GoodQueryEnum;
 import com.yasyl.sailtotm.common.exception.repo.RedisException;
 import com.yasyl.sailtotm.common.exception.repo.SearchException;
 import com.yasyl.sailtotm.domain.goods.supply.ability.ICacheGoodsDetailAbility;
 import com.yasyl.sailtotm.domain.goods.supply.ability.INetworkGoodsDetailAbility;
 import com.yasyl.sailtotm.domain.goods.supply.entity.GoodDetailDO;
+import com.yasyl.sailtotm.domain.goods.supply.entity.GoodQueryEnum;
 import com.yasyl.sailtotm.domain.goods.supply.model.response.GoodDetailResponse;
 import com.yasyl.sailtotm.domain.goods.supply.service.IGoodsDetailSupplyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,16 +51,22 @@ public class GoodsDetailSupplyService implements IGoodsDetailSupplyService {
 
     private GoodDetailDO getDetailDO(String numIid, GoodQueryEnum mode) {
         GoodDetailDO detailDO;
+        boolean getFromNetwork = false;
         if (mode == GoodQueryEnum.CACHE_ONLY || mode == GoodQueryEnum.COMBINE) {
             try {
                 detailDO = cacheGoodsDetailAbility.query(numIid);
             } catch (RedisException e) {
                 detailDO = networkGoodsDetailAbility.query(numIid);
+                getFromNetwork = true;
             }
         } else if (mode == GoodQueryEnum.NETWORK_ONLY) {
             detailDO = networkGoodsDetailAbility.query(numIid);
+            getFromNetwork = true;
         } else {
             throw new SearchException("错误的搜索类型");
+        }
+        if (getFromNetwork) {
+            cacheGoodsDetailAbility.store(numIid, detailDO);
         }
         return detailDO;
     }

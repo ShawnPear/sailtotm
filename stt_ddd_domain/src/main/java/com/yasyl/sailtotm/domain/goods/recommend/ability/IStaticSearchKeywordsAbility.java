@@ -1,5 +1,7 @@
 package com.yasyl.sailtotm.domain.goods.recommend.ability;
 
+import java.util.List;
+
 /**
  * @program: SailToTm
  * @description:
@@ -8,4 +10,6 @@ package com.yasyl.sailtotm.domain.goods.recommend.ability;
  **/
 public interface IStaticSearchKeywordsAbility {
     void staticKeywords(long userId, String keyWords);
+
+    List<String> getKeywords(long userId, int size);
 }

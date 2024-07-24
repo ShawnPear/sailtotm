@@ -33,9 +33,14 @@ public class GoodDetailDO {
     private Object propsList;
     private Skus skus;
     private String title;
+    private String titleZh;
     private String desc;
     private String descShort;
     private List<String> descImg;
+    private String nick;
+    private String nickZh;
+    private String picUrl;
+    private int sales;
 }
 
 // ItemImg.java

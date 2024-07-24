@@ -7,5 +7,5 @@ package com.yasyl.sailtotm.domain.goods.recommend.service;
  * @create: 2024-07-23 00:32
  **/
 public interface IRecommendBaseStaticService {
-    
+    void staticKeywords(long userId, String keyWords);
 }

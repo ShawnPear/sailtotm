@@ -14,12 +14,5 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class GoodSimpleListResponse {
-    private String dataFrom;
     private List<GoodSimpleDO> item;
-    private long itemWeightUpdate;
-    private String page;
-    private long pageSize;
-    private String pagecount;
-    private String realTotalResults;
-    private String totalResults;
 }
