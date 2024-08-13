@@ -1,5 +1,6 @@
 package com.yasyl.sailtotm.controller.user;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yasyl.sailtotm.annotation.CheckUserId;
 import com.yasyl.sailtotm.annotation.Translator;
 import com.yasyl.sailtotm.context.BaseContext;
@@ -10,7 +11,6 @@ import com.yasyl.sailtotm.enumeration.TranType;
 import com.yasyl.sailtotm.enumeration.TranslatorType;
 import com.yasyl.sailtotm.exception.user.OneBoundApiException;
 import com.yasyl.sailtotm.exception.user.ParamMissingException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yasyl.sailtotm.mapper.TranslatorDictMapper;
 import com.yasyl.sailtotm.result.Result;
 import com.yasyl.sailtotm.service.OneBoundApiService;
@@ -30,7 +30,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Objects;
 
-import static com.yasyl.sailtotm.constant.MessageConstant.*;
+import static com.yasyl.sailtotm.constant.MessageConstant.FAIL;
+import static com.yasyl.sailtotm.constant.MessageConstant.NO_DATA;
+import static com.yasyl.sailtotm.constant.MessageConstant.PARAM_MISSING_ERROR;
+import static com.yasyl.sailtotm.constant.MessageConstant.SUCCESS;
+import static com.yasyl.sailtotm.constant.MessageConstant.USER_SEARCH_SUCCESS;
 import static com.yasyl.sailtotm.enumeration.UserIdIntoType.STRING;
 
 @RestController

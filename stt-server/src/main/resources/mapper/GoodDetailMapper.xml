@@ -4,7 +4,7 @@
 <mapper namespace="com.yasyl.sailtotm.mapper.GoodDetailMapper">
     <insert id="insertGoodDetail" parameterType="com.yasyl.sailtotm.entity.Order.Good.GoodDetail" useGeneratedKeys="true"
             keyProperty="goodDetailId">
-        insert into sailtotmdb.GoodsDetails (quantity, num_iid, properties, properties_name)
+        insert into SAILTOTM.GoodsDetails (quantity, num_iid, properties, properties_name)
         values (#{quantity},
                 #{numIid},
                 #{properties},

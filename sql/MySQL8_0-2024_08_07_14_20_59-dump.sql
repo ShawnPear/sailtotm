@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 5.7.44, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.3.0, for macos14.2 (arm64)
 --
--- Host: localhost    Database: sailtotmdb
+-- Host: 127.0.0.1    Database: SAILTOTM
 -- ------------------------------------------------------
--- Server version	5.7.44-log
+-- Server version	8.3.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,16 +21,16 @@
 
 DROP TABLE IF EXISTS `CarrierInfo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `CarrierInfo` (
-  `carrier_id` int(11) NOT NULL,
-  `transport_id` int(11) NOT NULL,
+  `carrier_id` int NOT NULL,
+  `transport_id` int NOT NULL,
   `carrier_number` varchar(50) DEFAULT NULL,
   `send_date` datetime DEFAULT NULL,
   `receive_date` datetime DEFAULT NULL,
   PRIMARY KEY (`carrier_id`,`transport_id`),
   KEY `fk_CarrierInfo_TransportTypes1_idx` (`transport_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,14 +48,14 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `CarriersPriceHistory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `CarriersPriceHistory` (
-  `history_id` int(11) NOT NULL,
-  `transport_id` int(11) NOT NULL,
+  `history_id` int NOT NULL,
+  `transport_id` int NOT NULL,
   `price` float NOT NULL,
   `date` datetime NOT NULL,
   PRIMARY KEY (`history_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,11 +73,11 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `CartItems`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `CartItems` (
-  `cart_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
+  `cart_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `quantity` int NOT NULL,
   `created_date` datetime NOT NULL,
   `num_iid` varchar(100) NOT NULL,
   `properties` varchar(3000) DEFAULT NULL,
@@ -85,7 +85,7 @@ CREATE TABLE `CartItems` (
   PRIMARY KEY (`cart_id`,`user_id`),
   KEY `fk_Cart_list_Users_idx` (`user_id`),
   KEY `num_iid` (`num_iid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,15 +103,15 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ChinaDeliverDetails`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ChinaDeliverDetails` (
-  `deliver_id` int(11) NOT NULL AUTO_INCREMENT,
+  `deliver_id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `phone_number` varchar(15) NOT NULL,
   `address` varchar(250) NOT NULL,
-  `status` int(11) NOT NULL,
+  `status` int NOT NULL,
   PRIMARY KEY (`deliver_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,11 +129,11 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ChinaDetails`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ChinaDetails` (
-  `china_detail_id` int(11) NOT NULL,
-  `deliver_id` int(11) NOT NULL,
-  `stuff_id` int(11) NOT NULL,
+  `china_detail_id` int NOT NULL,
+  `deliver_id` int NOT NULL,
+  `stuff_id` int NOT NULL,
   `taobao_order_id` varchar(50) DEFAULT NULL,
   `send_date` datetime DEFAULT NULL,
   `receive_date` datetime DEFAULT NULL,
@@ -143,7 +143,7 @@ CREATE TABLE `ChinaDetails` (
   PRIMARY KEY (`china_detail_id`,`deliver_id`,`stuff_id`),
   KEY `fk_ChinaDetails_ChinaDeliverDetails1_idx` (`deliver_id`),
   KEY `fk_ChinaDetails_Stuff1_idx` (`stuff_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,14 +161,14 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `EmailVerifiCode`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `EmailVerifiCode` (
-  `user_id` int(11) NOT NULL,
+  `user_id` int NOT NULL,
   `created_date` datetime DEFAULT NULL,
   `dead_date` datetime DEFAULT NULL,
-  `code` int(11) NOT NULL,
+  `code` int NOT NULL,
   PRIMARY KEY (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -186,15 +186,15 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ExchangeRate`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ExchangeRate` (
-  `rate_id` int(11) NOT NULL AUTO_INCREMENT,
+  `rate_id` int NOT NULL AUTO_INCREMENT,
   `rmb` float NOT NULL,
   `usd` float NOT NULL,
   `manat` float NOT NULL,
   `updated_date` datetime NOT NULL,
   PRIMARY KEY (`rate_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -213,16 +213,16 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `FavouriteItems`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `FavouriteItems` (
-  `favourite_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
+  `favourite_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
   `created_date` datetime NOT NULL,
   `num_iid` varchar(100) NOT NULL,
   PRIMARY KEY (`favourite_id`,`user_id`),
   KEY `fk_Favourite_list_Users1_idx` (`user_id`),
   KEY `num_iid` (`num_iid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -240,16 +240,16 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `GoodsDetails`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `GoodsDetails` (
-  `good_detail_id` int(11) NOT NULL AUTO_INCREMENT,
-  `quantity` int(11) NOT NULL,
+  `good_detail_id` int NOT NULL AUTO_INCREMENT,
+  `quantity` int NOT NULL,
   `num_iid` varchar(100) NOT NULL,
   `properties` text,
   `properties_name` text,
   PRIMARY KEY (`good_detail_id`),
   KEY `fk_Goods_details` (`num_iid`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -268,10 +268,10 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `HistoryItems`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `HistoryItems` (
-  `history_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
+  `history_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
   `num_iid` varchar(100) NOT NULL,
   `created_date` datetime NOT NULL,
   PRIMARY KEY (`history_id`,`user_id`),
@@ -279,7 +279,7 @@ CREATE TABLE `HistoryItems` (
   KEY `HistoryItems_user_id_index` (`user_id`),
   KEY `fk_History_list_Users1_idx` (`user_id`),
   KEY `num_iid` (`num_iid`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -298,12 +298,12 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `InterestRate`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `InterestRate` (
-  `interest_id` int(11) NOT NULL,
+  `interest_id` int NOT NULL,
   `interest_rate` float NOT NULL,
   PRIMARY KEY (`interest_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -322,12 +322,12 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `MembershipBalanceHistoryType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `MembershipBalanceHistoryType` (
-  `type_id` int(11) NOT NULL,
+  `type_id` int NOT NULL,
   `type` varchar(50) NOT NULL,
   PRIMARY KEY (`type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -346,16 +346,16 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `MembershipUsers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `MembershipUsers` (
-  `membership_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
+  `membership_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
   `balance` float NOT NULL,
   `password` varchar(250) NOT NULL,
   `created_date` datetime NOT NULL,
   PRIMARY KEY (`membership_id`,`user_id`),
   KEY `fk_MembershipUsers_Users1_idx` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10002 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=10002 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -374,20 +374,20 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `MembershipUsersBalanceHistory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `MembershipUsersBalanceHistory` (
-  `history_id` int(11) NOT NULL AUTO_INCREMENT,
-  `membership_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `stuff_id` int(11) NOT NULL DEFAULT '0',
-  `status_id` int(11) NOT NULL,
+  `history_id` int NOT NULL AUTO_INCREMENT,
+  `membership_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `stuff_id` int NOT NULL DEFAULT '0',
+  `status_id` int NOT NULL,
   `change` float NOT NULL,
   `created_date` datetime NOT NULL,
   PRIMARY KEY (`history_id`,`membership_id`,`user_id`,`stuff_id`,`status_id`),
   KEY `fk_MembershipUsersBalanceHistory_MembershipUsers1_idx` (`membership_id`,`user_id`),
   KEY `fk_Membership_users_history_Membership_history_status1_idx` (`status_id`),
   KEY `fk_Membership_users_history_Stuff1_idx` (`stuff_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -406,7 +406,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `OneBoundApiTaobaoProduct`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `OneBoundApiTaobaoProduct` (
   `created_date` datetime NOT NULL,
   `detail_url` varchar(2000) DEFAULT NULL,
@@ -414,15 +414,15 @@ CREATE TABLE `OneBoundApiTaobaoProduct` (
   `pic_url` varchar(2000) NOT NULL,
   `price` float NOT NULL,
   `promotion_price` float NOT NULL,
-  `sales` int(11) DEFAULT NULL,
+  `sales` int DEFAULT NULL,
   `seller_nick` varchar(100) DEFAULT NULL,
   `title` varchar(1000) NOT NULL,
   `q` varchar(200) NOT NULL,
-  `status` int(11) NOT NULL DEFAULT '1',
+  `status` int NOT NULL DEFAULT '1',
   `title_zh` varchar(1000) DEFAULT NULL,
   `seller_nick_zh` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`num_iid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -436,54 +436,23 @@ INSERT INTO `OneBoundApiTaobaoProduct` VALUES ('2024-03-19 15:01:18','https://it
 UNLOCK TABLES;
 
 --
--- Table structure for table `OrderStatusChangeHIstory`
---
-
-DROP TABLE IF EXISTS `OrderStatusChangeHIstory`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `OrderStatusChangeHIstory` (
-  `order_status_change_history_id` int(11) NOT NULL AUTO_INCREMENT,
-  `created_date` datetime DEFAULT NULL,
-  `order_id` int(11) DEFAULT NULL,
-  `stuff_id` int(11) DEFAULT NULL,
-  `old_status` int(11) DEFAULT NULL,
-  `new_status` int(11) DEFAULT NULL,
-  PRIMARY KEY (`order_status_change_history_id`),
-  KEY `OrderStatusChangeHIstory_OrdersType_type_id_fk` (`old_status`),
-  KEY `OrderStatusChangeHIstory_OrdersType_type_id_fk2` (`new_status`),
-  KEY `OrderStatusChangeHIstory_Orders_order_id_fk` (`order_id`),
-  KEY `OrderStatusChangeHIstory_Stuff_stuff_id_fk` (`stuff_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `OrderStatusChangeHIstory`
---
-
-LOCK TABLES `OrderStatusChangeHIstory` WRITE;
-/*!40000 ALTER TABLE `OrderStatusChangeHIstory` DISABLE KEYS */;
-/*!40000 ALTER TABLE `OrderStatusChangeHIstory` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `Orders`
 --
 
 DROP TABLE IF EXISTS `Orders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Orders` (
-  `order_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL,
-  `stuff_id` int(11) DEFAULT '0',
-  `good_detail_id` int(11) DEFAULT NULL,
-  `transport_detail_id` int(11) DEFAULT NULL,
-  `china_detail_id` int(11) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
-  `pickup_code` int(11) DEFAULT NULL,
+  `order_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `stuff_id` int DEFAULT '0',
+  `good_detail_id` int DEFAULT NULL,
+  `transport_detail_id` int DEFAULT NULL,
+  `china_detail_id` int DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
+  `pickup_code` int DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
-  `pay_sum_id` int(11) DEFAULT NULL,
+  `pay_sum_id` int DEFAULT NULL,
   `pay_expect` float DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   PRIMARY KEY (`order_id`),
@@ -491,7 +460,7 @@ CREATE TABLE `Orders` (
   KEY `fk_Orders_ChinaDetails1_idx` (`china_detail_id`),
   KEY `fk_Orders_GoodsDetails1_idx` (`good_detail_id`),
   KEY `fk_Orders_OrdersType1_idx` (`status_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100003 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=100003 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -505,17 +474,48 @@ INSERT INTO `Orders` VALUES (100000,100001,0,13,13,NULL,1,NULL,'2024-03-16 11:48
 UNLOCK TABLES;
 
 --
+-- Table structure for table `OrderStatusChangeHIstory`
+--
+
+DROP TABLE IF EXISTS `OrderStatusChangeHIstory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `OrderStatusChangeHIstory` (
+  `order_status_change_history_id` int NOT NULL AUTO_INCREMENT,
+  `created_date` datetime DEFAULT NULL,
+  `order_id` int DEFAULT NULL,
+  `stuff_id` int DEFAULT NULL,
+  `old_status` int DEFAULT NULL,
+  `new_status` int DEFAULT NULL,
+  PRIMARY KEY (`order_status_change_history_id`),
+  KEY `OrderStatusChangeHIstory_OrdersType_type_id_fk` (`old_status`),
+  KEY `OrderStatusChangeHIstory_OrdersType_type_id_fk2` (`new_status`),
+  KEY `OrderStatusChangeHIstory_Orders_order_id_fk` (`order_id`),
+  KEY `OrderStatusChangeHIstory_Stuff_stuff_id_fk` (`stuff_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `OrderStatusChangeHIstory`
+--
+
+LOCK TABLES `OrderStatusChangeHIstory` WRITE;
+/*!40000 ALTER TABLE `OrderStatusChangeHIstory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `OrderStatusChangeHIstory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `OrdersType`
 --
 
 DROP TABLE IF EXISTS `OrdersType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `OrdersType` (
-  `type_id` int(11) NOT NULL,
+  `type_id` int NOT NULL,
   `type` varchar(50) NOT NULL,
   PRIMARY KEY (`type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -533,20 +533,20 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `PayHistory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `PayHistory` (
-  `pay_id` int(11) NOT NULL AUTO_INCREMENT,
+  `pay_id` int NOT NULL AUTO_INCREMENT,
   `created_date` datetime NOT NULL,
   `pay_amount` float NOT NULL,
-  `pay_type` int(11) NOT NULL,
-  `stuff_id` int(11) NOT NULL DEFAULT '1000',
-  `pay_sum_id` int(11) DEFAULT NULL,
-  `pay_out_or_in` int(11) DEFAULT NULL,
+  `pay_type` int NOT NULL,
+  `stuff_id` int NOT NULL DEFAULT '1000',
+  `pay_sum_id` int DEFAULT NULL,
+  `pay_out_or_in` int DEFAULT NULL,
   PRIMARY KEY (`pay_id`),
   KEY `PayHistory_PaySum_pay_sum_id_fk` (`pay_sum_id`),
   KEY `PayHistory_PayType_pay_type_id_fk` (`pay_type`),
   KEY `PayHistory_Stuff_stuff_id_fk` (`stuff_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -564,15 +564,15 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `PaySum`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `PaySum` (
-  `pay_sum_id` int(11) NOT NULL AUTO_INCREMENT,
+  `pay_sum_id` int NOT NULL AUTO_INCREMENT,
   `pay_now` float DEFAULT NULL,
   `pay_expect` float DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   PRIMARY KEY (`pay_sum_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -591,12 +591,12 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `PayType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `PayType` (
-  `pay_type_id` int(11) DEFAULT NULL,
+  `pay_type_id` int DEFAULT NULL,
   `pay_type` varchar(100) DEFAULT NULL,
   UNIQUE KEY `PayType_pk` (`pay_type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -615,12 +615,12 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `PickUpBase`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `PickUpBase` (
-  `pick_up_code` int(11) NOT NULL DEFAULT '0',
+  `pick_up_code` int NOT NULL DEFAULT '0',
   `enable` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`pick_up_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -639,19 +639,19 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ProgressDetailsInfo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ProgressDetailsInfo` (
-  `progress_id` int(11) NOT NULL,
-  `new_users_number` int(11) NOT NULL,
-  `new_orders_number` int(11) NOT NULL,
-  `active_users_number` int(11) NOT NULL,
-  `search_number` int(11) NOT NULL,
-  `search_items_number` int(11) NOT NULL,
-  `new_membership_users` int(11) NOT NULL,
+  `progress_id` int NOT NULL,
+  `new_users_number` int NOT NULL,
+  `new_orders_number` int NOT NULL,
+  `active_users_number` int NOT NULL,
+  `search_number` int NOT NULL,
+  `search_items_number` int NOT NULL,
+  `new_membership_users` int NOT NULL,
   `total_order_sum` float NOT NULL,
   `created_date` date NOT NULL,
   PRIMARY KEY (`progress_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -669,12 +669,12 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `RoleType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `RoleType` (
-  `role_id` int(11) NOT NULL,
+  `role_id` int NOT NULL,
   `role` varchar(50) NOT NULL,
   PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -693,17 +693,17 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `SearchItems`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `SearchItems` (
-  `search_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
+  `search_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
   `search` varchar(100) NOT NULL,
-  `searched_times` int(11) NOT NULL,
+  `searched_times` int NOT NULL,
   `created_date` datetime NOT NULL,
   `updated_date` datetime NOT NULL,
   PRIMARY KEY (`search_id`,`user_id`),
   KEY `fk_SearchItems_Users1_idx` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=329 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=329 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -717,20 +717,47 @@ INSERT INTO `SearchItems` VALUES (1,100001,'switch',3,'2023-11-29 22:00:00','202
 UNLOCK TABLES;
 
 --
+-- Table structure for table `SearchKeywordsHistory`
+--
+
+DROP TABLE IF EXISTS `SearchKeywordsHistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `SearchKeywordsHistory` (
+  `user_id` int NOT NULL,
+  `keyword` int NOT NULL,
+  `cnt` varchar(50) DEFAULT NULL,
+  `ctime` datetime DEFAULT NULL,
+  `utime` datetime DEFAULT NULL,
+  PRIMARY KEY (`user_id`,`keyword`),
+  KEY `SearchKeywordsHistory_user_id_keyword_cnt_index` (`user_id`,`keyword`,`cnt`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `SearchKeywordsHistory`
+--
+
+LOCK TABLES `SearchKeywordsHistory` WRITE;
+/*!40000 ALTER TABLE `SearchKeywordsHistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `SearchKeywordsHistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `StoreLocations`
 --
 
 DROP TABLE IF EXISTS `StoreLocations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `StoreLocations` (
-  `location_id` int(11) NOT NULL AUTO_INCREMENT,
+  `location_id` int NOT NULL AUTO_INCREMENT,
   `location` varchar(250) NOT NULL,
   `address` varchar(1000) DEFAULT NULL,
   `contact` varchar(1000) DEFAULT NULL,
   `worktime` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`location_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -749,12 +776,12 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Stuff`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Stuff` (
-  `stuff_id` int(11) NOT NULL AUTO_INCREMENT,
-  `role_id` int(11) NOT NULL,
-  `location_id` int(11) NOT NULL,
-  `status_id` int(11) NOT NULL,
+  `stuff_id` int NOT NULL AUTO_INCREMENT,
+  `role_id` int NOT NULL,
+  `location_id` int NOT NULL,
+  `status_id` int NOT NULL,
   `first_name` varchar(50) NOT NULL,
   `last_name` varchar(50) NOT NULL,
   `email` varchar(250) NOT NULL,
@@ -767,7 +794,7 @@ CREATE TABLE `Stuff` (
   KEY `fk_Stuff_RoleType1_idx` (`role_id`),
   KEY `fk_Stuff_StoreLocations1_idx` (`location_id`),
   KEY `fk_Stuff_Stuff_status1_idx` (`status_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1005 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1005 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -781,17 +808,52 @@ INSERT INTO `Stuff` VALUES (1004,1,1,1,'况个社门','动不才是思','6759195
 UNLOCK TABLES;
 
 --
+-- Table structure for table `Stuff_history`
+--
+
+DROP TABLE IF EXISTS `Stuff_history`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Stuff_history` (
+  `history_id` int NOT NULL AUTO_INCREMENT,
+  `stuff_id` int NOT NULL,
+  `role_id` int NOT NULL,
+  `location_id` int NOT NULL,
+  `status_id` int NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `email` varchar(250) NOT NULL,
+  `phone_number` varchar(15) NOT NULL,
+  `password` varchar(250) NOT NULL,
+  `created_date` datetime NOT NULL,
+  `resign_date` datetime NOT NULL,
+  `salary` float NOT NULL,
+  PRIMARY KEY (`history_id`,`stuff_id`),
+  KEY `fk_Stuff_history_Stuff1_idx` (`stuff_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Stuff_history`
+--
+
+LOCK TABLES `Stuff_history` WRITE;
+/*!40000 ALTER TABLE `Stuff_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Stuff_history` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `StuffStatusType`
 --
 
 DROP TABLE IF EXISTS `StuffStatusType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `StuffStatusType` (
-  `status_id` int(11) NOT NULL,
+  `status_id` int NOT NULL,
   `status` varchar(50) NOT NULL,
   PRIMARY KEY (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -805,56 +867,21 @@ INSERT INTO `StuffStatusType` VALUES (1,'working'),(2,'leave'),(3,'fall_ill'),(4
 UNLOCK TABLES;
 
 --
--- Table structure for table `Stuff_history`
---
-
-DROP TABLE IF EXISTS `Stuff_history`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Stuff_history` (
-  `history_id` int(11) NOT NULL AUTO_INCREMENT,
-  `stuff_id` int(11) NOT NULL,
-  `role_id` int(11) NOT NULL,
-  `location_id` int(11) NOT NULL,
-  `status_id` int(11) NOT NULL,
-  `first_name` varchar(50) NOT NULL,
-  `last_name` varchar(50) NOT NULL,
-  `email` varchar(250) NOT NULL,
-  `phone_number` varchar(15) NOT NULL,
-  `password` varchar(250) NOT NULL,
-  `created_date` datetime NOT NULL,
-  `resign_date` datetime NOT NULL,
-  `salary` float NOT NULL,
-  PRIMARY KEY (`history_id`,`stuff_id`),
-  KEY `fk_Stuff_history_Stuff1_idx` (`stuff_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Stuff_history`
---
-
-LOCK TABLES `Stuff_history` WRITE;
-/*!40000 ALTER TABLE `Stuff_history` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Stuff_history` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `TranslatorDict`
 --
 
 DROP TABLE IF EXISTS `TranslatorDict`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `TranslatorDict` (
-  `translator_id` int(11) NOT NULL AUTO_INCREMENT,
+  `translator_id` int NOT NULL AUTO_INCREMENT,
   `zh` varchar(3000) DEFAULT NULL,
   `ru` varchar(3000) DEFAULT NULL,
   PRIMARY KEY (`translator_id`),
   KEY `TranslatorDict_ru_index` (`ru`(255)),
   KEY `TranslatorDict_translator_id_index` (`translator_id`),
   KEY `TranslatorDict_zh_index` (`zh`(255))
-) ENGINE=InnoDB AUTO_INCREMENT=193 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=193 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -873,20 +900,20 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `TransportDetails`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `TransportDetails` (
-  `transport_detail_id` int(11) NOT NULL AUTO_INCREMENT,
-  `stuff_id` int(11) DEFAULT NULL,
-  `carrier_id` int(11) DEFAULT NULL,
-  `transport_id` int(11) DEFAULT NULL,
-  `location_id` int(11) DEFAULT NULL,
-  `width` int(11) DEFAULT NULL,
-  `height` int(11) DEFAULT NULL,
-  `length` int(11) DEFAULT NULL,
+  `transport_detail_id` int NOT NULL AUTO_INCREMENT,
+  `stuff_id` int DEFAULT NULL,
+  `carrier_id` int DEFAULT NULL,
+  `transport_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `width` int DEFAULT NULL,
+  `height` int DEFAULT NULL,
+  `length` int DEFAULT NULL,
   `weight` float DEFAULT NULL,
   `estimated_transport_cost` float DEFAULT NULL,
   `transport_cost` float DEFAULT NULL,
-  `transport_status` int(11) NOT NULL DEFAULT '0',
+  `transport_status` int NOT NULL DEFAULT '0',
   `transport_cost_paid_date` datetime DEFAULT NULL,
   `measure_date` datetime DEFAULT NULL,
   PRIMARY KEY (`transport_detail_id`),
@@ -895,7 +922,7 @@ CREATE TABLE `TransportDetails` (
   KEY `fk_TransportDetails_CarrierInfo1_idx` (`carrier_id`,`transport_id`),
   KEY `fk_TransportDetails_StoreLocations1_idx` (`location_id`),
   KEY `fk_TransportDetails_Stuff1_idx` (`stuff_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -914,14 +941,14 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `TransportTypes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `TransportTypes` (
-  `transport_id` int(11) NOT NULL AUTO_INCREMENT,
+  `transport_id` int NOT NULL AUTO_INCREMENT,
   `transport` varchar(250) NOT NULL,
   `price` float NOT NULL,
   `updated_date` datetime NOT NULL,
   PRIMARY KEY (`transport_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100003 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=100003 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -935,14 +962,43 @@ INSERT INTO `TransportTypes` VALUES (100001,'By Plane',60,'2023-12-01 12:05:00')
 UNLOCK TABLES;
 
 --
+-- Table structure for table `UserGoodsSourcePrefernce`
+--
+
+DROP TABLE IF EXISTS `UserGoodsSourcePrefernce`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `UserGoodsSourcePrefernce` (
+  `user_id` int NOT NULL,
+  `tb` int DEFAULT NULL,
+  `pdd` float DEFAULT NULL,
+  `jd` datetime DEFAULT NULL,
+  `valid` int DEFAULT NULL,
+  `ctime` int DEFAULT NULL,
+  `utime` int DEFAULT NULL,
+  `common_ext` varchar(2048) DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `UserGoodsSourcePrefernce`
+--
+
+LOCK TABLES `UserGoodsSourcePrefernce` WRITE;
+/*!40000 ALTER TABLE `UserGoodsSourcePrefernce` DISABLE KEYS */;
+/*!40000 ALTER TABLE `UserGoodsSourcePrefernce` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `Users`
 --
 
 DROP TABLE IF EXISTS `Users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Users` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL AUTO_INCREMENT,
   `password` varchar(250) NOT NULL,
   `first_name` varchar(50) NOT NULL,
   `last_name` varchar(50) NOT NULL,
@@ -954,7 +1010,7 @@ CREATE TABLE `Users` (
   `user_name` varchar(500) NOT NULL,
   `enable` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100007 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=100007 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -966,14 +1022,6 @@ LOCK TABLES `Users` WRITE;
 INSERT INTO `Users` VALUES (100001,'e10adc3949ba59abbe56e057f20f883e','几表光天参','九一展众国','675919543@qq.com',NULL,NULL,'2023-11-28 08:14:47','2023-11-28 08:14:47','九一展众国 几表光天参',1),(100002,'e10adc3949ba59abbe56e057f20f883e','被何看中','声习管好所','67591954@qq.com',NULL,NULL,'2023-11-28 17:01:25','2023-11-28 17:01:25','声习管好所 被何看中',1),(100003,'e10adc3949ba59abbe56e057f20f883e','Mike','Kurbanazarov','mkurbanazarov1@gmail.com',NULL,NULL,'2023-11-29 10:50:23','2023-11-29 10:50:23','Kurbanazarov Mike',1),(100004,'c33367701511b4f6020ec61ded352059','李浩宇','李','mkurbanazarow@inbox.ru',NULL,NULL,'2023-12-04 01:18:01','2023-12-04 01:18:01','李 李浩宇',1),(100005,'202cb962ac59075b964b07152d234b70','两改位理','后率般因','i.pnxvygkoz@qq.com',NULL,NULL,'2024-03-18 03:39:18','2024-03-18 03:39:18','后率般因 两改位理',0),(100006,'e10adc3949ba59abbe56e057f20f883e','Test','test','test@sailtotm.com',NULL,NULL,'2024-03-20 23:25:36','2024-03-20 23:25:36','test Test',0);
 /*!40000 ALTER TABLE `Users` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping events for database 'sailtotmdb'
---
-
---
--- Dumping routines for database 'sailtotmdb'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -984,4 +1032,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-21  0:28:54
+-- Dump completed on 2024-08-07 14:20:59

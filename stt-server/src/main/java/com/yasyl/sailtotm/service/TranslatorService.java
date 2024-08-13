@@ -1,10 +1,10 @@
 package com.yasyl.sailtotm.service;
 
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.yasyl.sailtotm.component.TranslatorMicrosoftPost;
 import com.yasyl.sailtotm.entity.TranslatorDict;
 import com.yasyl.sailtotm.enumeration.TranslatorType;
 import com.yasyl.sailtotm.exception.user.TranslatorException;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.yasyl.sailtotm.mapper.TranslatorDictMapper;
 import com.yasyl.sailtotm.properties.AzureTranslatorProperties;
 import lombok.extern.slf4j.Slf4j;

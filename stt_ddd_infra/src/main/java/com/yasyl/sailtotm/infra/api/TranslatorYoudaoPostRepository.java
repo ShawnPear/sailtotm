@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yasyl.sailtotm.common.enumeration.TranslatorType;
 import com.yasyl.sailtotm.domain.translation.repository.ITranslatorRepository;
-import com.yasyl.sailtotm.infra.api.properties.YoudaoTranslatorProperties;
+import com.yasyl.sailtotm.infra.api.properties.YoudaoTranslatorProp;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -31,10 +31,10 @@ import java.util.Map;
 
 @Component
 @Scope("prototype")
-public class TranslatorYoudaoPost implements ITranslatorRepository {
+public class TranslatorYoudaoPostRepository implements ITranslatorRepository {
 
     @Autowired
-    YoudaoTranslatorProperties properties;
+    YoudaoTranslatorProp properties;
     
     public static List<String> requestForHttp(String url, Map<String, String> params, String[] qArray) throws IOException {
 

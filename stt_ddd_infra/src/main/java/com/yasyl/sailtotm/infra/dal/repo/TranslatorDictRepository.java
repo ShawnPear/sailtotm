@@ -2,7 +2,7 @@ package com.yasyl.sailtotm.infra.dal.repo;
 
 import com.yasyl.sailtotm.domain.translation.entity.TranslatorDictDO;
 import com.yasyl.sailtotm.domain.translation.repository.ITranslatorDictRepository;
-import com.yasyl.sailtotm.infra.dal.dao.TranslatorDictMapper;
+import com.yasyl.sailtotm.infra.dal.dao.TranslatorDictDao;
 import com.yasyl.sailtotm.infra.dal.entity.TranslatorDict;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TranslatorDictRepository implements ITranslatorDictRepository {
     @Autowired
-    TranslatorDictMapper mapper;
+    TranslatorDictDao mapper;
 
     @Override
     public Boolean insert(TranslatorDictDO dict) {

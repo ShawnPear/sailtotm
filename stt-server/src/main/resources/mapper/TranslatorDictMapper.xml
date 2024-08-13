@@ -4,7 +4,7 @@
 <mapper namespace="com.yasyl.sailtotm.mapper.TranslatorDictMapper">
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="translatorId">
-        insert into sailtotmdb.TranslatorDict (zh, ru)
+        insert into SAILTOTM.TranslatorDict (zh, ru)
         values (#{zh}, #{ru})
     </insert>
 </mapper>

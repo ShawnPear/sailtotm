@@ -3,7 +3,7 @@ package com.yasyl.sailtotm.infra.dal.repo;
 import com.yasyl.sailtotm.domain.userpreference.entity.GoodSourceStaticDO;
 import com.yasyl.sailtotm.domain.userpreference.repository.dal.IUserGoodsSourceRepository;
 import com.yasyl.sailtotm.infra.dal.converter.UserGoodsSourceDalConverter;
-import com.yasyl.sailtotm.infra.dal.dao.UserGoodsSourcePrefernceMapper;
+import com.yasyl.sailtotm.infra.dal.dao.UserGoodsSourcePrefernceDao;
 import com.yasyl.sailtotm.infra.dal.entity.UserGoodsSourcePreferencePO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserGoodsSourceRepository implements IUserGoodsSourceRepository {
     @Autowired
-    private UserGoodsSourcePrefernceMapper mapper;
+    private UserGoodsSourcePrefernceDao mapper;
 
     @Override
     public GoodSourceStaticDO queryUserGoodsSource(long userId) {

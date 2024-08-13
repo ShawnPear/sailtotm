@@ -5,7 +5,7 @@
 
 
     <insert id="insert">
-        insert into sailtotmdb.FavouriteItems (user_id, num_iid, created_date)
+        insert into SAILTOTM.FavouriteItems (user_id, num_iid, created_date)
         VALUES (#{user_id},
                 #{num_iid},
                 #{created_time});
@@ -19,8 +19,8 @@
                p.promotion_price as promotion_price,
                p.price           as price,
                p.title           as title
-        from sailtotmdb.FavouriteItems h,
-             sailtotmdb.OneBoundApiTaobaoProduct p
+        from SAILTOTM.FavouriteItems h,
+             SAILTOTM.OneBoundApiTaobaoProduct p
         where h.user_id = #{user_id}
           and h.num_iid = p.num_iid
         order by h.created_date desc
@@ -33,8 +33,8 @@
                p.promotion_price as promotion_price,
                p.price           as price,
                p.title           as title
-        from sailtotmdb.FavouriteItems h,
-             sailtotmdb.OneBoundApiTaobaoProduct p
+        from SAILTOTM.FavouriteItems h,
+             SAILTOTM.OneBoundApiTaobaoProduct p
         where h.user_id = #{user_id}
           and h.num_iid = p.num_iid
           and p.title LIKE #{q}
@@ -48,8 +48,8 @@
                p.promotion_price as promotion_price,
                p.price           as price,
                p.title           as title
-        from sailtotmdb.FavouriteItems h,
-             sailtotmdb.OneBoundApiTaobaoProduct p
+        from SAILTOTM.FavouriteItems h,
+             SAILTOTM.OneBoundApiTaobaoProduct p
         where h.num_iid = #{numIid}
           and h.user_id = #{userId}
         limit 1;

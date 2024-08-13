@@ -30,6 +30,6 @@ public class CacheGoodsSimpleAbilityInstance implements ICacheGoodsSimpleAbility
 
     @Override
     public void sync(String key, List<GoodSimpleDO> goodSimpleDO) {
-
+        
     }
 }

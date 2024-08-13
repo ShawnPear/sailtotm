@@ -12,19 +12,19 @@ import java.util.List;
 @Mapper
 public interface StoreLocationMapper {
 
-    @Insert("insert into sailtotmdb.StoreLocations (location_id, location) " +
+    @Insert("insert into SAILTOTM.StoreLocations (location_id, location) " +
             "VALUES (#{locationId},#{location})")
     public Boolean add(StoreLocation storeLocation);
 
-    @Update("update sailtotmdb.StoreLocations set location = #{location} where location_id = #{locationId}")
+    @Update("update SAILTOTM.StoreLocations set location = #{location} where location_id = #{locationId}")
     public Boolean update(StoreLocation storeLocation);
 
-    @Select("select * from sailtotmdb.StoreLocations")
+    @Select("select * from SAILTOTM.StoreLocations")
     public List<StoreLocation> getAll();
 
-    @Select("select * from sailtotmdb.StoreLocations where location_id = #{id}")
+    @Select("select * from SAILTOTM.StoreLocations where location_id = #{id}")
     StoreLocation getAllById(String id);
 
-    @Select("select * from sailtotmdb.StoreLocations order by location_id")
+    @Select("select * from SAILTOTM.StoreLocations order by location_id")
     Page<StoreLocation> getAllPage();
 }

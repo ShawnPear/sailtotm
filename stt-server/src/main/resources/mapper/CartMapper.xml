@@ -4,7 +4,7 @@
 <mapper namespace="com.yasyl.sailtotm.mapper.CartMapper">
 
     <insert id="insert">
-        insert into sailtotmdb.CartItems (user_id, quantity, created_date, num_iid, properties, properties_name)
+        insert into SAILTOTM.CartItems (user_id, quantity, created_date, num_iid, properties, properties_name)
         VALUES (#{user_id},
                 #{quantity},
                 #{created_time},
@@ -24,8 +24,8 @@
                h.quantity        as quantity,
                h.properties      as properties,
                h.properties_name as propertiesName
-        from sailtotmdb.CartItems h,
-             sailtotmdb.OneBoundApiTaobaoProduct p
+        from SAILTOTM.CartItems h,
+             SAILTOTM.OneBoundApiTaobaoProduct p
         where h.user_id = #{user_id}
           and h.num_iid = p.num_iid
         order by h.created_date desc
@@ -41,8 +41,8 @@
                h.quantity        as quantity,
                h.properties      as properties,
                h.properties_name as propertiesName
-        from sailtotmdb.CartItems h,
-             sailtotmdb.OneBoundApiTaobaoProduct p
+        from SAILTOTM.CartItems h,
+             SAILTOTM.OneBoundApiTaobaoProduct p
         where h.user_id = #{user_id}
           and h.num_iid = p.num_iid
           and p.title LIKE #{q}
@@ -60,8 +60,8 @@
                h.quantity        as quantity,
                h.properties      as properties,
                h.properties_name as propertiesName
-        from sailtotmdb.CartItems h,
-             sailtotmdb.OneBoundApiTaobaoProduct p
+        from SAILTOTM.CartItems h,
+             SAILTOTM.OneBoundApiTaobaoProduct p
         where h.user_id = #{userId}
           and h.num_iid = #{numIid}
           and properties_name = #{propertiesName}

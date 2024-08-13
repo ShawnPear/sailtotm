@@ -1,5 +1,6 @@
 package com.yasyl.sailtotm.domain.goods.recommend.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yasyl.sailtotm.domain.goods.supply.entity.GoodSimpleDO;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  **/
 public interface IRecommendBaseProviderService {
 
-    List<GoodSimpleDO> recommendByHotBrowser(int page, int size);
+    List<GoodSimpleDO> recommendByHotBrowser(int page, int size) throws JsonProcessingException;
 
     List<GoodSimpleDO> recommendByPersonal(long userId, int page, int size);
 }

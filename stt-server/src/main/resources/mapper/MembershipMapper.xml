@@ -5,7 +5,7 @@
 
 
     <insert id="topUpMoneyAddHistory">
-        insert into sailtotmdb.MembershipUsersBalanceHistory (membership_id, user_id, stuff_id, status_id, `change`, created_date)
+        insert into SAILTOTM.MembershipUsersBalanceHistory (membership_id, user_id, stuff_id, status_id, `change`, created_date)
         values (#{membershipId},
                 #{userId},
                 #{stuffId},

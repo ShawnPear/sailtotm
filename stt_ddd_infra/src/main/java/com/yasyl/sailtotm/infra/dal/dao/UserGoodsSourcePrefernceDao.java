@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @create: 2024-07-20 22:44
  **/
 @Mapper
-public interface UserGoodsSourcePrefernceMapper {
+public interface UserGoodsSourcePrefernceDao {
     public Boolean insert(UserGoodsSourcePreferencePO po);
     public Boolean update(UserGoodsSourcePreferencePO po);
     public UserGoodsSourcePreferencePO queryByUserId(long userId);

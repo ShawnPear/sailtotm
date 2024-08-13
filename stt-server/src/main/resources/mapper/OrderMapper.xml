@@ -4,7 +4,7 @@
 <mapper namespace="com.yasyl.sailtotm.mapper.OrderMapper">
 
     <insert id="submit" keyProperty="orderId" useGeneratedKeys="true">
-        insert into sailtotmdb.Orders (user_id, good_detail_id, transport_detail_id, china_detail_id,
+        insert into SAILTOTM.Orders (user_id, good_detail_id, transport_detail_id, china_detail_id,
                                        status_id, pickup_code, created_date, pay_sum_id, updated_date)
         VALUES (#{userId},
                 #{goodDetailId},
@@ -38,12 +38,12 @@
                SL.address                  as locationAddress,
                SL.contact                  as locationContact,
                SL.worktime                 as locationWorktime
-        from sailtotmdb.Orders O
-                 LEFT JOIN sailtotmdb.PaySum PH on PH.pay_sum_id = O.pay_sum_id
-                 LEFT JOIN sailtotmdb.TransportDetails TD on TD.transport_detail_id = O.transport_detail_id
-                 LEFT JOIN sailtotmdb.GoodsDetails GD on GD.good_detail_id = O.good_detail_id
-                 LEFT JOIN sailtotmdb.OneBoundApiTaobaoProduct OBATP on OBATP.num_iid = GD.num_iid
-                 LEFT JOIN sailtotmdb.StoreLocations SL on TD.location_id = SL.location_id
+        from SAILTOTM.Orders O
+                 LEFT JOIN SAILTOTM.PaySum PH on PH.pay_sum_id = O.pay_sum_id
+                 LEFT JOIN SAILTOTM.TransportDetails TD on TD.transport_detail_id = O.transport_detail_id
+                 LEFT JOIN SAILTOTM.GoodsDetails GD on GD.good_detail_id = O.good_detail_id
+                 LEFT JOIN SAILTOTM.OneBoundApiTaobaoProduct OBATP on OBATP.num_iid = GD.num_iid
+                 LEFT JOIN SAILTOTM.StoreLocations SL on TD.location_id = SL.location_id
         where O.user_id = #{userId}
         order by O.created_date desc
     </select>
@@ -70,12 +70,12 @@
                SL.address                  as locationAddress,
                SL.contact                  as locationContact,
                SL.worktime                 as locationWorktime
-        from sailtotmdb.Orders O
-                 LEFT JOIN sailtotmdb.PaySum PH on PH.pay_sum_id = O.pay_sum_id
-                 LEFT JOIN sailtotmdb.TransportDetails TD on TD.transport_detail_id = O.transport_detail_id
-                 LEFT JOIN sailtotmdb.GoodsDetails GD on GD.good_detail_id = O.good_detail_id
-                 LEFT JOIN sailtotmdb.OneBoundApiTaobaoProduct OBATP on OBATP.num_iid = GD.num_iid
-                 LEFT JOIN sailtotmdb.StoreLocations SL on TD.location_id = SL.location_id
+        from SAILTOTM.Orders O
+                 LEFT JOIN SAILTOTM.PaySum PH on PH.pay_sum_id = O.pay_sum_id
+                 LEFT JOIN SAILTOTM.TransportDetails TD on TD.transport_detail_id = O.transport_detail_id
+                 LEFT JOIN SAILTOTM.GoodsDetails GD on GD.good_detail_id = O.good_detail_id
+                 LEFT JOIN SAILTOTM.OneBoundApiTaobaoProduct OBATP on OBATP.num_iid = GD.num_iid
+                 LEFT JOIN SAILTOTM.StoreLocations SL on TD.location_id = SL.location_id
         where O.user_id = #{userId}
           and OBATP.title LIKE #{q}
         order by O.created_date desc
@@ -108,13 +108,13 @@
                SL.address                  as locationAddress,
                SL.contact                  as locationContact,
                SL.worktime                 as locationWorktime
-        from sailtotmdb.Orders O
-                 LEFT JOIN sailtotmdb.PaySum PH on PH.pay_sum_id = O.pay_sum_id
-                 LEFT JOIN sailtotmdb.TransportDetails TD on TD.transport_detail_id = O.transport_detail_id
-                 LEFT JOIN sailtotmdb.GoodsDetails GD on GD.good_detail_id = O.good_detail_id
-                 LEFT JOIN sailtotmdb.OneBoundApiTaobaoProduct OBATP on OBATP.num_iid = GD.num_iid
-                 LEFT JOIN sailtotmdb.Users U on O.user_id = U.user_id
-                 LEFT JOIN sailtotmdb.StoreLocations SL on TD.location_id = SL.location_id
+        from SAILTOTM.Orders O
+                 LEFT JOIN SAILTOTM.PaySum PH on PH.pay_sum_id = O.pay_sum_id
+                 LEFT JOIN SAILTOTM.TransportDetails TD on TD.transport_detail_id = O.transport_detail_id
+                 LEFT JOIN SAILTOTM.GoodsDetails GD on GD.good_detail_id = O.good_detail_id
+                 LEFT JOIN SAILTOTM.OneBoundApiTaobaoProduct OBATP on OBATP.num_iid = GD.num_iid
+                 LEFT JOIN SAILTOTM.Users U on O.user_id = U.user_id
+                 LEFT JOIN SAILTOTM.StoreLocations SL on TD.location_id = SL.location_id
         where O.order_id = #{orderId}
     </select>
     <select id="getOrderInfoByUserId" resultType="com.yasyl.sailtotm.entity.OrderExtraInfo">
@@ -145,13 +145,13 @@
                SL.address                  as locationAddress,
                SL.contact                  as locationContact,
                SL.worktime                 as locationWorktime
-        from sailtotmdb.Orders O
-                 LEFT JOIN sailtotmdb.PaySum PH on PH.pay_sum_id = O.pay_sum_id
-                 LEFT JOIN sailtotmdb.TransportDetails TD on TD.transport_detail_id = O.transport_detail_id
-                 LEFT JOIN sailtotmdb.GoodsDetails GD on GD.good_detail_id = O.good_detail_id
-                 LEFT JOIN sailtotmdb.OneBoundApiTaobaoProduct OBATP on OBATP.num_iid = GD.num_iid
-                 LEFT JOIN sailtotmdb.Users U on O.user_id = U.user_id
-                 LEFT JOIN sailtotmdb.StoreLocations SL on TD.location_id = SL.location_id
+        from SAILTOTM.Orders O
+                 LEFT JOIN SAILTOTM.PaySum PH on PH.pay_sum_id = O.pay_sum_id
+                 LEFT JOIN SAILTOTM.TransportDetails TD on TD.transport_detail_id = O.transport_detail_id
+                 LEFT JOIN SAILTOTM.GoodsDetails GD on GD.good_detail_id = O.good_detail_id
+                 LEFT JOIN SAILTOTM.OneBoundApiTaobaoProduct OBATP on OBATP.num_iid = GD.num_iid
+                 LEFT JOIN SAILTOTM.Users U on O.user_id = U.user_id
+                 LEFT JOIN SAILTOTM.StoreLocations SL on TD.location_id = SL.location_id
         where O.user_id = #{userId}
         order by O.created_date desc
     </select>

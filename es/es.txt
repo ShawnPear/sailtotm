@@ -1,0 +1,43 @@
+PUT /one_bound_api_taobao_product
+{
+  "mappings": {
+    "properties": {
+      "q": {
+        "type": "text"
+      },
+      "titleZh": {
+        "type": "text"
+      },
+      "detailUrl": {
+        "type": "keyword"
+      },
+      "numIid": {
+        "type": "keyword"
+      },
+      "picUrl": {
+        "type": "keyword"
+      },
+      "price": {
+        "type": "keyword"
+      },
+      "promotionPrice": {
+        "type": "keyword"
+      },
+      "sales": {
+        "type": "long"
+      },
+      "sellerNick": {
+        "type": "keyword"
+      },
+      "title": {
+        "type": "text"
+      },
+      "sellerNickZh": {
+        "type": "keyword"
+      },
+      "created_date": {
+        "type": "date"
+      }
+    }
+  }
+}

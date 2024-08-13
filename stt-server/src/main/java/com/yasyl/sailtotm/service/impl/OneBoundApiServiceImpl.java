@@ -1,5 +1,7 @@
 package com.yasyl.sailtotm.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.yasyl.sailtotm.constant.MessageConstant;
 import com.yasyl.sailtotm.dto.Search.TaobaoSearchDTO;
 import com.yasyl.sailtotm.dto.Search.TaobaoSearchDetailDTO;
@@ -10,11 +12,7 @@ import com.yasyl.sailtotm.entity.TaobaoGoodList.TaobaoGoodDetail.Sku;
 import com.yasyl.sailtotm.entity.TaobaoGoodList.TaobaoGoodDetail.TaobaoGoodDetail;
 import com.yasyl.sailtotm.entity.TranslatorDict;
 import com.yasyl.sailtotm.enumeration.TranslatorType;
-import com.yasyl.sailtotm.es.OneBoundApiTaobaoProductESV1;
 import com.yasyl.sailtotm.exception.user.OneBoundApiException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.yasyl.sailtotm.mapper.TranslatorDictMapper;
 import com.yasyl.sailtotm.mapper.mapper_helper.OneBoundApiTaobaoProductMapperHelper;
 import com.yasyl.sailtotm.properties.OneBoundProperties;
 import com.yasyl.sailtotm.service.OneBoundApiService;
@@ -36,7 +34,11 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -47,15 +49,11 @@ public class OneBoundApiServiceImpl implements OneBoundApiService {
     @Autowired
     private TranslatorService translator;
     @Autowired
-    private OneBoundApiTaobaoProductESV1 productES;
-    @Autowired
     private OneBoundProperties obProperties;
     @Autowired
     private OneBoundApiTaobaoProductMapperHelper obApiTaobaoProductMapperHelper;
     @Autowired
     private CloseableHttpClient httpClient;
-    @Autowired
-    private TranslatorDictMapper dictMapper;
     @Autowired
     private SkuPropService skuPropService;
 

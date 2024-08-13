@@ -9,5 +9,7 @@ import java.util.List;
  * @create: 2024-07-24 08:48
  **/
 public interface IStaticHotBrowserAbility {
-    List<String> getHotBrowserId(int page, int size);
+    List<String> getHotBrowserNumIid(int page, int size);
+    
+    void saveHotBorowserNumIid(int numIid);
 }

@@ -2,6 +2,9 @@ package com.yasyl.sailtotm.domain.goods.supply.ability.instance;
 
 import com.yasyl.sailtotm.domain.goods.supply.ability.INetworkGoodsDetailAbility;
 import com.yasyl.sailtotm.domain.goods.supply.entity.GoodDetailDO;
+import com.yasyl.sailtotm.domain.goods.supply.repository.ISupplyGoodsDetailByThirdAPIRepository;
+import com.yasyl.sailtotm.domain.goods.supply.repository.req.GoodDetailRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,8 +15,13 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class NetworkGoodsDetailAbilityInstance implements INetworkGoodsDetailAbility {
+    @Autowired
+    ISupplyGoodsDetailByThirdAPIRepository supplyGoodsDetailByThirdAPIRepository;
+
     @Override
     public GoodDetailDO query(String numIid) {
-        return null;
+        return supplyGoodsDetailByThirdAPIRepository.queryGoodsDetailByCallAPI(GoodDetailRequest.builder()
+                .numIid(numIid)
+                .build());
     }
 }

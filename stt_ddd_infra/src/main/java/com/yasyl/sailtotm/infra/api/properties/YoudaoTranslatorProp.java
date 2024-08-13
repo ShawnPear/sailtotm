@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "translator.youdao-translator")
 @Data
-public class YoudaoTranslatorProperties {
+public class YoudaoTranslatorProp {
     private String YoudaoUrl;
     private String AppKey;
     private String AppSecret;

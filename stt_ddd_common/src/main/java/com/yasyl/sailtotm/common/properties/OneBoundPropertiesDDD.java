@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "onebound")
 @Data
-public class OneBoundProperties {
+public class OneBoundPropertiesDDD {
     private String key;
     private String secret;
 

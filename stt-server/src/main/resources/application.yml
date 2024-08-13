@@ -14,14 +14,12 @@ spring:
     elasticsearch:
       repositories:
         enabled: true
-  elasticsearch:
-    uris: 118.31.50.178:9200
   datasource:
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://118.31.50.178:3306/sailtotmdb?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
-      username: sailtotmdb
-      password: SailToTMDB123
+      url: jdbc:mysql://127.0.0.1:3306/SAILTOTM?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      username: root
+      password: root
   mail:
     host: smtp-mail.outlook.com
     port: 587
@@ -96,4 +94,5 @@ translator:
     App-Secret: 4VDJUrAfatUYAvbKA0vr8I72XqwWxZiT
 
 es:
+  allow_use_elasticsearch: false
   One-Bound-Api-Search-DB: one_bound_api_taobao_product

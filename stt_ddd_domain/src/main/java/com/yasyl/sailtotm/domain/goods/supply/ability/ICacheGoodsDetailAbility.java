@@ -1,5 +1,7 @@
 package com.yasyl.sailtotm.domain.goods.supply.ability;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.yasyl.sailtotm.common.exception.repo.RedisException;
 import com.yasyl.sailtotm.domain.goods.supply.entity.GoodDetailDO;
 
 /**
@@ -11,5 +13,5 @@ import com.yasyl.sailtotm.domain.goods.supply.entity.GoodDetailDO;
 public interface ICacheGoodsDetailAbility {
     void store(String numIid,GoodDetailDO goodDetailDO);
 
-    GoodDetailDO query(String numIid);
+    GoodDetailDO query(String numIid) throws JsonProcessingException, RedisException;
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.yasyl.sailtotm.infra.dal.dao.UserGoodsSourcePrefernceMapper">
+<mapper namespace="com.yasyl.sailtotm.infra.dal.dao.UserGoodsSourcePrefernceDao">
     <insert id="insert" keyProperty="userId" useGeneratedKeys="true">
         INSERT INTO UserGoodsSourcePrefernce (user_id, tb, pdd, jd, valid, ctime, utime, common_ext)
         VALUES (#{userId},

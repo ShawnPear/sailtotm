@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.yasyl.sailtotm.infra.dal.dao.TranslatorDictMapper">
+<mapper namespace="com.yasyl.sailtotm.infra.dal.dao.TranslatorDictDao">
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="translatorId">
-        insert into sailtotmdb.TranslatorDict (zh, ru)
+        insert into SAILTOTM.TranslatorDict (zh, ru)
         values (#{zh}, #{ru})
     </insert>
 </mapper>

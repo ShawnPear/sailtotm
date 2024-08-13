@@ -146,8 +146,13 @@ public abstract class TranslatorService {
         Set<Map.Entry<String, TranslatorDictDO>> tranDictEntry = tranDict.entrySet();
         for (Map.Entry<String, TranslatorDictDO> me : tranDictEntry) {
             userGoodsPreferenceSyncThreadPool.execute(() -> {
-                translatorDictRepository.insert(me.getValue());
-                translatorMapperLatch.countDown();
+                try {
+                    translatorDictRepository.insert(me.getValue());
+                } catch (Exception e) {
+
+                } finally {
+                    translatorMapperLatch.countDown();
+                }
             });
         }
 
@@ -164,8 +169,13 @@ public abstract class TranslatorService {
 
         for (TranslatorDictDO me : tranDict) {
             userGoodsPreferenceSyncThreadPool.execute(() -> {
-                translatorDictRepository.insert(me);
-                translatorMapperLatch.countDown();
+                try {
+                    translatorDictRepository.insert(me);
+                } catch (Exception e) {
+
+                } finally {
+                    translatorMapperLatch.countDown();
+                }
             });
         }
 

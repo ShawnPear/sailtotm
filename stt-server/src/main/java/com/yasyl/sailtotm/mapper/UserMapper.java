@@ -17,6 +17,6 @@ public interface UserMapper {
 
     Boolean updateByUserId(User user);
 
-    @Update("update sailtotmdb.Users set enable = #{enable} where email = #{email}")
+    @Update("update SAILTOTM.Users set enable = #{enable} where email = #{email}")
     Boolean updateActivateStatusByEmail(String email,int enable);
 }

@@ -4,7 +4,7 @@
 <mapper namespace="com.yasyl.sailtotm.mapper.ChinaDeliverDetailMapper">
 
     <update id="updateById">
-        update sailtotmdb.ChinaDeliverDetails
+        update SAILTOTM.ChinaDeliverDetails
         <set>
             <if test="name != null">name = #{name},</if>
             <if test="phoneNumber != null">phone_number = #{phoneNumber},</if>

@@ -1,5 +1,6 @@
 package com.yasyl.sailtotm.domain.goods.recommend.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yasyl.sailtotm.domain.goods.recommend.ability.IStaticHotBrowserAbility;
 import com.yasyl.sailtotm.domain.goods.recommend.ability.IStaticSearchKeywordsAbility;
 import com.yasyl.sailtotm.domain.goods.recommend.service.IRecommendBaseProviderService;
@@ -35,8 +36,8 @@ public class RecommendBaseProviderService implements IRecommendBaseProviderServi
     ICacheGoodsSimpleAbility cacheGoodsSimpleAbility;
 
     @Override
-    public List<GoodSimpleDO> recommendByHotBrowser(int page, int size) {
-        List<String> hotBrowserIdList = staticHotBrowserAbility.getHotBrowserId(page, size);
+    public List<GoodSimpleDO> recommendByHotBrowser(int page, int size) throws JsonProcessingException {
+        List<String> hotBrowserIdList = staticHotBrowserAbility.getHotBrowserNumIid(page, size);
         List<GoodSimpleDO> goodSimpleDOList = new ArrayList<>();
         for (String numIid : hotBrowserIdList) {
             GoodDetailDO detailDO = cacheGoodsDetailAbility.query(numIid);

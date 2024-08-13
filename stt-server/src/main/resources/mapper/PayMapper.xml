@@ -5,7 +5,7 @@
 
     <insert id="insertPayHistory" useGeneratedKeys="true"
             keyProperty="payId">
-        insert into sailtotmdb.PayHistory (created_date, pay_amount, pay_type, stuff_id, pay_sum_id,
+        insert into SAILTOTM.PayHistory (created_date, pay_amount, pay_type, stuff_id, pay_sum_id,
                                            pay_out_or_in)
         values (#{createdDate},
                 #{payAmount},
@@ -16,7 +16,7 @@
     </insert>
 
     <insert id="generatePaySum" useGeneratedKeys="true" keyProperty="paySumId">
-        insert into sailtotmdb.PaySum (pay_now, pay_expect, created_date, updated_date)
+        insert into SAILTOTM.PaySum (pay_now, pay_expect, created_date, updated_date)
         values (#{payNow},
                 #{payExpect},
                 #{createdDate},
@@ -24,14 +24,14 @@
     </insert>
 
     <update id="checkPaySum">
-        update sailtotmdb.PaySum
-        set pay_now      = (((select IFNULL(sum(sailtotmdb.PayHistory.pay_amount), 0)
-                              from sailtotmdb.PayHistory
+        update SAILTOTM.PaySum
+        set pay_now      = (((select IFNULL(sum(SAILTOTM.PayHistory.pay_amount), 0)
+                              from SAILTOTM.PayHistory
                               where PayHistory.pay_sum_id = #{paySumId}
                                 and pay_out_or_in = 1)
             -
-                             (select IFNULL(sum(sailtotmdb.PayHistory.pay_amount), 0)
-                              from sailtotmdb.PayHistory
+                             (select IFNULL(sum(SAILTOTM.PayHistory.pay_amount), 0)
+                              from SAILTOTM.PayHistory
                               where PayHistory.pay_sum_id = #{paySumId}
                                 and pay_out_or_in = 0))),
             updated_date = #{updatedDate}

@@ -9,10 +9,10 @@ import com.yasyl.sailtotm.common.exception.user.BaseException;
  * @create: 2024-07-20 00:19
  **/
 public class RedisException extends BaseException {
-    RedisException() {
+    public RedisException() {
     }
 
-    RedisException(String msg) {
+    public RedisException(String msg) {
         super(msg);
     }
 }

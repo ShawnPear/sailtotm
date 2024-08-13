@@ -1,5 +1,6 @@
 package com.yasyl.sailtotm.domain.goods.supply.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yasyl.sailtotm.common.exception.repo.RedisException;
 import com.yasyl.sailtotm.common.exception.repo.SearchException;
 import com.yasyl.sailtotm.domain.goods.supply.ability.ICacheGoodsDetailAbility;
@@ -55,7 +56,7 @@ public class GoodsDetailSupplyService implements IGoodsDetailSupplyService {
         if (mode == GoodQueryEnum.CACHE_ONLY || mode == GoodQueryEnum.COMBINE) {
             try {
                 detailDO = cacheGoodsDetailAbility.query(numIid);
-            } catch (RedisException e) {
+            } catch (RedisException | JsonProcessingException e) {
                 detailDO = networkGoodsDetailAbility.query(numIid);
                 getFromNetwork = true;
             }
